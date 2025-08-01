@@ -1,0 +1,17 @@
+- type: entity
+  id: ESRespawnPointManagerBase
+  name: Respawn Point Manager (internal)
+  categories: [RespawnPointManagers]
+  abstract: true
+  components:
+  - type: ESRespawnPointManager
+
+- type: entity
+  id: ESRespawnPointBase
+  name: Respawn Point
+  parents: [MarkerBase]
+  categories: [RespawnPoints]
+  abstract: true
+  components:
+  - type: ESRespawnPoint
+

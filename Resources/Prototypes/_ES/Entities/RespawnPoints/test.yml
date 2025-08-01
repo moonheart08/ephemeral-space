@@ -1,0 +1,15 @@
+- type: entity
+  id: ESTestRespawnPointManager
+  parents: [ESRespawnPointManagerBase]
+  components:
+  - type: ESRespawnPointEntityTable
+    entityTable:
+    - id: ToyAmongPequeno # my beloved
+
+- type: entity
+  id: ESTestRespawnPoint
+  parents: [ESRespawnPointBase]
+  components:
+  - type: ESRespawnPoint
+    managerLocator: !type:ESRespawnPointSingularManager
+      - managerPrototype: ESTestRespawnPointManager

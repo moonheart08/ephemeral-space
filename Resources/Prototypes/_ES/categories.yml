@@ -1,0 +1,8 @@
+- type: entityCategory
+  id: RespawnPointManagers
+  name: entity-category-name-respawn-point-managers
+  hideSpawnMenu: true
+
+- type: entityCategory
+  id: RespawnPoints
+  name: entity-category-name-respawn-points
