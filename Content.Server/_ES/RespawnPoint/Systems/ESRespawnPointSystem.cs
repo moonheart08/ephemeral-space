@@ -7,10 +7,11 @@ namespace Content.Server._ES.RespawnPoint.Systems;
 /// <summary>
 ///     Manages respawn points and their managers.
 /// </summary>
-public sealed class ESRespawnPointSystem : EntitySystem
+public sealed partial class ESRespawnPointSystem : EntitySystem
 {
     [Dependency] private readonly IMapManager _mapManager = default!;
 
+    private EntityQuery<ESRespawnPointOwnedComponent> OwnedQuery;
     private EntityQuery<ESRespawnPointComponent> RespawnPointQuery;
     private EntityQuery<ESRespawnPointManagerComponent> ManagerQuery;
 
@@ -20,11 +21,33 @@ public sealed class ESRespawnPointSystem : EntitySystem
 
         RespawnPointQuery = GetEntityQuery<ESRespawnPointComponent>();
         ManagerQuery = GetEntityQuery<ESRespawnPointManagerComponent>();
+        OwnedQuery = GetEntityQuery<ESRespawnPointOwnedComponent>();
 
         SubscribeLocalEvent<ESRespawnPointComponent, ESRespawnPointSingularManager>(OnSingularManagerLookup);
         SubscribeLocalEvent<ESRespawnPointComponent, ESRespawnPointGridWideManager>(OnGridWideManagerLookup);
         SubscribeLocalEvent<ESRespawnPointComponent, ComponentShutdown>(OnRespawnPointShutdown);
+        SubscribeLocalEvent<ESRespawnPointOwnedComponent, ComponentShutdown>(OnOwnedShutdown);
+        SubscribeLocalEvent<ESRespawnPointManagerComponent, ComponentShutdown>(OnManagerShutdown);
         SubscribeLocalEvent<ESRespawnPointComponent, MapInitEvent>(OnRespawnPointMapInit);
+    }
+
+    private void OnManagerShutdown(Entity<ESRespawnPointManagerComponent> manager, ref ComponentShutdown args)
+    {
+        foreach (var point in manager.Comp.AttachedRespawnPoints)
+        {
+            BreakPointFromManager(RespawnPointQuery.Get(point), manager);
+        }
+
+        foreach (var owned in manager.Comp.AttachedEntities)
+        {
+            BreakOwnedFromManager(OwnedQuery.Get(owned), manager);
+        }
+    }
+
+    private void OnOwnedShutdown(Entity<ESRespawnPointOwnedComponent> ent, ref ComponentShutdown args)
+    {
+        if (ent.Comp.Manager is {} manager)
+            BreakOwnedFromManager(ent, ManagerQuery.Get(manager));
     }
 
     private void OnRespawnPointMapInit(Entity<ESRespawnPointComponent> ent, ref MapInitEvent args)
@@ -83,30 +106,5 @@ public sealed class ESRespawnPointSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-    }
-
-    /// <summary>
-    ///     Assigns a respawn point to a manager.
-    /// </summary>
-    private void UnionPointWithManager(Entity<ESRespawnPointComponent> point,
-        Entity<ESRespawnPointManagerComponent> manager)
-    {
-        manager.Comp.AttachedRespawnPoints.Add(point);
-        point.Comp.Manager = manager;
-    }
-
-    /// <summary>
-    ///     Removes a respawn point from a manager.
-    /// </summary>
-    /// <remarks>
-    ///     The respawn point should be destroyed soon after this is called.
-    /// </remarks>
-    private void BreakPointFromManager(Entity<ESRespawnPointComponent> point,
-        Entity<ESRespawnPointManagerComponent> manager)
-    {
-        var success = manager.Comp.AttachedRespawnPoints.Remove(point);
-        DebugTools.Assert(success, "Removing a respawn point from a manager should never be called with the wrong manager or point.");
-
-        point.Comp.Manager = null;
     }
 }
