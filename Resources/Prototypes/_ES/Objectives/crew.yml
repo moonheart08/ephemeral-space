@@ -84,3 +84,20 @@
     title: es-guzzle-specific-objective-title
     min: 100
     max: 201 # non-inclusive, a spce odysey.
+
+- type: entity
+  parent: ESBaseMaskObjective
+  id: ESObjectiveGuzzleUniqueReagents
+  name: Guzzle
+  description: Consume as many unique liquids as you can, from anywhere you can get them!
+  components:
+  - type: Objective
+    icon:
+      sprite: Objects/Consumable/Drinks/shaker.rsi
+      state: icon
+  - type: ESImbibeUniqueReagentsObjective
+    canBeFromFood: false
+  - type: NumberObjective
+    title: es-guzzle-unique-reagents-objective-title
+    min: 15
+    max: 25 # non-inclusive, non-space non-odyssey.

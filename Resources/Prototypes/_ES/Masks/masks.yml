@@ -66,7 +66,7 @@
   objectives:
     all:
     - id: ESObjectiveGuzzle
-    - id: ESObjectiveGuzzleSpecialInterest
+    - id: ESObjectiveGuzzleUniqueReagents
     - id: ESObjectiveGuzzleSpecialInterest
 
 # Traitor Masks

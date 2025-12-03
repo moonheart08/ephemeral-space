@@ -8,6 +8,7 @@ namespace Content.Server._ES.Masks.Objectives.Components;
 /// <summary>
 ///     This contains data for the "imbibe reagent" objective, which requires the engager to drink some units of that
 ///     reagent.
+///     The target amount is set by <see cref="NumberObjectiveComponent"/>.
 /// </summary>
 /// <seealso cref="ESImbibeReagentObjectiveSystem"/>
 [RegisterComponent]
