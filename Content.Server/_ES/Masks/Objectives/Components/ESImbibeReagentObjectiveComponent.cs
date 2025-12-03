@@ -1,5 +1,6 @@
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.FixedPoint;
+using Robust.Shared.Prototypes;
 
 
 namespace Content.Server._ES.Masks.Objectives.Components;
@@ -17,7 +18,7 @@ public sealed partial class ESImbibeReagentObjectiveComponent : Component
     ///     The possible targets we can pick from on startup.
     /// </summary>
     [DataField(required: true)]
-    public List<ReagentId> PossibleConsumeTargets { get; private set; }
+    public List<ProtoId<ReagentPrototype>> PossibleConsumeTargets { get; private set; }
 
     /// <summary>
     ///     The description for this objective, where $reagent will become the reagent name.
@@ -29,7 +30,7 @@ public sealed partial class ESImbibeReagentObjectiveComponent : Component
     ///     The target reagent we need to consume.
     /// </summary>
     [DataField]
-    public ReagentId ConsumeTarget { get; set; }
+    public ProtoId<ReagentPrototype> ConsumeTarget { get; set; }
 
     /// <summary>
     ///     How much of our target we've consumed.

@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Server._ES.Masks.Objectives.Components;
 using Content.Server._ES.Masks.Objectives.Relays;
 using Content.Server._ES.Masks.Objectives.Relays.Components;
@@ -32,9 +33,10 @@ public sealed class ESImbibeReagentObjectiveSystem : ESBaseObjectiveSystem<ESImb
     {
         base.OnObjectiveAfterAssign(ent, ref args);
 
+        // TODO: This probably should avoid picking the same one between duplicates?
         ent.Comp.ConsumeTarget = _random.Pick(ent.Comp.PossibleConsumeTargets);
 
-        var reagentName = _proto.Index((ProtoId<ReagentPrototype>)ent.Comp.ConsumeTarget.Prototype).LocalizedName;
+        var reagentName = _proto.Index((ProtoId<ReagentPrototype>)ent.Comp.ConsumeTarget).LocalizedName;
 
         _meta.SetEntityDescription(ent, Loc.GetString(ent.Comp.DescriptionLoc, ("reagent", reagentName)));
     }
@@ -51,8 +53,13 @@ public sealed class ESImbibeReagentObjectiveSystem : ESBaseObjectiveSystem<ESImb
         if (!args.IsDrink)
             return;
 
-        var amount = args.FoodSolution.GetReagent(ent.Comp.ConsumeTarget).Quantity;
+        // I solemnly swear this is the best way I found to do this. Weird ass API.
+        var reagents = args.FoodSolution.Contents
+            .Where(x => x.Reagent.Prototype == ent.Comp.ConsumeTarget)
+            .Select(x => x.Quantity).ToList();
 
-        ent.Comp.ConsumedAmount += amount;
+        // can't use Sum() on FixedPoint2, and Aggregate yells about empty lists.
+        if (reagents.Count > 0)
+            ent.Comp.ConsumedAmount += reagents.Aggregate(static (x, y) => x + y);
     }
 }

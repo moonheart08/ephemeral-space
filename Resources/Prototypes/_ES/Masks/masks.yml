@@ -64,7 +64,10 @@
   description: es-mask-guzzler-desc
   weight: 1
   objectives:
-    id: ESObjectiveGuzzle
+    all:
+    - id: ESObjectiveGuzzle
+    - id: ESObjectiveGuzzleSpecialInterest
+    - id: ESObjectiveGuzzleSpecialInterest
 
 # Traitor Masks
 - type: esMask

@@ -53,10 +53,34 @@
   components:
   - type: Objective
     icon:
-      sprite: Objects/Specific/Hydroponics/apple.rsi
-      state: produce
+      sprite: Objects/Tools/bucket.rsi
+      state: icon
   - type: ESGuzzleObjective
   - type: NumberObjective
     title: es-guzzle-objective-title
     min: 1000
     max: 2001 # non-inclusive, a space odyssey.
+
+- type: entity
+  parent: ESBaseMaskObjective
+  id: ESObjectiveGuzzleSpecialInterest
+  name: Guzzle Special Interest
+  description: Consume as much of your Special Interest as you can!
+  components:
+  - type: Objective
+    icon:
+      sprite: Objects/Tools/bucket.rsi
+      state: icon
+    unique: false
+  - type: ESImbibeReagentObjective
+    canBeFromFood: false # you're GUZZLING not MUNCHING.
+    descriptionLoc: es-imbibe-reagent-guzzler-desc
+    possibleConsumeTargets:
+    - Beer
+    - WeldingFuel # Excuse to really annoy engineering, AND medical.
+    - Epinephrine # Excuses to really annoy medical.
+    - DexalinPlus
+  - type: NumberObjective
+    title: es-guzzle-specific-objective-title
+    min: 100
+    max: 201 # non-inclusive, a spce odysey.
