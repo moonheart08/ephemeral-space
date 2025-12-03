@@ -26,25 +26,25 @@ public sealed class ESMuncherRelaySystem : ESBaseMindRelay
     private void OnFullyAte(Entity<ESMuncherRelayComponent> ent, ref FullyAteEvent args)
     {
         // TODO(Kaylie): Mind doesn't have an Entity<T> override for this. For reasons.
-        if (_mind.TryGetMind(ent, out var mindId, out var mindComp))
+        if (!_mind.TryGetMind(ent, out var mindId, out var mindComp))
             return;
 
         var ev = new BodyFullyAteEvent(ent, args.Food);
 
-        RaiseMindEvent((mindId, mindComp!), ref ev);
+        RaiseMindEvent((mindId, mindComp), ref ev);
     }
 
     private void OnIngesting(Entity<ESMuncherRelayComponent> ent, ref IngestingEvent args)
     {
-        if (_mind.TryGetMind(ent, out var mindId, out var mindComp))
+        if (!_mind.TryGetMind(ent, out var mindId, out var mindComp))
             return;
 
         //TODO(Kaylie): Ew, protoid comparison. Nothing better, though.
-        var isDrink = Comp<EdibleComponent>(ent).Edible == IngestionSystem.Drink;
+        var isFood = TryComp<EdibleComponent>(ent, out var edible) && edible.Edible != IngestionSystem.Drink;
 
-        var ev = new BodyIngestingEvent(ent, args.Food, args.Split, args.ForceFed, isDrink);
+        var ev = new BodyIngestingEvent(ent, args.Food, args.Split, args.ForceFed, !isFood);
 
-        RaiseMindEvent((mindId, mindComp!), ref ev);
+        RaiseMindEvent((mindId, mindComp), ref ev);
     }
 }
 
