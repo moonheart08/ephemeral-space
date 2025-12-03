@@ -31,7 +31,7 @@ public sealed partial class ESImbibeReagentObjectiveComponent : Component
     ///     The target reagent we need to consume.
     /// </summary>
     [DataField]
-    public ProtoId<ReagentPrototype> ConsumeTarget { get; set; } = string.Empty;
+    public ProtoId<ReagentPrototype> ConsumeTarget { get; set; } = "Water"; // Tests demand a default.
 
     /// <summary>
     ///     How much of our target we've consumed.
