@@ -23,6 +23,8 @@
   - type: Construction
     graph: smokeableCigarette
     node: cigarette
+  - type: Extractable
+    grindableSolutionName: smokable
 
 - type: entity
   id: SoakedCigarette
