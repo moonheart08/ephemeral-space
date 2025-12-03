@@ -30,7 +30,7 @@ public sealed partial class ESImbibeReagentObjectiveComponent : Component
     ///     The target reagent we need to consume.
     /// </summary>
     [DataField]
-    public ProtoId<ReagentPrototype> ConsumeTarget { get; set; }
+    public ProtoId<ReagentPrototype> ConsumeTarget { get; set; } = string.Empty;
 
     /// <summary>
     ///     How much of our target we've consumed.
