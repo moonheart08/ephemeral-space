@@ -1,5 +1,6 @@
 using Content.Server._ES.Masks.Objectives.Components;
 using Content.Server._ES.Masks.Objectives.Relays;
+using Content.Server._ES.Masks.Objectives.Relays.Components;
 using Content.Shared.Objectives.Components;
 
 namespace Content.Server._ES.Masks.Objectives;
@@ -10,6 +11,8 @@ namespace Content.Server._ES.Masks.Objectives;
 /// <seealso cref="ESImbibeUniqueReagentsObjectiveComponent"/>
 public sealed class ESImbibeUniqueReagentsObjectiveSystem : ESBaseObjectiveSystem<ESImbibeUniqueReagentsObjectiveComponent>
 {
+    public override Type[] RelayComponents => new[] { typeof(ESMuncherRelayComponent) };
+
     /// <inheritdoc/>
     public override void Initialize()
     {
