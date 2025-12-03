@@ -80,6 +80,18 @@
     - WeldingFuel # Excuse to really annoy engineering, AND medical.
     - Epinephrine # Excuses to really annoy medical.
     - DexalinPlus
+    - JuiceBanana
+    - JuiceApple
+    - Milk
+    - Bicaridine
+    - THC
+    - Sugar
+    - Blood
+    - Fiber
+    - Fat
+    - SoapReagent
+    - SpaceCleaner
+    - SpaceLube
   - type: NumberObjective
     title: es-guzzle-specific-objective-title
     min: 100
