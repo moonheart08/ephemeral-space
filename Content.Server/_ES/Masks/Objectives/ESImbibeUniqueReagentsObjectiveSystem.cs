@@ -23,6 +23,9 @@ public sealed class ESImbibeUniqueReagentsObjectiveSystem : ESBaseObjectiveSyste
 
     private void OnBodyIngesting(Entity<ESImbibeUniqueReagentsObjectiveComponent> ent, ref BodyIngestingEvent args)
     {
+        if (!ent.Comp.CanBeFromFood && !args.IsDrink)
+            return;
+
         foreach (var reagent in args.FoodSolution)
         {
             ent.Comp.SeenReagents.Add(reagent.Reagent);
