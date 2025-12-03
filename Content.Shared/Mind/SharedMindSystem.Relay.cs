@@ -13,7 +13,19 @@ public abstract partial class SharedMindSystem : EntitySystem
     {
         // for name modifiers that depend on certain mind roles
         SubscribeLocalEvent<MindContainerComponent, RefreshNameModifiersEvent>(RelayRefToMind);
+
+// ES PATCH START
+        SubscribeLocalEvent<MindComponent, MindGotAddedEvent>(RelayToObjectives);
     }
+
+    protected void RelayToObjectives<T>(Entity<MindComponent> ent, ref T args) where T : notnull
+    {
+        foreach (var objective in ent.Comp.Objectives)
+        {
+            RaiseLocalEvent(objective, args);
+        }
+    }
+// ES PATCH END
 
     protected void RelayToMind<T>(EntityUid uid, MindContainerComponent component, T args) where T : class
     {

@@ -57,6 +57,15 @@
   - type: ESMaskCacheSpawner
     cacheProto: ESCrateCacheCrewVeteran
 
+- type: esMask
+  id: ESGuzzler
+  name: es-mask-guzzler-name
+  troupe: ESCrew
+  description: es-mask-guzzler-desc
+  weight: 1
+  objectives:
+    id: ESObjectiveGuzzle
+
 # Traitor Masks
 - type: esMask
   id: ESBaseTraitor

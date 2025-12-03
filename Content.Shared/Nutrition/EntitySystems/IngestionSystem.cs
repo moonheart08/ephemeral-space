@@ -393,6 +393,11 @@ public sealed partial class IngestionSystem : EntitySystem
         var finishedEv = new FullyEatenEvent(args.User);
         RaiseLocalEvent(food, ref finishedEv);
 
+        // ES PATCH START
+        var bodyFinishedEv = new FullyAteEvent(food);
+        RaiseLocalEvent(args.User, ref bodyFinishedEv);
+        // ES PATCH END
+
         var eventArgs = new DestructionEventArgs();
         RaiseLocalEvent(food, eventArgs);
 

@@ -175,6 +175,16 @@ public readonly record struct FullyEatenEvent(EntityUid User)
     public readonly EntityUid User = User;
 }
 
+// ES PATCH START
+// TODO: Upstream this..
+/// <summary>
+/// Raised directed at the user after finishing eating it, but before it's deleted.
+/// </summary>
+/// <param name="Food">The food we just ate in full.</param>
+[ByRefEvent]
+public readonly record struct FullyAteEvent(EntityUid Food);
+// ES PATCH END
+
 /// <summary>
 /// Returns a list of Utensils that can be used to consume the entity, as well as a list of required types.
 /// </summary>

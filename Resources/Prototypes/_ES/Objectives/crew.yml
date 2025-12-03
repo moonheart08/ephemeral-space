@@ -44,3 +44,19 @@
   - type: NumberObjective
     min: 1
     max: 2 # non-inclusive
+
+- type: entity
+  parent: ESBaseMaskObjective
+  id: ESObjectiveGuzzle
+  name: Guzzle
+  description: Consume as much liquid as you can, from anywhere you can get it!
+  components:
+  - type: Objective
+    icon:
+      sprite: Objects/Specific/Hydroponics/apple.rsi
+      state: produce
+  - type: ESGuzzleObjective
+  - type: NumberObjective
+    title: es-guzzle-objective-title
+    min: 1000
+    max: 2001 # non-inclusive, a space odyssey.
