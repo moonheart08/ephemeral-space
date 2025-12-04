@@ -26,7 +26,7 @@ public sealed partial class ESImbibeReagentObjectiveComponent : Component
     ///     The description for this objective, where $reagent will become the reagent name.
     /// </summary>
     [DataField(required: true)]
-    public string DescriptionLoc { get; private set; }
+    public LocId DescriptionLoc { get; private set; }
 
     /// <summary>
     ///     The target reagent we need to consume.
