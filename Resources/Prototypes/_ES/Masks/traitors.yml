@@ -1,0 +1,42 @@
+# Traitor-troupe masks, the Bad Guys.
+
+- type: esMask
+  id: ESBaseTraitor
+  troupe: ESTraitor
+  weight: 1
+  abstract: true
+  components:
+  - type: ESTroupeFactionIcon
+    icon: ESTraitor
+    troupe: ESTraitor
+    examineString: es-mask-troupe-traitor-examine
+
+- type: esMask
+  parent: ESBaseTraitor
+  id: ESMarauder
+  name: es-mask-marauder-name
+  description: es-mask-marauder-desc
+  color: coral
+  mindComponents:
+  - type: ESMaskCacheSpawner
+    cacheProto: ESCrateCacheTraitorMarauder
+
+- type: esMask
+  parent: ESBaseTraitor
+  id: ESAssassin
+  name: es-mask-assassin-name
+  description: es-mask-assassin-desc
+  color: hotpink
+  mindComponents:
+  - type: ESMaskCacheSpawner
+    cacheProto: ESCrateCacheTraitorAssassin
+
+- type: esMask
+  parent: ESBaseTraitor
+  id: ESInfiltrator
+  name: es-mask-infiltrator-name
+  description: es-mask-infiltrator-desc
+  color: yellow
+  mindComponents:
+  - type: ESMaskCacheSpawner
+    cacheProto: ESCrateCacheTraitorInfiltrator
