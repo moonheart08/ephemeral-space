@@ -13,18 +13,8 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared._ES.Masks.Masquerades;
 
-public sealed class MasqueradeRoleSet
+public sealed class MasqueradeRoleSet : MasqueradeKind
 {
-    /// <summary>
-    ///     Minimum number of players this mask set can support.
-    /// </summary>
-    public int MinPlayers { get; set; }
-
-    /// <summary>
-    ///     Maximum number of players this mask set can support.
-    /// </summary>
-    public int? MaxPlayers { get; set; }
-
     /// <summary>
     ///     All the roles in this masquerade at given population levels, baked into something easy to use by the game.
     /// </summary>

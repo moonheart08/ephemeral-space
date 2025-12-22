@@ -90,14 +90,3 @@ public abstract class MasqueradeKind
 /// </summary>
 [DataDefinition]
 public sealed partial class RandomMasquerade : MasqueradeKind;
-
-/// <summary>
-///     A masquerade defined by what roles to add/remove at given levels of players, specifying which roles or role sets
-///     to introduce to the round.
-/// </summary>
-[DataDefinition]
-public sealed partial class RoleSetMasquerade : MasqueradeKind
-{
-    [DataField(required: true, priority: 0)]
-    public MasqueradeRoleSet Roles = new();
-}
