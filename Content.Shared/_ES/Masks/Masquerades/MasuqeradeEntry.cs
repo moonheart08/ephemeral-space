@@ -13,7 +13,8 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared._ES.Masks.Masquerades;
 
-public sealed class MasqueradeRoleSet : MasqueradeKind
+[DataDefinition]
+public sealed partial class MasqueradeRoleSet : MasqueradeKind
 {
     /// <summary>
     ///     All the roles in this masquerade at given population levels, baked into something easy to use by the game.
@@ -23,11 +24,28 @@ public sealed class MasqueradeRoleSet : MasqueradeKind
     /// </remarks>
     private List<HashSet<MasqueradeEntry>> _bakedRoles = new();
 
-    public bool TryGetEntriesForPop(int playerCount, out IReadOnlySet<MasqueradeEntry>? entries)
+    public bool TryGetEntriesForPop(int playerCount, [NotNullWhen(true)] out IReadOnlySet<MasqueradeEntry>? entries)
     {
         var index = MinPlayers + playerCount;
 
-        if (_bakedRoles
+        if (_bakedRoles.TryGetValue(index, out var entries2))
+        {
+            entries = entries2;
+            return true;
+        }
+
+        entries = null;
+        return false;
+    }
+
+    [DataField(readOnly: true, required: true)]
+    public MasqueradeEntry DefaultMask = default!;
+
+    [DataField("roles", readOnly: true, required: true)]
+    private IReadOnlyDictionary<int, HashSet<MasqueradeEntry>> _roles
+    {
+        get => throw new NotImplementedException();
+        set => Init(value); // set up the baked role lists.
     }
 
     internal void Init(IReadOnlyDictionary<int, HashSet<MasqueradeEntry>> mapping)
@@ -58,20 +76,6 @@ public sealed class MasqueradeRoleSet : MasqueradeKind
 /// </remarks>
 public abstract record MasqueradeEntry(int Count, bool Subtract)
 {
-    public virtual bool Equals(MasqueradeEntry? other)
-    {
-        if (other is null)
-            return false;
-        if (ReferenceEquals(this, other))
-            return true;
-        return Count == other.Count;
-    }
-
-    public override int GetHashCode()
-    {
-        return Count;
-    }
-
     /// <summary>
     ///     An entry containing a set of unweighted masks and how many times to repeat them.
     /// </summary>
@@ -84,12 +88,12 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
-            return base.Equals(other) && Masks.Equals(other.Masks);
+            return Masks.Equals(other.Masks);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), Masks);
+            return HashCode.Combine(Masks, 271821); // Nothing up my sleeve, just avoiding hash collisions.
         }
     }
 
@@ -106,12 +110,12 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
             if (ReferenceEquals(this, other))
                 return true;
 
-            return base.Equals(other) && MaskSet.Equals(other.MaskSet);
+            return MaskSet.Equals(other.MaskSet);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), MaskSet);
+            return HashCode.Combine(MaskSet, 314159); // Nothing up my sleeve, just avoiding hash collisions.
         }
     }
 

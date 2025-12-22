@@ -1,3 +1,4 @@
+using Content.Shared.Random.Helpers;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
@@ -24,9 +25,17 @@ public sealed class ESMaskSetPrototype : IPrototype, IInheritingPrototype
     [AbstractDataField]
     public bool Abstract { get; }
 
-    // TODO: Weighted set.
-    public IReadOnlySet<ProtoId<ESMaskPrototype>> Masks => _masks;
+    public IReadOnlyDictionary<ProtoId<ESMaskPrototype>, float> Masks => _masks;
 
+    /// <summary>
+    ///     A weighted random bag of masks.
+    /// </summary>
+    [AlwaysPushInheritance]
     [DataField("masks", required: true)]
-    private HashSet<ProtoId<ESMaskPrototype>> _masks = default!;
+    private Dictionary<ProtoId<ESMaskPrototype>, float> _masks = default!;
+
+    public ProtoId<ESMaskPrototype> Pick(IRobustRandom random)
+    {
+        return random.Pick(_masks);
+    }
 }

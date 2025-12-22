@@ -14,6 +14,9 @@ es-mask-daredevil-desc = You live an intense lifestyle, constantly seeking new w
 es-mask-empath-name = Empath
 es-mask-empath-desc = Use your tuned-in emotional connection to read the auras of others.
 
+es-mask-crewmember-name = Crew member
+es-mask-crewmember-desc = You're just here for the ride, try not to die and do your job.
+
 es-mask-fruit-vendor-name = Fruit Vendor
 es-mask-fruit-vendor-desc = Dispense delicious fruits to aid in the completion of the station objective.
 

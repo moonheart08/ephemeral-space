@@ -1,0 +1,6 @@
+- type: esMaskSet
+  id: Jesters
+  masks:
+    ESPhantom: 1,
+    ESMartyr: 1,
+    ESGuzzler: 1,
