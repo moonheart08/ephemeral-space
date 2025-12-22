@@ -1,0 +1,6 @@
+- type: esMasquerade
+  id: Random
+  minPlayers: 4
+  preset: ESTraitors
+  masquerade: !type:RandomMasquerade
+

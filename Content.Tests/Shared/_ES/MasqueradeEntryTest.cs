@@ -20,18 +20,29 @@ public sealed class MasqueradeEntryTest
     [TestCase("Mask1/Mask2(3)")]
     [TestCase("-Mask1/Mask2(3)")]
     [TestCase("-Mask1/Mask2/Mask3/Mask4/Mask5(1)")]
+    [TestCase("#MaskSet")]
+    [TestCase("-#MaskSet")]
+    [TestCase("#MaskSet(3)")]
+    [TestCase("-#MaskSet(3)")]
     public void ParseEntry(string entry)
     {
-        // mild jank, only ever call with validation off, or it'll be sad about the lack of prototype manager.
-        var parser = new UnresolvedMasqueradeEntrySerializer();
-
-        Assert.That(parser.TryRead(new ValueDataNode(entry), false, out var entryParsed, out _));
+        Assert.That(MasqueradeEntry.TryRead(new ValueDataNode(entry), null, out var entryParsed, out _));
 
         Assert.Multiple(() =>
         {
             Assert.That(entryParsed!.Count, Is.GreaterThan(0));
-            Assert.That(entryParsed!.Masks, Is.Not.Empty);
             Assert.That(entryParsed!.Subtract, Is.EqualTo(entry.StartsWith('-')));
+            // Ensure we're working with the types we support, so if someone adds more they gotta fix it.
+            Assert.That(entryParsed, Is.TypeOf<MasqueradeEntry.DirectEntry>().Or.TypeOf<MasqueradeEntry.SetEntry>());
+
+            if (entryParsed is MasqueradeEntry.DirectEntry e)
+            {
+                Assert.That(e.Masks, Is.Not.Empty);
+            }
+            else if (entryParsed is MasqueradeEntry.SetEntry e2)
+            {
+                Assert.That(e2.MaskSet, Is.Not.EqualTo(string.Empty));
+            }
         });
     }
 }

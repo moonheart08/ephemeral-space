@@ -1,0 +1,5 @@
+- type: esMasquerade
+  id: Default
+  minPlayers: 4
+  maxPlayers: 35
+
