@@ -9,7 +9,7 @@ namespace Content.Shared._ES.Masks.Masquerades;
 ///     A weighted collection of masks for use by Masquerades.
 /// </summary>
 /// <seealso cref="MasqueradeEntry"/>
-[Prototype]
+[Prototype("esMaskSet")]
 public sealed class ESMaskSetPrototype : IPrototype, IInheritingPrototype
 {
     /// <inheritdoc/>

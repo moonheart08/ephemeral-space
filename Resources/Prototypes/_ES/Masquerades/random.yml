@@ -1,6 +1,8 @@
 - type: esMasquerade
   id: Random
+  name: Random
+  description: A truly random traitors round.
   minPlayers: 4
   preset: ESTraitors
-  masquerade: !type:
+  masquerade: !type:RandomMasquerade
 

@@ -26,7 +26,7 @@ public sealed class MasqueradeEntryTest
     [TestCase("-#MaskSet(3)")]
     public void ParseEntry(string entry)
     {
-        Assert.That(MasqueradeEntry.TryRead(new ValueDataNode(entry), null, out var entryParsed, out _));
+        Assert.That(MasqueradeEntry.TryRead(entry, null, out var entryParsed, out _));
 
         Assert.Multiple(() =>
         {

@@ -1,14 +1,15 @@
 using Content.Shared._ES.Masks.Masquerades;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
+using YamlDotNet.Serialization.Utilities;
 
 namespace Content.Shared._ES.Masks;
 
 /// <summary>
 /// This is a prototype for a Masquerade, a set of roles to give for given player counts.
 /// </summary>
-[Prototype]
-public sealed class ESMasqueradePrototype : IPrototype
+[Prototype("esMasquerade")]
+public sealed class ESMasqueradePrototype : IPrototype, IPostDeserializationCallback
 {
     [Dependency] private readonly ILocalizationManager _loc = default!;
 
@@ -38,26 +39,25 @@ public sealed class ESMasqueradePrototype : IPrototype
     /// </summary>
     public string LocDescription => _loc.TryGetString($"es-masquerade-desc-{ID}", out var value) ? value : Description;
 
-
     /// <summary>
-    ///     Setter for serialization because we're manually inlining some fields from MasqueradeRoleSet.
+    ///     Setter for serialization because we're manually inlining some fields from MasqueradeKind.
     /// </summary>
-    /// <seealso cref="MasqueradeRoleSet.MinPlayers"/>
-    [DataField(priority: 1, required: true)]
+    /// <seealso cref="MasqueradeKind.MinPlayers"/>
+    [DataField(priority: 0, required: true, readOnly: true)]
     private int MinPlayers
     {
-        get => Masquerade.MinPlayers;
+        get => 0; // So serializer doesn't get sad.
         set => Masquerade.MinPlayers = value;
     }
 
     /// <summary>
-    ///     Setter for serialization because we're manually inlining some fields from MasqueradeRoleSet.
+    ///     Setter for serialization because we're manually inlining some fields from MasqueradeKind.
     /// </summary>
-    /// <seealso cref="MasqueradeRoleSet.MaxPlayers"/>
-    [DataField(priority: 1)]
+    /// <seealso cref="MasqueradeKind.MaxPlayers"/>
+    [DataField(priority: 0, readOnly: true)]
     private int? MaxPlayers
     {
-        get => Masquerade.MaxPlayers;
+        get => 0; // So serializer doesn't get sad.
         set => Masquerade.MaxPlayers = value;
     }
 
@@ -70,9 +70,14 @@ public sealed class ESMasqueradePrototype : IPrototype
     [DataField(required: true, serverOnly: true)]
     public string Preset { get; private set; } = default!;
 
-    [DataField(required: true, priority: 0)]
+    [DataField(required: true, priority: 1)]
     public MasqueradeKind Masquerade { get; private set; } = default!;
 
+    public void OnDeserialization()
+    {
+        // This is actually evil but I'm willing to do crimes to make this work.
+        Masquerade.Init();
+    }
 }
 
 /// <summary>
@@ -83,6 +88,8 @@ public abstract class MasqueradeKind
     public virtual int MinPlayers { get; set; }
 
     public virtual int? MaxPlayers { get; set; }
+
+    internal virtual void Init() {}
 };
 
 /// <summary>

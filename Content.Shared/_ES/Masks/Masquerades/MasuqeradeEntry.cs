@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Serialization.Markdown;
@@ -42,23 +44,19 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
     public MasqueradeEntry DefaultMask = default!;
 
     [DataField("roles", readOnly: true, required: true)]
-    private IReadOnlyDictionary<int, HashSet<MasqueradeEntry>> _roles
-    {
-        get => throw new NotImplementedException();
-        set => Init(value); // set up the baked role lists.
-    }
+    private IReadOnlyDictionary<int, HashSet<MasqueradeEntry>> _roles { get; set; }
 
-    internal void Init(IReadOnlyDictionary<int, HashSet<MasqueradeEntry>> mapping)
+    internal override void Init()
     {
         var rollingSet = new HashSet<MasqueradeEntry>();
 
-        var minPlayers = mapping.Keys.Min();
+        var minPlayers = _roles.Keys.Min();
 
         DebugTools.Assert(minPlayers > 0, "You can't have any roles without players.");
         DebugTools.Assert(minPlayers == MinPlayers, $"Minimum players should match the first specified set of entries (expected {MinPlayers}, found {minPlayers})");
 
 
-        foreach (var popCount in mapping.Keys.Order())
+        foreach (var popCount in _roles.Keys.Order())
         {
 
         }
@@ -91,6 +89,11 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
             return Masks.Equals(other.Masks);
         }
 
+        protected override ProtoId<ESMaskPrototype> Pick(IRobustRandom random, IPrototypeManager proto)
+        {
+            return random.Pick(Masks);
+        }
+
         public override int GetHashCode()
         {
             return HashCode.Combine(Masks, 271821); // Nothing up my sleeve, just avoiding hash collisions.
@@ -117,6 +120,11 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
         {
             return HashCode.Combine(MaskSet, 314159); // Nothing up my sleeve, just avoiding hash collisions.
         }
+
+        protected override ProtoId<ESMaskPrototype> Pick(IRobustRandom random, IPrototypeManager proto)
+        {
+            return proto.Index(MaskSet).Pick(random);
+        }
     }
 
     // Magic regex to match everything in an unresolved entry.
@@ -127,9 +135,9 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture
             );
 
-    public static bool TryRead(ValueDataNode node, IPrototypeManager? proto, [NotNullWhen(true)] out MasqueradeEntry? action, [NotNullWhen(false)] out string? error)
+    public static bool TryRead(string node, IPrototypeManager? proto, [NotNullWhen(true)] out MasqueradeEntry? action, [NotNullWhen(false)] out string? error)
     {
-        var match = _entryRegex.Match(node.Value);
+        var match = _entryRegex.Match(node);
 
         if (!match.Success)
         {
@@ -144,6 +152,13 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
         if (match.Groups["count"].Captures is [var capture])
         {
             count = int.Parse(capture.ValueSpan);
+
+            if (count == 0)
+            {
+                action = null;
+                error = "Mask entry count cannot be 0.";
+                return false;
+            }
         }
 
         if (match.Groups["subtractive"].Length == 1)
@@ -188,7 +203,119 @@ public abstract record MasqueradeEntry(int Count, bool Subtract)
         }
         else
         {
-            throw new NotImplementedException();
+            throw new UnreachableException();
         }
     }
+
+    protected abstract ProtoId<ESMaskPrototype> Pick(IRobustRandom random, IPrototypeManager proto);
+
+    public List<ProtoId<ESMaskPrototype>> PickMasks(IRobustRandom random, IPrototypeManager proto)
+    {
+        DebugTools.Assert(!Subtract, "Subtractive entries shouldn't ever be picked from.");
+
+        var list = new List<ProtoId<ESMaskPrototype>>(Count);
+
+        for (var i = 0; i < Count; i++)
+        {
+            list.Add(Pick(random, proto));
+        }
+
+        return list;
+    }
 }
+
+[TypeSerializer]
+internal sealed class MasqueradeEntrySerializer : ITypeSerializer<MasqueradeEntry, ValueDataNode>,
+    ITypeSerializer<MasqueradeEntry.DirectEntry, ValueDataNode>,
+    ITypeSerializer<MasqueradeEntry.SetEntry, ValueDataNode>
+{
+    [Dependency] private readonly IPrototypeManager _proto = default!;
+
+    public ValidationNode Validate(ISerializationManager serializationManager,
+        ValueDataNode node,
+        IDependencyCollection dependencies,
+        ISerializationContext? context = null)
+    {
+        if (MasqueradeEntry.TryRead(node.Value, _proto, out _, out var error))
+        {
+            return new ValidatedValueNode(node);
+        }
+        else
+        {
+            return new ErrorNode(node, error);
+        }
+    }
+
+    public MasqueradeEntry Read(ISerializationManager serializationManager,
+        ValueDataNode node,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null,
+        ISerializationManager.InstantiationDelegate<MasqueradeEntry>? instanceProvider = null)
+    {
+        MasqueradeEntry.TryRead(node.Value, _proto, out var value, out var error);
+
+        if (error is not null)
+            throw new Exception(error);
+
+        return value!;
+    }
+
+    public DataNode Write(ISerializationManager serializationManager,
+        MasqueradeEntry value,
+        IDependencyCollection dependencies,
+        bool alwaysWrite = false,
+        ISerializationContext? context = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public MasqueradeEntry.DirectEntry Read(ISerializationManager serializationManager,
+        ValueDataNode node,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null,
+        ISerializationManager.InstantiationDelegate<MasqueradeEntry.DirectEntry>? instanceProvider = null)
+    {
+        return (MasqueradeEntry.DirectEntry)((ITypeSerializer<MasqueradeEntry, ValueDataNode>)this).Read(serializationManager,
+            node,
+            dependencies,
+            hookCtx,
+            context,
+            instanceProvider);
+    }
+
+    public DataNode Write(ISerializationManager serializationManager,
+        MasqueradeEntry.DirectEntry value,
+        IDependencyCollection dependencies,
+        bool alwaysWrite = false,
+        ISerializationContext? context = null)
+    {
+        throw new NotImplementedException();
+    }
+
+    public MasqueradeEntry.SetEntry Read(ISerializationManager serializationManager,
+        ValueDataNode node,
+        IDependencyCollection dependencies,
+        SerializationHookContext hookCtx,
+        ISerializationContext? context = null,
+        ISerializationManager.InstantiationDelegate<MasqueradeEntry.SetEntry>? instanceProvider = null)
+    {
+        return (MasqueradeEntry.SetEntry)((ITypeSerializer<MasqueradeEntry, ValueDataNode>)this).Read(serializationManager,
+            node,
+            dependencies,
+            hookCtx,
+            context,
+            instanceProvider);
+    }
+
+    public DataNode Write(ISerializationManager serializationManager,
+        MasqueradeEntry.SetEntry value,
+        IDependencyCollection dependencies,
+        bool alwaysWrite = false,
+        ISerializationContext? context = null)
+    {
+        throw new NotImplementedException();
+    }
+}
+
