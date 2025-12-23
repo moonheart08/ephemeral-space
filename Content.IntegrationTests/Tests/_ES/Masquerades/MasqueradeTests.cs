@@ -64,6 +64,30 @@ public sealed class MasqueradeTests
 
             TestOnEntry(entry);
         }
+    }
 
+    [GameTest(RunOnSide = Side.Server, Description = "Ensures that masquerade mask selection itself is deterministic.")]
+    public void MasqueradeDeterminism(
+        [SidedDependency(Side.Server)] IPrototypeManager proto,
+        [SidedDependency(Side.Server)] IRobustRandom globalRng
+    )
+    {
+        #pragma warning disable RA0033
+        var freakshow = proto.Index<ESMasqueradePrototype>("Freakshow");
+        #pragma warning restore RA0033
+
+        for (var i = 0; i < 100; i++)
+        {
+            var rngSeed = new RngSeed(globalRng);
+            var rng1 = rngSeed.IntoRandomizer();
+            var rng2 = rngSeed.IntoRandomizer();
+
+            var masquerade = (MasqueradeRoleSet)freakshow.Masquerade;
+
+            Assert.That(masquerade.TryGetMasks(30, rng1, proto, out var masks1));
+            Assert.That(masquerade.TryGetMasks(30, rng2, proto, out var masks2));
+
+            Assert.That(masks1!, Is.EquivalentTo(masks2!));
+        }
     }
 }
