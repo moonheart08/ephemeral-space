@@ -1,5 +1,6 @@
 using Content.Shared._ES.Masks.Masquerades;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 using YamlDotNet.Serialization.Utilities;
 
@@ -9,7 +10,7 @@ namespace Content.Shared._ES.Masks;
 /// This is a prototype for a Masquerade, a set of roles to give for given player counts.
 /// </summary>
 [Prototype("esMasquerade")]
-public sealed class ESMasqueradePrototype : IPrototype, IPostDeserializationCallback
+public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
 {
     [Dependency] private readonly ILocalizationManager _loc = default!;
 
@@ -73,9 +74,8 @@ public sealed class ESMasqueradePrototype : IPrototype, IPostDeserializationCall
     [DataField(required: true, priority: 1)]
     public MasqueradeKind Masquerade { get; private set; } = default!;
 
-    public void OnDeserialization()
+    void ISerializationHooks.AfterDeserialization()
     {
-        // This is actually evil but I'm willing to do crimes to make this work.
         Masquerade.Init();
     }
 }
