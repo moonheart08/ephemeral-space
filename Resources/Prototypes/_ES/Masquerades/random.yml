@@ -3,6 +3,10 @@
   name: Random
   description: A truly random traitors round.
   minPlayers: 4
-  preset: ESTraitors
+  gameRules:
+    - ESTroupeRuleCrew
+    - ESTroupeRuleTraitor
+    - ESSchedulerRuleStationEventVote
+    - ESSchedulerRuleDegradationEventVote
   masquerade: !type:RandomMasquerade
 

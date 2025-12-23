@@ -2,8 +2,12 @@
   id: Freakshow
   name: Freakshow
   description: Packs the round with almost nothing but high noise crew masks.
+  weight: 0 # Admin only until voting is implemented.
   minPlayers: 4
-  preset: ESExtended
+  gameRules:
+    - ESTroupeRuleCrew
+    - ESSchedulerRuleStationEventVote
+    - ESSchedulerRuleDegradationEventVote
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember"
     roles:

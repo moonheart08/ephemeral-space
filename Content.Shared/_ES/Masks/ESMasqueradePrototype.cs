@@ -37,6 +37,12 @@ public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
     public string Description = default!;
 
     /// <summary>
+    ///     The weight for this masquerade when random picking.
+    ///     0 means it can never occur naturally.
+    /// </summary>
+    public int? Weight = 1;
+
+    /// <summary>
     ///     The localized name for this masquerade.
     /// </summary>
     public string LocDescription(ILocalizationManager loc)
@@ -68,11 +74,10 @@ public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
 
     // Due to this being shared, we can't rely on GamePresetPrototype... please don't make typos :3
     /// <summary>
-    ///     The GamePreset prototype to use for this masquerade.
-    ///     This will always be decoy'd to avoid the existing preset system spoiling the masquerade.
+    ///     The gamerules to use for this masquerade.
     /// </summary>
     [DataField(required: true, serverOnly: true)]
-    public string Preset { get; private set; } = default!;
+    public IReadOnlyList<EntProtoId> GameRules { get; private set; } = default!;
 
     [DataField(required: true, priority: 1)]
     public MasqueradeKind Masquerade { get; private set; } = default!;
