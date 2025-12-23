@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Utility;
@@ -149,6 +150,9 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
 
     internal override void Init()
     {
+        // Validation wise, this would have better UX if all this happened at parse time so ValidationNodes could be made.
+        // But doing all of this at parse time would have Consequences I don't want to deal with and would significantly
+        // complicate all of this code. So for now, the asserts will have to do.
         var rollingSet = new Dictionary<MqKey, MasqueradeEntry>();
 
         var minPlayers = _roles.Keys.Min();
@@ -167,6 +171,12 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
                 _bakedRoles.Add(_bakedRoles[lastAt - minPlayers]);
             }
 
+            DebugTools.AssertEqual(
+                _roles[popCount].Select(MqKey.FromEntry).ToHashSet().Count,
+                _roles[popCount].Count,
+                $"The roles list at {popCount} contains duplicate entries."
+                );
+
             foreach (var entry in _roles[popCount])
             {
                 rollingSet.MergeKey(MqKey.FromEntry(entry), entry);
@@ -174,7 +184,7 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
 
             foreach (var entry in rollingSet)
             {
-                DebugTools.Assert(entry.Value.Subtract == false, $"You subtracted too much at {popCount}.");
+                DebugTools.Assert(entry.Value.Subtract == false, $"You subtracted too much at {popCount} with the entry {entry}.");
             }
 
             _bakedRoles.Add(rollingSet.Values.ToList());
@@ -209,7 +219,11 @@ public abstract record MasqueradeEntry(int Count, bool Subtract) : IMergeable<Ma
         if (rhs.Subtract)
         {
             Count -= rhs.Count;
-            DebugTools.Assert(Count >= 0);
+            if (Count < 0)
+            {
+                Count = int.Abs(Count);
+                Subtract = true; // Gets better error info if we do this. It'll be caught.
+            }
         }
         else
         {
@@ -339,7 +353,52 @@ public abstract record MasqueradeEntry(int Count, bool Subtract) : IMergeable<Ma
         return list;
     }
 
-    public int Count { get; set; } = Count;
+    public int Count { get; private set; } = Count;
+    public bool Subtract { get; private set; } = Subtract;
+
+    // should look identical to what's in yaml but i don't feel like testing that atm.
+    // Notably, the output order for masks in a direct set is *arbitrary*, making this unsuitable for serialization.
+    // This also always outputs a count, regardless of how it was originally written. `Mask(1)` is equivalent to `Mask`,
+    // this doesn't care and always outputs `Mask(1)`.
+    public override string ToString()
+    {
+        var builder = new StringBuilder();
+
+        if (Subtract)
+            builder.Append('-');
+
+        switch (this)
+        {
+            case DirectEntry direct:
+            {
+                var first = true;
+                foreach (var mask in direct.Masks)
+                {
+                    if (!first)
+                        builder.Append('/');
+
+                    builder.Append(mask.ToString());
+
+                    first = false;
+                }
+                break;
+            }
+            case SetEntry set:
+            {
+                builder.Append('#');
+                builder.Append(set.MaskSet.ToString());
+                break;
+            }
+            default:
+                throw new UnreachableException();
+        }
+
+        builder.Append('(');
+        builder.Append(Count);
+        builder.Append(')');
+
+        return builder.ToString();
+    }
 }
 
 [TypeSerializer]
