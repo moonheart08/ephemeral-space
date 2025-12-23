@@ -157,7 +157,7 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
 
         var minPlayers = _roles.Keys.Min();
 
-        DebugTools.Assert(minPlayers > 0, "You can't have any roles without players.");
+        DebugTools.Assert(minPlayers > 0, "You can't have any roles without players, minPlayers must be at least 1.");
         DebugTools.Assert(minPlayers == MinPlayers, $"Minimum players should match the first specified set of entries (expected {MinPlayers}, found {minPlayers})");
 
         var lastAt = minPlayers;
