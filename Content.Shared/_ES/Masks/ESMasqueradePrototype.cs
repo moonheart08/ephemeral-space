@@ -12,8 +12,6 @@ namespace Content.Shared._ES.Masks;
 [Prototype("esMasquerade")]
 public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
 {
-    [Dependency] private readonly ILocalizationManager _loc = default!;
-
     /// <inheritdoc/>
     [IdDataField]
     public string ID { get; } = default!;
@@ -27,7 +25,10 @@ public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
     /// <summary>
     ///     The localized name for this masquerade.
     /// </summary>
-    public string LocName => _loc.TryGetString($"es-masquerade-name-{ID}", out var value) ? value : Name;
+    public string LocName(ILocalizationManager loc)
+    {
+        return loc.TryGetString($"es-masquerade-name-{ID}", out var value) ? value : Name;
+    }
 
     /// <summary>
     ///     The name for this masquerade. Can be overwritten by localization.
@@ -38,8 +39,10 @@ public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
     /// <summary>
     ///     The localized name for this masquerade.
     /// </summary>
-    public string LocDescription => _loc.TryGetString($"es-masquerade-desc-{ID}", out var value) ? value : Description;
-
+    public string LocDescription(ILocalizationManager loc)
+    {
+        return loc.TryGetString($"es-masquerade-desc-{ID}", out var value) ? value : Description;
+    }
     /// <summary>
     ///     Setter for serialization because we're manually inlining some fields from MasqueradeKind.
     /// </summary>
