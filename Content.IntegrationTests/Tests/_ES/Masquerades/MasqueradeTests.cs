@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using Content.IntegrationTests.Tests._Citadel;
+using Content.Server._ES.Masks.Masquerades;
+using Content.Server.GameTicking;
 using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Masquerades;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization.Manager;
@@ -89,5 +92,41 @@ public sealed class MasqueradeTests
 
             Assert.That(masks1!, Is.EquivalentTo(masks2!));
         }
+    }
+
+    public sealed class MasqueradeTestData : GameTestData
+    {
+        // We need to get to run a mode.
+        public override PoolSettings PoolSettings { get; } = new()
+        {
+            Dirty = true,
+            DummyTicker = false,
+            Connected = true,
+            InLobby = true,
+        };
+
+        [System(Side.Server)] public GameTicker SGameticker = default!;
+    }
+
+    [GameTest<MasqueradeTestData>]
+    public async Task MasqueradeRuns(MasqueradeTestData data)
+    {
+        await data.Server.AddDummySessions(10); // A smattering of people.
+
+        await data.Server.WaitAssertion(() =>
+        {
+            // Force a masquerade.
+            data.SGameticker.SetGamePreset("ESMasquerade", true);
+
+            // Ready everyone up.
+            data.SGameticker.ToggleReadyAll(true);
+
+            // Start the round.
+            data.SGameticker.StartRound();
+
+            Assert.That(data.SQuerySingle(out Entity<MasqueradeRuleComponent>? rule), "Masquerade didn't start correctly, no rule was found.");
+
+
+        });
     }
 }
