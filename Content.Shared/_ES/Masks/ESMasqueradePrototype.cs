@@ -40,7 +40,7 @@ public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
     ///     The weight for this masquerade when random picking.
     ///     0 means it can never occur naturally.
     /// </summary>
-    public int? Weight = 1;
+    public float? Weight = 1;
 
     /// <summary>
     ///     The localized name for this masquerade.

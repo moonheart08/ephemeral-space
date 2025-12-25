@@ -105,7 +105,7 @@ public sealed class MasqueradeTests
             InLobby = true,
         };
 
-        [System(Side.Server)] public GameTicker SGameticker = default!;
+        [System(Side.Server)] public readonly GameTicker SGameticker = default!;
     }
 
     [GameTest<MasqueradeTestData>]
@@ -124,7 +124,7 @@ public sealed class MasqueradeTests
             // Start the round.
             data.SGameticker.StartRound();
 
-            Assert.That(data.SQuerySingle(out Entity<MasqueradeRuleComponent>? rule), "Masquerade didn't start correctly, no rule was found.");
+            Assert.That(data.SQuerySingle(out Entity<ESMasqueradeRuleComponent>? rule), "Masquerade didn't start correctly, no rule was found.");
 
 
         });
