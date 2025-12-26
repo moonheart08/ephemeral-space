@@ -3,7 +3,7 @@
   name: Random
   description: A truly random traitors round.
   weight: 1
-  minPlayers: 4
+  minPlayers: 0
   gameRules:
     - ESTroupeRuleCrew
     - ESTroupeRuleTraitor
