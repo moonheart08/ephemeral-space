@@ -16,7 +16,7 @@ public sealed class MasqueradeCommands : ToolshedCommand
 
     public static readonly ProtoId<GamePresetPrototype> MasqueradePreset = "ESMasqueradeManaged";
 
-    [CommandImplementation]
+    [CommandImplementation("pickFromMaskSet")]
     public ProtoId<ESMaskPrototype> PickFromMaskSet([CommandArgument] ProtoId<ESMaskSetPrototype> maskSet,
         [CommandArgument] RngSeed seed)
     {
@@ -27,7 +27,7 @@ public sealed class MasqueradeCommands : ToolshedCommand
         return set.Pick(rng);
     }
 
-    [CommandImplementation]
+    [CommandImplementation("force")]
     public void ForceMasquerade([CommandArgument] ProtoId<ESMasqueradePrototype> masquerade)
     {
         var mqSys = Sys<ESMasqueradeSystem>();
@@ -38,7 +38,7 @@ public sealed class MasqueradeCommands : ToolshedCommand
     }
 
     // exists due to toolshed and C# limitations around nulls.
-    [CommandImplementation]
+    [CommandImplementation("unforce")]
     public void UnforceMasquerade()
     {
         var mqSys = Sys<ESMasqueradeSystem>();
