@@ -379,18 +379,35 @@ public sealed class SmallRandom : IRobustRandom
 
     public void Shuffle<T>(IList<T> list)
     {
-        // C#... why is this necessary.
-        ((IRobustRandom)this).Shuffle(list);
+        var n = list.Count;
+        while (n > 1)
+        {
+            n -= 1;
+            var k = Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
+        }
     }
 
     public void Shuffle<T>(Span<T> list)
     {
-        ((IRobustRandom)this).Shuffle(list);
+        var n = list.Length;
+        while (n > 1)
+        {
+            n -= 1;
+            var k = Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
+        }
     }
 
     public void Shuffle<T>(ValueList<T> list)
     {
-        ((IRobustRandom)this).Shuffle(list);
+        var n = list.Count;
+        while (n > 1)
+        {
+            n -= 1;
+            var k = Next(n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
+        }
     }
 
     /// <summary>

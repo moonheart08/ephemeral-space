@@ -69,7 +69,6 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
 
         var players = ev.Players;
 
-
         var masksEnum = masks.OrderByDescending(MaskOrder);
 
         foreach (var mask in masksEnum)

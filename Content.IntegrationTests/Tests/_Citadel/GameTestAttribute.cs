@@ -17,9 +17,12 @@ namespace Content.IntegrationTests.Tests._Citadel;
 /// <typeparam name="TData">The GameTestData inheriter to use.</typeparam>
 [MeansImplicitUse]
 [PublicAPI]
-public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFixture, IApplyToTest
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFixture, IApplyToTest, ITestData
     where TData: GameTestData, new()
 {
+    public object?[] Arguments { get; init; }
+
     /// <summary>
     ///     An optional description of the test.
     /// </summary>
@@ -29,6 +32,15 @@ public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFi
     ///     Which side to run the inner test code on, if not the test thread.
     /// </summary>
     public Side RunOnSide { get; set; } = Side.Neither;
+
+    public GameTestAttribute()
+    {
+    }
+
+    public GameTestAttribute(params object[] args)
+    {
+        Arguments = args;
+    }
 
     /// <summary>
     ///     Evil magic that allows us to cleanly wrap a test method.
@@ -76,13 +88,17 @@ public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFi
             {
                 async Task DoRun()
                 {
+                    var args = new object[attribute.Arguments.Length + 1];
+                    args[0] = data;
+                    attribute.Arguments.CopyTo(args, 1);
+
                     if (inner.ReturnType.IsType(typeof(Task)))
                     {
-                        await (Task)inner.Invoke(fixture, data)!;
+                        await (Task)inner.Invoke(fixture, args)!;
                     }
                     else
                     {
-                        inner.Invoke(fixture, data);
+                        inner.Invoke(fixture, args);
                     }
                 }
 
@@ -133,7 +149,7 @@ public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFi
     {
         var innerParams = method.GetParameters();
 
-        if (innerParams.Length == 1 && innerParams[0].ParameterType.IsAssignableTo(typeof(GameTestData)))
+        if (innerParams.Length == 1 + Arguments.Length && innerParams[0].ParameterType.IsAssignableTo(typeof(GameTestData)))
         {
             var wrapper = new TestDataBasedWrapper(method, this);
 
@@ -150,6 +166,11 @@ public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFi
         if (!test.Properties.ContainsKey(PropertyNames.Description) && Description is not null)
             test.Properties.Set(PropertyNames.Description, Description);
     }
+
+    public string? TestName { get; }
+    public RunState RunState { get; } = RunState.Runnable;
+
+    public IPropertyBag Properties { get; } = new PropertyBag();
 }
 
 public sealed class DirtyFlag
@@ -318,7 +339,6 @@ public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, 
 
     public IEnumerable<TestMethod> BuildFrom(IMethodInfo method, Test? suite)
     {
-
         var innerParams = method.GetParameters();
 
         if (innerParams.Length == 1 && innerParams[0].ParameterType.IsAssignableTo(typeof(GameTestData)))

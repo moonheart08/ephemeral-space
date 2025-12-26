@@ -115,75 +115,74 @@ public sealed class MasqueradeTests
         [System(Side.Server)] public readonly ESMasqueradeSystem MasqueradeSys = default!;
     }
 
-    [GameTest<MasqueradeTestData>]
-    public async Task MasqueradeRuns(MasqueradeTestData data)
+    [GameTest<MasqueradeTestData>("Random")]
+    [GameTest<MasqueradeTestData>("Freakshow")]
+    public async Task TestMasqueradeStart(MasqueradeTestData data, string protoStr)
     {
-        foreach (var proto in data.Proto.EnumeratePrototypes<ESMasqueradePrototype>())
+        var proto = data.Proto.Index<ESMasqueradePrototype>(protoStr);
+        // A smattering of people. Not including the real client.
+        var userCount = (proto.Masquerade.MaxPlayers) ?? 35;
+        await data.Server.AddDummySessions(userCount - 1);
+
+        await data.Pair.ReallyBeIdle();
+
+        await data.Server.WaitAssertion(() =>
         {
-            // A smattering of people. Not including the real client.
-            var userCount = (proto.Masquerade.MaxPlayers) ?? 35;
-            await data.Server.AddDummySessions(userCount - 1);
+            // Ready everyone up.
+            data.SGameticker.ToggleReadyAll(true);
 
-            await data.Pair.ReallyBeIdle();
+            // Force a masquerade.
+            data.SGameticker.SetGamePreset("ESMasqueradeManaged");
+            data.MasqueradeSys.ForceMasquerade(proto);
 
-            await data.Server.WaitAssertion(() =>
+            // Start the round.
+            data.SGameticker.StartRound();
+        });
+
+        await data.SyncTicks(10);
+
+        // Game should have started
+        Assert.That(data.SGameticker.RunLevel, Is.EqualTo(GameRunLevel.InRound));
+        Assert.That(data.SGameticker.PlayerGameStatuses.Values.All(x => x == PlayerGameStatus.JoinedGame));
+
+        await data.Server.WaitAssertion(() =>
+        {
+            // Get the game rule, ensure it's running, ensure we don't have any leftover masks.
+            Assert.That(data.SQuerySingle(out Entity<ESMasqueradeRuleComponent>? rule),
+                "Masquerade didn't start correctly, no rule was found.");
+
+            Assert.That(rule?.Comp.Masquerade,
+                Is.Not.Null,
+                "By the time the round starts, the masquerade should exist.");
+
+            Assert.That(data.SQueryCount<ESMaskRoleComponent>(),
+                Is.EqualTo(userCount),
+                "Expected in-game players with everyone assigned masks.");
+
+            // TODO: This should be applicable to random masquerade too instead of being special cased.
+            if (rule.Value.Comp.Masquerade!.Masquerade is MasqueradeRoleSet set)
             {
-                // Ready everyone up.
-                data.SGameticker.ToggleReadyAll(true);
+                var roles =
+                    data.SQueryList<ESMaskRoleComponent>()
+                        .Select(x => x.Comp.Mask!.Value.Id)
+                        .OrderDescending();
 
-                // Force a masquerade.
-                data.SGameticker.SetGamePreset("ESMasqueradeManaged");
-                data.MasqueradeSys.ForceMasquerade(proto);
+                Assert.That(set.TryGetMasks(userCount, rule.Value.Comp.Seed.IntoRandomizer(), data.Proto, out var expectedRoles));
 
-                // Start the round.
-                data.SGameticker.StartRound();
-            });
+                // We don't care about order so we sort both.
+                Assert.That(
+                    expectedRoles!.Select(x => x.Id).OrderDescending(),
+                    Is.EquivalentTo(roles),
+                    "The roles in the game did not match what was expected. Either there's nondeterminism, or masks are not being selected properly."
+                    );
+            }
 
-            await data.SyncTicks(10);
+            data.SGameticker.RestartRound();
+        });
 
-            // Game should have started
-            Assert.That(data.SGameticker.RunLevel, Is.EqualTo(GameRunLevel.InRound));
-            Assert.That(data.SGameticker.PlayerGameStatuses.Values.All(x => x == PlayerGameStatus.JoinedGame));
+        // Clear out our crowd.
+        await data.Server.RemoveAllDummySessions();
 
-            await data.Server.WaitAssertion(() =>
-            {
-                // Get the game rule, ensure it's running, ensure we don't have any leftover masks.
-                Assert.That(data.SQuerySingle(out Entity<ESMasqueradeRuleComponent>? rule),
-                    "Masquerade didn't start correctly, no rule was found.");
-
-                Assert.That(rule?.Comp.Masquerade,
-                    Is.Not.Null,
-                    "By the time the round starts, the masquerade should exist.");
-
-                Assert.That(data.SQueryCount<ESMaskRoleComponent>(),
-                    Is.EqualTo(userCount),
-                    "Expected in-game players with everyone assigned masks.");
-
-                // TODO: This should be applicable to random masquerade too instead of being special cased.
-                if (rule.Value.Comp.Masquerade!.Masquerade is MasqueradeRoleSet set)
-                {
-                    var roles =
-                        data.SQueryList<ESMaskRoleComponent>()
-                            .Select(x => x.Comp.Mask!.Value.Id)
-                            .OrderDescending();
-
-                    Assert.That(set.TryGetMasks(userCount, rule.Value.Comp.Seed.IntoRandomizer(), data.Proto, out var expectedRoles));
-
-                    // We don't care about order so we sort both.
-                    Assert.That(
-                        expectedRoles!.Select(x => x.Id).OrderDescending(),
-                        Is.EquivalentTo(roles),
-                        "The roles in the game did not match what was expected. Either there's nondeterminism, or masks are not being selected properly."
-                        );
-                }
-
-                data.SGameticker.RestartRound();
-            });
-
-            // Clear out our crowd.
-            await data.Server.RemoveAllDummySessions();
-
-            await data.SyncTicks(5); // hang out for a little.
-        }
+        await data.SyncTicks(5); // hang out for a little.
     }
 }
