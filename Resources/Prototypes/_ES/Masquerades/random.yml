@@ -2,6 +2,7 @@
   id: Random
   name: Random
   description: A truly random traitors round.
+  weight: 1
   minPlayers: 4
   gameRules:
     - ESTroupeRuleCrew

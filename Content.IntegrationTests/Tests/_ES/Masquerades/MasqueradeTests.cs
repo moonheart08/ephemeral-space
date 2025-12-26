@@ -126,7 +126,7 @@ public sealed class MasqueradeTests
             await data.Server.WaitAssertion(() =>
             {
                 // Force a masquerade.
-                data.SGameticker.SetGamePreset("ESMasqueradeManaged", true);
+                data.SGameticker.SetGamePreset("ESMasqueradeManaged");
                 data.MasqueradeSys.ForceMasquerade(proto);
 
                 // Ready everyone up.

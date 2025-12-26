@@ -34,7 +34,7 @@ public sealed class MasqueradeCommands : ToolshedCommand
         var gameTicker = Sys<GameTicker>();
 
         mqSys.ForceMasquerade(masquerade);
-        gameTicker.SetGamePreset(MasqueradePreset, true);
+        gameTicker.SetGamePreset(MasqueradePreset);
     }
 
     // exists due to toolshed and C# limitations around nulls.
