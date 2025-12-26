@@ -32,6 +32,9 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
     /// <summary>
     ///     Attempts to get a mask list for the current player count.
     /// </summary>
+    /// <remarks>
+    ///     While the masks are random, the order in the output list is not.
+    /// </remarks>
     public bool TryGetMasks(int playerCount, IRobustRandom rng, IPrototypeManager proto, [NotNullWhen(true)] out List<ProtoId<ESMaskPrototype>>? masks)
     {
         if (!TryGetEntriesForPop(playerCount, out var entries))

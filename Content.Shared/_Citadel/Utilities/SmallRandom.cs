@@ -31,6 +31,7 @@ https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib
 
 using System.Numerics;
 using JetBrains.Annotations;
+using Robust.Shared.Collections;
 using Robust.Shared.Random;
 using Robust.Shared.Utility;
 
@@ -374,6 +375,22 @@ public sealed class SmallRandom : IRobustRandom
             lastValue >>= 8;
             buffer = buffer[1..];
         }
+    }
+
+    public void Shuffle<T>(IList<T> list)
+    {
+        // C#... why is this necessary.
+        ((IRobustRandom)this).Shuffle(list);
+    }
+
+    public void Shuffle<T>(Span<T> list)
+    {
+        ((IRobustRandom)this).Shuffle(list);
+    }
+
+    public void Shuffle<T>(ValueList<T> list)
+    {
+        ((IRobustRandom)this).Shuffle(list);
     }
 
     /// <summary>

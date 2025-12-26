@@ -152,6 +152,7 @@ public sealed class MasqueradeTests
                     Is.EqualTo(userCount),
                     "Expected in-game players with everyone assigned masks.");
 
+                // TODO: This should be applicable to random masquerade too instead of being special cased.
                 if (rule.Value.Comp.Masquerade!.Masquerade is MasqueradeRoleSet set)
                 {
                     var roles =
@@ -161,6 +162,7 @@ public sealed class MasqueradeTests
 
                     Assert.That(set.TryGetMasks(userCount, rule.Value.Comp.Seed.IntoRandomizer(), data.Proto, out var expectedRoles));
 
+                    // We don't care about order so we sort both.
                     Assert.That(
                         expectedRoles!.Select(x => x.Id).OrderDescending(),
                         Is.EquivalentTo(roles),

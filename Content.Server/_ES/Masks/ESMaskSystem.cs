@@ -123,6 +123,13 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
         if (!ev.LateJoin)
             return;
 
+        // TODO: Refactor this to not simply fall back to random selection logic.
+        // All of this logic should probably live in MasqueradeKind, and be reworked
+        // to prefer ensuring a balanced set of masks over potentially compromising
+        // due to too many command players for all the traitors to be assigned.
+        // The entire random selection thing should be moved to RandomMasquerade,
+        // and a general API should be added to MasqueradeKind for getting masks for
+        // players.
         var ev2 = new AssignLatejoinerToTroupeEvent(false, ev.Player);
         RaiseLocalEvent(ref ev2);
 
@@ -138,6 +145,10 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
 
     public void AssignPlayersToTroupe(List<ICommonSession> players)
     {
+        // TODO: See comment in OnPlayerSpawnComplete, this needs refactored.
+        // but I don't want to change and test the existing logic for an already
+        // massive PR that blocks others' work.
+
         var ev = new AssignPlayersToTroupeEvent(false, players);
         RaiseLocalEvent(ref ev);
 
@@ -282,8 +293,16 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
     }
 }
 
+/// <summary>
+///     Fired when players are being assigned to a troupe. Old random assignment algorithm kicks in
+///     if not handled. (This is a mild hack.)
+/// </summary>
 [ByRefEvent]
 public record struct AssignPlayersToTroupeEvent(bool Handled, List<ICommonSession> Players);
 
+/// <summary>
+///     Fired when players are latejoining. Old random assignment algorithm kicks in
+///     if not handled. (This is a mild hack.)
+/// </summary>
 [ByRefEvent]
 public record struct AssignLatejoinerToTroupeEvent(bool Handled, ICommonSession Victim);
