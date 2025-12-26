@@ -166,9 +166,6 @@ public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFi
     {
         if (!test.Properties.ContainsKey(PropertyNames.Description) && Description is not null)
             test.Properties.Set(PropertyNames.Description, Description);
-        // I literally can't get IDE integration to work right sooo
-
-        test.Name = $"{test.Name} [{string.Join(", ", Arguments)}]";
     }
 
     public string? TestName { get; }
