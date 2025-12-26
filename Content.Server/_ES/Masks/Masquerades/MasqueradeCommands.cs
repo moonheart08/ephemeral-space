@@ -1,8 +1,10 @@
+using Content.Server.Administration;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Presets;
 using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Masquerades;
+using Content.Shared.Administration;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Toolshed;
@@ -10,6 +12,7 @@ using Robust.Shared.Toolshed;
 namespace Content.Server._ES.Masks.Masquerades;
 
 [ToolshedCommand(Name = "mq")]
+[AdminCommand(AdminFlags.Round )]
 public sealed class MasqueradeCommands : ToolshedCommand
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;

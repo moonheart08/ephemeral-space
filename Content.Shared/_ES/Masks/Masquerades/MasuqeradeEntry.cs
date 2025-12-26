@@ -87,7 +87,7 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
             {
                 MasqueradeEntry.DirectEntry direct => new MqKeyDirect(direct.Masks),
                 MasqueradeEntry.SetEntry set => new MqKeySet(set.MaskSet),
-                _ => throw new UnreachableException(),
+                _ => throw new NotImplementedException(),
             };
         }
 
@@ -132,7 +132,7 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
             if (this is MqKeySet set)
                 return HashCode.Combine(set.MaskSet);
 
-            throw new UnreachableException();
+            throw new NotImplementedException();
         }
     }
 
@@ -332,7 +332,7 @@ public abstract record MasqueradeEntry(int Count, bool Subtract) : IMergeable<Ma
         }
         else
         {
-            throw new UnreachableException();
+            throw new NotImplementedException();
         }
     }
 
@@ -389,7 +389,7 @@ public abstract record MasqueradeEntry(int Count, bool Subtract) : IMergeable<Ma
                 break;
             }
             default:
-                throw new UnreachableException();
+                throw new NotImplementedException();
         }
 
         builder.Append('(');

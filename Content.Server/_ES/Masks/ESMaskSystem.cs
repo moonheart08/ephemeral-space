@@ -154,6 +154,7 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
 
         if (!ev.Handled)
         {
+            Log.Info("Nobody handled player assignment, doing it randomly.");
             foreach (var troupe in GetOrderedTroupes())
             {
                 if (players.Count == 0)
