@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using Content.IntegrationTests.Tests._Citadel;
 using Content.Server._ES.Masks.Masquerades;
 using Content.Server.GameTicking;
 using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Masks;
+using Content.Shared._ES.Masks.Components;
 using Content.Shared._ES.Masks.Masquerades;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -101,32 +103,78 @@ public sealed class MasqueradeTests
         {
             Dirty = true,
             DummyTicker = false,
-            Connected = true,
+            Connected = true, // Have one real client connected just to catch oddities.
             InLobby = true,
         };
 
+        [SidedDependency(Side.Server)] public readonly IPrototypeManager Proto = default!;
+
         [System(Side.Server)] public readonly GameTicker SGameticker = default!;
+
+        [System(Side.Server)] public readonly ESMasqueradeSystem MasqueradeSys = default!;
     }
 
     [GameTest<MasqueradeTestData>]
     public async Task MasqueradeRuns(MasqueradeTestData data)
     {
-        await data.Server.AddDummySessions(10); // A smattering of people.
-
-        await data.Server.WaitAssertion(() =>
+        foreach (var proto in data.Proto.EnumeratePrototypes<ESMasqueradePrototype>())
         {
-            // Force a masquerade.
-            data.SGameticker.SetGamePreset("ESMasquerade", true);
+            // A smattering of people. Not including the real client.
+            var userCount = (proto.Masquerade.MaxPlayers) ?? 35;
+            await data.Server.AddDummySessions(userCount - 1);
 
-            // Ready everyone up.
-            data.SGameticker.ToggleReadyAll(true);
+            await data.Server.WaitAssertion(() =>
+            {
+                // Force a masquerade.
+                data.SGameticker.SetGamePreset("ESMasqueradeManaged", true);
+                data.MasqueradeSys.ForceMasquerade(proto);
 
-            // Start the round.
-            data.SGameticker.StartRound();
+                // Ready everyone up.
+                data.SGameticker.ToggleReadyAll(true);
 
-            Assert.That(data.SQuerySingle(out Entity<ESMasqueradeRuleComponent>? rule), "Masquerade didn't start correctly, no rule was found.");
+                // Start the round.
+                data.SGameticker.StartRound();
+            });
 
+            await data.SyncTicks(5); // Chill a little and let the client/server sync up.
 
-        });
+            await data.Server.WaitAssertion(() =>
+            {
+                // Get the game rule, ensure it's running, ensure we don't have any leftover masks.
+                Assert.That(data.SQuerySingle(out Entity<ESMasqueradeRuleComponent>? rule),
+                    "Masquerade didn't start correctly, no rule was found.");
+
+                Assert.That(rule?.Comp.Masquerade,
+                    Is.Not.Null,
+                    "By the time the round starts, the masquerade should exist.");
+
+                Assert.That(data.SQueryCount<ESMaskRoleComponent>(),
+                    Is.EqualTo(userCount),
+                    "Expected in-game players with everyone assigned masks.");
+
+                if (rule.Value.Comp.Masquerade!.Masquerade is MasqueradeRoleSet set)
+                {
+                    var roles =
+                        data.SQueryList<ESMaskRoleComponent>()
+                            .Select(x => x.Comp.Mask!.Value.Id)
+                            .OrderDescending();
+
+                    Assert.That(set.TryGetMasks(userCount, rule.Value.Comp.Seed.IntoRandomizer(), data.Proto, out var expectedRoles));
+
+                    Assert.That(
+                        expectedRoles!.Select(x => x.Id).OrderDescending(),
+                        Is.EquivalentTo(roles),
+                        "The roles in the game did not match what was expected. Either there's nondeterminism, or masks are not being selected properly."
+                        );
+                }
+
+                data.SGameticker.RestartRound();
+            });
+
+            // Clear out our crowd.
+            await data.Server.RemoveAllDummySessions();
+
+            await data.SyncTicks(5); // hang out for a little.
+        }
     }
 }

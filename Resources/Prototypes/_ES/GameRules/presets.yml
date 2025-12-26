@@ -5,10 +5,7 @@
   name: es-preset-extended-title
   description: es-preset-extended-desc
   rules:
-  - ESTroupeRuleCrew
-  - ESSchedulerRuleStationEventVote
-  - ESSchedulerRuleDegradationEventVote
-  - ESBasicRoundstartVariation
+  - ESMasqueradeGameRule
 
 - type: gamePreset
   id: ESExtended

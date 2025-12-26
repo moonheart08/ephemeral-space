@@ -91,11 +91,18 @@ public sealed class ESMasqueradePrototype : IPrototype, ISerializationHooks
 /// <summary>
 ///     Base class for any masquerades. To introduce new ones, make sure you update the custom serializer too.
 /// </summary>
-public abstract class MasqueradeKind
+[DataDefinition]
+public abstract partial class MasqueradeKind
 {
     public virtual int MinPlayers { get; set; }
 
     public virtual int? MaxPlayers { get; set; }
+
+    /// <summary>
+    ///     The default mask used for post-start latejoiners.
+    /// </summary>
+    [DataField(readOnly: true, required: true)]
+    public MasqueradeEntry DefaultMask { get; set; }
 
     internal virtual void Init() {}
 };

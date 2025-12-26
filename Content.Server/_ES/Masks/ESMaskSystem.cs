@@ -122,7 +122,12 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
     {
         if (!ev.LateJoin)
             return;
-        AssignPlayersToTroupe([ev.Player]);
+
+        var ev2 = new AssignLatejoinerToTroupeEvent(false, ev.Player);
+        RaiseLocalEvent(ref ev2);
+
+        if (!ev2.Handled)
+            AssignPlayersToTroupe([ev.Player]);
     }
 
     private void OnRulePlayerJobsAssigned(RulePlayerJobsAssignedEvent args)
@@ -133,11 +138,17 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
 
     public void AssignPlayersToTroupe(List<ICommonSession> players)
     {
-        foreach (var troupe in GetOrderedTroupes())
+        var ev = new AssignPlayersToTroupeEvent(false, players);
+        RaiseLocalEvent(ref ev);
+
+        if (!ev.Handled)
         {
-            if (players.Count == 0)
-                break;
-            TryAssignToTroupe(troupe, ref players);
+            foreach (var troupe in GetOrderedTroupes())
+            {
+                if (players.Count == 0)
+                    break;
+                TryAssignToTroupe(troupe, ref players);
+            }
         }
 
         if (players.Count > 0)
@@ -270,3 +281,9 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
         Objective.RegenerateObjectiveList(mind.Owner);
     }
 }
+
+[ByRefEvent]
+public record struct AssignPlayersToTroupeEvent(bool Handled, List<ICommonSession> Players);
+
+[ByRefEvent]
+public record struct AssignLatejoinerToTroupeEvent(bool Handled, ICommonSession Victim);

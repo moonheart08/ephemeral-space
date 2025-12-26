@@ -70,16 +70,12 @@ public sealed partial class MasqueradeRoleSet : MasqueradeKind
         return false;
     }
 
-    /// <summary>
-    ///     The default mask to assign people if they didn't get a mask from any of the entries.
-    /// </summary>
-    [DataField(readOnly: true, required: true)]
-    public MasqueradeEntry DefaultMask = default!;
-
     [DataField("roles", readOnly: true, required: true)]
     private IReadOnlyDictionary<int, List<MasqueradeEntry>> _roles { get; set; }
 
-    // This lets us key a dict by entries.
+    /// <summary>
+    ///     A hashable, equatable key for a MasqueradeEntry, used to handle implementing subtraction.
+    /// </summary>
     public abstract class MqKey : IEquatable<MqKey>
     {
         public static MqKey FromEntry(MasqueradeEntry entry)

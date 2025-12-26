@@ -9,4 +9,4 @@
     - ESSchedulerRuleStationEventVote
     - ESSchedulerRuleDegradationEventVote
   masquerade: !type:RandomMasquerade
-
+    defaultMask: "ESCrewmember"

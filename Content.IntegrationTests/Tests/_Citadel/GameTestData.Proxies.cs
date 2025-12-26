@@ -159,14 +159,14 @@ public partial class GameTestData
     public EntityQueryEnumerator<T> SQuery<T>()
         where T: IComponent
     {
-        return Pair.Server.EntMan.EntityQueryEnumerator<T>();
+        return Server.EntMan.EntityQueryEnumerator<T>();
     }
 
     /// <inheritdoc cref="M:Robust.Shared.GameObjects.EntityManager.EntityQueryEnumerator``1"/>
     public EntityQueryEnumerator<T> CQuery<T>()
         where T: IComponent
     {
-        return Pair.Client.EntMan.EntityQueryEnumerator<T>();
+        return Client.EntMan.EntityQueryEnumerator<T>();
     }
 
     /// <summary>
@@ -189,6 +189,60 @@ public partial class GameTestData
         var query = CQuery<T>();
 
         return query.MoveNext(out _);
+    }
+
+    /// <summary>
+    ///     Queries the number of entities with a given component on the server.
+    /// </summary>
+    public int SQueryCount<T>()
+        where T : IComponent
+    {
+        return Server.EntMan.Count<T>();
+    }
+
+    /// <summary>
+    ///     Queries every entity with the given component on the server and returns a list of them.
+    /// </summary>
+    public List<Entity<T>> SQueryList<T>()
+        where T : IComponent
+    {
+        var list = new List<Entity<T>>(SQueryCount<T>());
+
+        var q = SQuery<T>();
+
+        while (q.MoveNext(out var ent, out var comp1))
+        {
+            list.Add((ent, comp1));
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    ///     Queries every entity with the given component on the server and returns a list of them.
+    /// </summary>
+    public List<Entity<T>> CQueryList<T>()
+        where T : IComponent
+    {
+        var list = new List<Entity<T>>(CQueryCount<T>());
+
+        var q = CQuery<T>();
+
+        while (q.MoveNext(out var ent, out var comp1))
+        {
+            list.Add((ent, comp1));
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    ///     Queries the number of entities with a given component on the client.
+    /// </summary>
+    public int CQueryCount<T>()
+        where T : IComponent
+    {
+        return Client.EntMan.Count<T>();
     }
 
     /// <summary>
