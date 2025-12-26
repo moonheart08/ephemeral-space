@@ -5,7 +5,7 @@
     ESMercenary: 1,
 
 - type: esMaskSet
-  parents: [CrewGunners]
+  parent: [CrewGunners]
   id: Gunners
   masks: # this always pushes inheritence, like an entity prototype, so we merge with our parent.
     ESVeteran: 1,
