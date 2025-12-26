@@ -106,6 +106,7 @@ public sealed class MasqueradeTests
             DummyTicker = false,
             Connected = true, // Have one real client connected just to catch oddities.
             InLobby = true,
+            Destructive = true, // fuck it. We set the preset which is destructive.
         };
 
         [SidedDependency(Side.Server)] public readonly IPrototypeManager Proto = default!;
@@ -132,6 +133,7 @@ public sealed class MasqueradeTests
             data.SGameticker.ToggleReadyAll(true);
 
             // Force a masquerade.
+
             data.SGameticker.SetGamePreset("ESMasqueradeManaged");
             data.MasqueradeSys.ForceMasquerade(proto);
 
@@ -182,7 +184,5 @@ public sealed class MasqueradeTests
 
         // Clear out our crowd.
         await data.Server.RemoveAllDummySessions();
-
-        await data.SyncTicks(5); // hang out for a little.
     }
 }
