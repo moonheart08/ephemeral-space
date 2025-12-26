@@ -7,6 +7,7 @@ using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
 using Content.Shared._ES.Masks.Masquerades;
+using Content.Shared.GameTicking;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -123,20 +124,26 @@ public sealed class MasqueradeTests
             var userCount = (proto.Masquerade.MaxPlayers) ?? 35;
             await data.Server.AddDummySessions(userCount - 1);
 
+            await data.Pair.ReallyBeIdle();
+
             await data.Server.WaitAssertion(() =>
             {
+                // Ready everyone up.
+                data.SGameticker.ToggleReadyAll(true);
+
                 // Force a masquerade.
                 data.SGameticker.SetGamePreset("ESMasqueradeManaged");
                 data.MasqueradeSys.ForceMasquerade(proto);
-
-                // Ready everyone up.
-                data.SGameticker.ToggleReadyAll(true);
 
                 // Start the round.
                 data.SGameticker.StartRound();
             });
 
-            await data.SyncTicks(5); // Chill a little and let the client/server sync up.
+            await data.SyncTicks(10);
+
+            // Game should have started
+            Assert.That(data.SGameticker.RunLevel, Is.EqualTo(GameRunLevel.InRound));
+            Assert.That(data.SGameticker.PlayerGameStatuses.Values.All(x => x == PlayerGameStatus.JoinedGame));
 
             await data.Server.WaitAssertion(() =>
             {
