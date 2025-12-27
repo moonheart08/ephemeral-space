@@ -118,6 +118,7 @@ public sealed class MasqueradeTests
 
     [GameTest<MasqueradeTestData>("Random")]
     [GameTest<MasqueradeTestData>("Freakshow")]
+    [GameTest<MasqueradeTestData>("Showdown")]
     public async Task TestMasqueradeStart(MasqueradeTestData data, string protoStr)
     {
         var proto = data.Proto.Index<ESMasqueradePrototype>(protoStr);
