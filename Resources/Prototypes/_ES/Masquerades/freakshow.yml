@@ -13,14 +13,14 @@
     roles:
       4: ["#Jesters", "ESVandal", "#Oracles"] # 1 generic crew.
       5: ["ESMercenary"]
-      6: ["#Freaks"]
+      6: ["#Softsafes"]
       8: ["#Jesters", "#Freaks"]
       10: ["#CrewGunners"] # 2 generic crew.
       11: ["ESVandal"]
       13: ["#CrewGunners(2)"]
       15: ["-ESMercenary", "#Jesters(2)"] # 3 generic crew.
-      18: ["ESPhantom", "#Freaks"] # 4 generic crew. If there isn't already a phantom, make sure of it.
+      18: ["ESPhantom", "#Softsafes", "#Reaped"] # 3 generic crew. If there isn't already a phantom, make sure of it.
       20: ["#Oracles"] # You can finally have another oracle. 5 generic crew.
-      25: ["#CrewGunners", "#Freaks(3)"] # 6 generic crew. The freaks are banding together.
+      25: ["#CrewGunners", "#Freaks(3)", "#Softsafes"] # 5 generic crew. The freaks are banding together.
       30: ["#Jesters(2)", "#Oracles"] # This is kind of a problem. I hope the oracles don't lose their mind here.
 
