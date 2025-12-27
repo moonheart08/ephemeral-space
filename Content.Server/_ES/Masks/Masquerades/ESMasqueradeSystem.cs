@@ -203,7 +203,7 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
         {
             var weighted = _proto.EnumeratePrototypes<ESMasqueradePrototype>()
                 .Where(x => x.Weight is not null)
-                .Where(x => x.Masquerade.MinPlayers <= players && x.Masquerade.MaxPlayers >= players)
+                .Where(x => players >= x.Masquerade.MinPlayers && (x.Masquerade.MaxPlayers >= players || x.Masquerade.MaxPlayers is null))
                 .ToDictionary(x => x, x => (float)x.Weight!.Value);
 
             return _random.Pick(weighted);
