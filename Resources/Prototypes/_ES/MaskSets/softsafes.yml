@@ -1,8 +1,5 @@
 - type: esMaskSet
-  id: Softsafes # Assorted masks that can confirm themselves in some capacity.
-                # This is funny guys like the VIP with obvious tells, and also
-                # those who have visible actions they can perform on a dime.
+  id: Softsafes # Masks who's activates are counterproductive enough to probably be safe.
+  parent: [Firmsafes, Freaks]
   masks:
-    ESVIP: 1 # Look it's right here I have my c-
-    ESFruitVendor: 1
-    ESArmsDealer: 1
+    ESSurvivalist: 1
