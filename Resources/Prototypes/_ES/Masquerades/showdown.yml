@@ -12,7 +12,7 @@
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember"
     roles:
-      6: ["ESMarauder(2)", "#Gunners(2)", "ESVeteran", "ESSurvivalist"] # 0 generic crew, 2 traitors
+      6: ["ESMarauder(2)", "#Gunners(2)", "ESVIP/ESFruitVendor", "ESSurvivalist"] # 0 generic crew, 2 traitors
       8: ["-ESMarauder", "#Traitors", "#Oracles"] # 1 generic crew, 2 traitors
       10: ["#Traitors"] # 1 generic crew, 3 traitors.
       11: ["ESArmsDealer"] # Guarantee an arms dealer, this is definitely balanced around an armed crew.
