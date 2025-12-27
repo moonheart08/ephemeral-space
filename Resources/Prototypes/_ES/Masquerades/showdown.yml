@@ -19,6 +19,7 @@
       13: ["#Reaped"] # 2 generic crew, 3 traitors.
       15: ["#Traitors(2)", "ESMercenary"] # 1 generic crew, 5 traitors.
       16: ["#Softsafes"]
+      18: ["#Oracles"] # 2 generic crew, 6 traitors.
       20: ["#Traitors"] # 3 generic crew, 6 traitors.
       22: ["#Oracles"] # 4 generic crew, 6 traitors.
       25: ["#Jesters(2)", "#Traitors"] # 4 generic crew, 7 traitors.
