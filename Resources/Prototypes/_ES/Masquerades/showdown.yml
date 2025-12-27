@@ -5,10 +5,10 @@
   weight: 1 # Not that common
   minPlayers: 6
   gameRules:
-  - ESTroupeRuleCrew
-  - ESTroupeRuleTraitor
-  - ESSchedulerRuleStationEventVote
-  - ESSchedulerRuleDegradationEventVote
+    - ESTroupeRuleCrew
+    - ESTroupeRuleTraitor
+    - ESSchedulerRuleStationEventVote
+    - ESSchedulerRuleDegradationEventVote
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember"
     roles:
@@ -16,11 +16,11 @@
       8: ["-ESMarauder", "#Traitors", "#Oracles"] # 1 generic crew, 2 traitors
       10: ["#Traitors"] # 1 generic crew, 3 traitors.
       11: ["ESArmsDealer"] # Guarantee an arms dealer, this is definitely balanced around an armed crew.
-      13: ["#Reaped"], # 2 generic crew, 3 traitors.
-      15: ["#Traitors(2)", "ESMercenary"], # 1 generic crew, 5 traitors.
+      13: ["#Reaped"] # 2 generic crew, 3 traitors.
+      15: ["#Traitors(2)", "ESMercenary"] # 1 generic crew, 5 traitors.
       16: ["#Softsafes"]
-      20: ["#Traitors(2)"], # 2 generic crew, 7 traitors.
-      22: ["#Oracles"], # 3 generic crew, 7 traitors.
-      25: ["#Jesters(2)"], # 4 generic crew, 7 traitors.
+      20: ["#Traitors(2)"] # 2 generic crew, 7 traitors.
+      22: ["#Oracles"] # 3 generic crew, 7 traitors.
+      25: ["#Jesters(2)"] # 4 generic crew, 7 traitors.
       26: ["#Freaks"]
-      30: ["#Softsafes", "#Freaks", "#Traitors"], # 5 generic crew, 8 traitors.
+      30: ["#Softsafes", "#Freaks", "#Traitors"] # 5 generic crew, 8 traitors.
