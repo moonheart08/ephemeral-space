@@ -33,6 +33,7 @@ using System.Numerics;
 using JetBrains.Annotations;
 using Robust.Shared.Collections;
 using Robust.Shared.Random;
+using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 
 namespace Content.Shared._Citadel.Utilities;
@@ -44,6 +45,7 @@ namespace Content.Shared._Citadel.Utilities;
 ///     To set the seed, construct a new SmallRandom.
 /// </remarks>
 /// <seealso cref="RngSeed"/>
+[Serializable, NetSerializable]
 public sealed class SmallRandom : IRobustRandom
 {
     private uint _s0, _s1, _s2, _s3;

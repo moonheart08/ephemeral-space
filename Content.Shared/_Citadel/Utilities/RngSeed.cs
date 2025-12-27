@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using JetBrains.Annotations;
 using Robust.Shared.Random;
+using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
 using SpaceWizards.Sodium;
 
@@ -13,6 +14,7 @@ namespace Content.Shared._Citadel.Utilities;
 ///     A 128-bit seed for random number generation.
 /// </summary>
 /// <seealso cref="SmallRandom"/>
+[Serializable, NetSerializable]
 public readonly struct RngSeed
 {
     private const ulong MagicScrambleConstant = 3141592653589793238;
