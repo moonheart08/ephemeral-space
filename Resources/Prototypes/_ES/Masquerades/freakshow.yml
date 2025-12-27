@@ -21,6 +21,8 @@
       15: ["-ESMercenary", "#Jesters(2)"] # 3 generic crew.
       18: ["ESPhantom", "#Softsafes", "#Reaped"] # 3 generic crew. If there isn't already a phantom, make sure of it.
       20: ["#Oracles"] # You can finally have another oracle. 5 generic crew.
-      25: ["#CrewGunners", "#Freaks(3)", "#Softsafes"] # 5 generic crew. The freaks are banding together.
-      30: ["#Jesters(2)", "#Oracles"] # This is kind of a problem. I hope the oracles don't lose their mind here.
+      23: ["#Freaks", "#Softsafes"] # 6 generic crew.
+      25: ["#CrewGunners", "#Freaks(2)"] # 5 generic crew. The freaks are banding together.
+      27: ["#Jesters"] # 6 generic crew.
+      30: ["#Jesters", "#Oracles"] # This is kind of a problem. I hope the oracles don't lose their mind here.
 
