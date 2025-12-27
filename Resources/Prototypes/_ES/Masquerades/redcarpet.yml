@@ -12,9 +12,9 @@
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESVIP/ESCrewmember" # God help you.
     roles:
-      6: ["ESMarauder", "ESVIP", "#Oracles", "#Softsafes(2)", "#Gunners"] # 0 generic crew, 1 traitors
+      6: ["ESMarauder(2)", "ESVIP", "#Oracles", "#Softsafes", "#Gunners"] # 0 generic crew, 2 traitors
       7: ["ESVIP"]
-      8: ["#Traitors"] # 0 generic crew, 2 traitors.
+      8: ["#Softsafes"]
       9: ["ESVIP"] # The gang is here.
       10: ["#Jesters"]
       12: ["-ESMarauder", "#Traitors"] # 1 generic crew, 2 traitors.
