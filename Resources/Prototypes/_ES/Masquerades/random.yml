@@ -1,6 +1,6 @@
 - type: esMasquerade
-  id: Random
-  name: Random
+  id: RandomTraitors
+  name: Random (Traitors)
   description: is a truly randomized traitorous experience
   weight: 10
   minPlayers: 1
