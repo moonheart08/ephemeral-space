@@ -154,12 +154,15 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
 
         if (!ev.Handled)
         {
+            var playerCount = players.Count;
+
             Log.Info("Nobody handled player assignment, doing it randomly.");
             foreach (var troupe in GetOrderedTroupes())
             {
                 if (players.Count == 0)
                     break;
-                TryAssignToTroupe(troupe, ref players);
+
+                TryAssignToTroupe(troupe, ref players, playerCount);
             }
         }
 
@@ -184,13 +187,12 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
         Objective.TryAddObjective(rule.Owner, troupe.Objectives);
     }
 
-    public bool TryAssignToTroupe(Entity<ESTroupeRuleComponent> ent, ref List<ICommonSession> players)
+    public bool TryAssignToTroupe(Entity<ESTroupeRuleComponent> ent, ref List<ICommonSession> players, int playerCount)
     {
         var troupe = PrototypeManager.Index(ent.Comp.Troupe);
 
         var filteredPlayers = players.Where(s => IsPlayerValid(troupe, s)).ToList();
 
-        var playerCount = _esAuditions.GetPlayerCount();
         var targetCount = Math.Clamp((int)MathF.Ceiling((float) playerCount / ent.Comp.PlayersPerTargetMember), ent.Comp.MinTargetMembers, ent.Comp.MaxTargetMembers);
         var targetDiff = Math.Min(targetCount - ent.Comp.TroupeMemberMinds.Count, filteredPlayers.Count);
         if (targetDiff <= 0)
