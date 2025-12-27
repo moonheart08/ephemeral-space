@@ -28,7 +28,7 @@ public sealed class MqKeyEqualityTest
         dict.Add(key1, entry1);
         Assert.That(dict.TryAdd(key2, entry2), Is.False);
 
-        dict.MergeKey(key2, entry2);
+        dict.MergeValue(key2, entry2);
 
         Assert.That(dict, Is.Empty);
     }

@@ -5,7 +5,7 @@ using Robust.Shared.Prototypes;
 namespace Content.Server._ES.Masks.Masquerades;
 
 /// <summary>
-/// This is used for...
+///     Holds data related to the current masquerade, including the seed used to select it.
 /// </summary>
 [RegisterComponent]
 public sealed partial class ESMasqueradeRuleComponent : Component

@@ -24,6 +24,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <!-- ES/CIT edit: Depended on by _Citadel/Utility/SmallRandom. -->
     <Reference Include="SpaceWizards.Sodium">
       <HintPath>..\..\..\..\.nuget\packages\spacewizards.sodium\0.2.1\lib\net6.0\SpaceWizards.Sodium.dll</HintPath>
     </Reference>

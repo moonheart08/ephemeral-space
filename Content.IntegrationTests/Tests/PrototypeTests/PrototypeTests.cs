@@ -12,11 +12,14 @@ namespace Content.IntegrationTests.Tests.PrototypeTests;
 
 public sealed class PrototypeTests
 {
+    // ES CHANGE
     public static Type[] ExcludedKinds =
     [
-        // I really cba, this prototype is a bit funny for writability reasons.
+        // MasqueradePrototype makes this particular test sad, it's not reaaallly meant to be writable.
+        // and does a bunch of things strictly for readability.
         typeof(ESMasqueradePrototype),
     ];
+    // END ES CHANGE
 
     /// <summary>
     /// This test writes all known server prototypes as yaml files, then validates that the result is valid yaml.
@@ -107,8 +110,10 @@ public sealed class PrototypeTests
             {
                 foreach (var kind in protoMan.EnumeratePrototypeKinds())
                 {
+                    // ES CHANGE
                     if (ExcludedKinds.Contains(kind))
                         continue;
+                    // END ES CHANGE
 
                     foreach (var proto in protoMan.EnumeratePrototypes(kind))
                     {
