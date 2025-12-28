@@ -116,14 +116,14 @@ public sealed class MasqueradeTests
         [System(Side.Server)] public readonly ESMasqueradeSystem MasqueradeSys = default!;
     }
 
-    [GameTest<MasqueradeTestData>("Random")]
-    [GameTest<MasqueradeTestData>("Freakshow")]
-    [GameTest<MasqueradeTestData>("Showdown")]
-    public async Task TestMasqueradeStart(MasqueradeTestData data, string protoStr)
+    [GameTest<MasqueradeTestData>("Random", 35)]
+    [GameTest<MasqueradeTestData>("Freakshow", 35)]
+    [GameTest<MasqueradeTestData>("Freakshow", 21)]
+    [GameTest<MasqueradeTestData>("Showdown", 35)]
+    public async Task TestMasqueradeStart(MasqueradeTestData data, string protoStr, int userCount)
     {
         var proto = data.Proto.Index<ESMasqueradePrototype>(protoStr);
         // A smattering of people. Not including the real client.
-        var userCount = (proto.Masquerade.MaxPlayers) ?? 35;
         await data.Server.AddDummySessions(userCount - 1);
 
         await data.Pair.ReallyBeIdle();
@@ -134,7 +134,6 @@ public sealed class MasqueradeTests
             data.SGameticker.ToggleReadyAll(true);
 
             // Force a masquerade.
-
             data.SGameticker.SetGamePreset("ESMasqueradeManaged");
             data.MasqueradeSys.ForceMasquerade(proto);
 
@@ -186,4 +185,16 @@ public sealed class MasqueradeTests
         // Clear out our crowd.
         await data.Server.RemoveAllDummySessions();
     }
+
+    [GameTest]
+    public void MaskSetsHaveMasks(
+        [SidedDependency(Side.Server)] IPrototypeManager proto
+    )
+    {
+        foreach (var maskSet in proto.EnumeratePrototypes<ESMaskSetPrototype>())
+        {
+            Assert.That(maskSet.AllMasks(), Is.Not.Empty);
+        }
+    }
+
 }

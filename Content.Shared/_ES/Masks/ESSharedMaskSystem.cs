@@ -254,12 +254,12 @@ public abstract class ESSharedMaskSystem : EntitySystem
     ///     Applies the given mask to a mind, without any checks.
     /// </summary>
     /// <remarks>
-    ///     This allows "bad" game states like giving masks to roles they're incompatible with.
-    ///
+    ///     This allows "bad" game states like giving masks to roles they're incompatible with, and will automatically
+    ///     start troupes as necessary.
     /// </remarks>
     public virtual void ApplyMask(Entity<MindComponent> mind,
         ProtoId<ESMaskPrototype> maskId,
-        Entity<ESTroupeRuleComponent> troupe)
+        Entity<ESTroupeRuleComponent>? troupe)
     {
         // No Op
     }

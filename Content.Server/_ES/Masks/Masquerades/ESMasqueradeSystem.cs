@@ -47,12 +47,10 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
     {
         var rule = EntityQuery<ESMasqueradeRuleComponent>().SingleOrDefault();
 
-        if (rule is null)
+        if (rule?.Masquerade is null)
             return;
 
-        // TODO: This shouldn't be hardcoded here, TryGetMasks should be on MasqueradeKind.
-        if (rule.Masquerade!.Masquerade is not MasqueradeRoleSet set)
-            return;
+        var set = rule.Masquerade.Masquerade;
 
         if (!set.TryGetMasks(ev.Players.Count, rule.Rng, _proto, out var masks))
         {
@@ -83,10 +81,7 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
                 if (!_mask.IsPlayerValid(troupe, player))
                     continue;
 
-                if (!TryGetTroupeForMaskOrLog(mask, rule, out var troupeEnt))
-                    return;
-
-                _mask.ApplyMask(mind.Value, mask, troupeEnt.Value);
+                _mask.ApplyMask(mind.Value, mask, null);
 
                 players.RemoveAt(i);
                 goto exit; // escape to next mask.
@@ -100,14 +95,12 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
                 if (!TryGetMindOrLog(player, out var mind))
                     continue;
 
-                if (!TryGetTroupeForMaskOrLog(mask, rule, out var troupeEnt))
-                    return;
-
-                _mask.ApplyMask(mind.Value, mask, troupeEnt.Value);
+                _mask.ApplyMask(mind.Value, mask, null);
 
                 players.RemoveAt(i);
                 goto exit; // escape to next mask.
             }
+
             // Fuuuck okay fine don't assign.
 
             Log.Error($"Was unable to assign {mask} to any player.");
@@ -127,10 +120,10 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
     {
         var rule = EntityQuery<ESMasqueradeRuleComponent>().SingleOrDefault();
 
-        if (rule is null)
+        if (rule?.Masquerade is null)
             return;
 
-        var mask = rule.Masquerade!.Masquerade.DefaultMask.PickMasks(rule.Rng, _proto).Single();
+        var mask = rule.Masquerade.Masquerade.DefaultMask.PickMasks(rule.Rng, _proto).Single();
 
         if (!TryGetMindOrLog(ev.Victim, out var mind))
             return;
@@ -184,6 +177,9 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
         component.Rng = component.Seed.IntoRandomizer();
         component.Masquerade = SelectMasquerade(_gameTicker.ReadyPlayerCount());
 
+        if (component.Masquerade is null)
+            return;
+
         _chat.SendAdminAlert($"Upcoming masquerade is {component.Masquerade.ID}.");
 
         // TODO: Masquerades should auto-discover the necessary troupe rules.
@@ -193,7 +189,7 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
         }
     }
 
-    private ESMasqueradePrototype SelectMasquerade(int players)
+    private ESMasqueradePrototype? SelectMasquerade(int players)
     {
         if (_forcedMasquerade is { } forced)
         {
@@ -205,6 +201,9 @@ public sealed class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRuleComponen
                 .Where(x => x.Weight is not null)
                 .Where(x => players >= x.Masquerade.MinPlayers && (x.Masquerade.MaxPlayers >= players || x.Masquerade.MaxPlayers is null))
                 .ToDictionary(x => x, x => (float)x.Weight!.Value);
+
+            if (weighted.Count == 0)
+                return null;
 
             return _random.Pick(weighted);
         }
