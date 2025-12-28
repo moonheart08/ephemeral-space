@@ -1,7 +1,7 @@
 - type: esMasquerade
   id: Showdown
   name: Showdown
-  description: A real showdown, with many more guns than usual.
+  description: is a real showdown, with many more guns than usual
   weight: 1 # Not that common
   minPlayers: 6
   gameRules: []

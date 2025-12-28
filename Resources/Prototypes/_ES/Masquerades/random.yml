@@ -1,7 +1,7 @@
 - type: esMasquerade
   id: Random
   name: Random
-  description: A truly random traitors round.
+  description: is a truly randomized traitorous experience
   weight: 10
   minPlayers: 1
   gameRules: []
