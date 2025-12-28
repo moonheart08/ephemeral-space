@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 using System.Reflection;
 using Content.IntegrationTests.Pair;
@@ -86,9 +87,6 @@ public partial class GameTest
         }
     }
 
-    /// <summary>
-    ///     Internal function to do post-test teardown. Don't use this..
-    /// </summary>
     [TearDown]
     public async Task DoTeardown()
     {

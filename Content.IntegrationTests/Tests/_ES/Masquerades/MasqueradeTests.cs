@@ -132,9 +132,7 @@ public sealed class MasqueradeRunTests : GameTest
     {
         var proto = _proto.Index<ESMasqueradePrototype>(protoStr);
         // A smattering of people. Not including the real client.
-        await Server.AddDummySessions(userCount - 1);
-
-        await Pair.ReallyBeIdle();
+        await AddDummySessionsSync(userCount - 1);
 
         await Server.WaitAssertion(() =>
         {
@@ -189,8 +187,5 @@ public sealed class MasqueradeRunTests : GameTest
 
             _sGameticker.RestartRound();
         });
-
-        // Clear out our crowd.
-        await Server.RemoveAllDummySessions();
     }
 }
