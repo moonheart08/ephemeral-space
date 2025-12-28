@@ -110,9 +110,7 @@ public sealed class MasqueradeTests
         };
 
         [SidedDependency(Side.Server)] public readonly IPrototypeManager Proto = default!;
-
         [System(Side.Server)] public readonly GameTicker SGameticker = default!;
-
         [System(Side.Server)] public readonly ESMasqueradeSystem MasqueradeSys = default!;
     }
 

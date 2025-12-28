@@ -15,6 +15,8 @@ namespace Content.IntegrationTests.Tests._Citadel;
 ///     Marks a game test, that needs a client and server to run.
 /// </summary>
 /// <typeparam name="TData">The GameTestData inheriter to use.</typeparam>
+[MeansImplicitUse]
+[PublicAPI]
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFixture, IApplyToTest, ITestData
     where TData: GameTestData, new()
@@ -166,8 +168,8 @@ public sealed class GameTestAttribute<TData> : Attribute, ITestBuilder, IImplyFi
             test.Properties.Set(PropertyNames.Description, Description);
     }
 
-    public string? TestName { get; }
-    public RunState RunState { get; } = RunState.Runnable;
+    public string? TestName { get; set; }
+    public RunState RunState { get; set; } = RunState.Runnable;
 
     public IPropertyBag Properties { get; } = new PropertyBag();
 }
@@ -182,8 +184,12 @@ public sealed class DirtyFlag
 /// <summary>
 ///     A simpler version of the generic GameTestAttribute that allows you to specify what you need with just arguments.
 /// </summary>
-public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, IApplyToTest
+[MeansImplicitUse]
+[PublicAPI]
+public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, IApplyToTest, ITestData
 {
+    public object?[] Arguments { get; init; }
+
     /// <summary>
     ///     An optional description of the test.
     /// </summary>
@@ -193,6 +199,16 @@ public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, 
     ///     Which side to run the inner test code on, if not the test thread.
     /// </summary>
     public Side RunOnSide { get; set; }  = Side.Neither;
+
+    public GameTestAttribute()
+    {
+        Arguments = Array.Empty<object?>();
+    }
+
+    public GameTestAttribute(params object?[] args)
+    {
+        Arguments = args;
+    }
 
     /// <summary>
     ///     Evil magic that allows us to cleanly wrap a test method.
@@ -234,7 +250,7 @@ public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, 
         {
             var pair = await PoolManager.GetServerClient(new PoolSettings { Connected = true });
 
-            var args = new List<object>();
+            var args = new List<object?>();
 
             var dirty = new DirtyFlag();
 
@@ -272,6 +288,7 @@ public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, 
                 }
             }
 
+            args.AddRange(attribute.Arguments);
 
             try
             {
@@ -355,4 +372,9 @@ public sealed class GameTestAttribute : Attribute, ITestBuilder, IImplyFixture, 
         if (!test.Properties.ContainsKey(PropertyNames.Description) && Description is not null)
             test.Properties.Set(PropertyNames.Description, Description);
     }
+
+    public string? TestName { get; set; }
+    public RunState RunState { get; set; } = RunState.Runnable;
+
+    public IPropertyBag Properties { get; } = new PropertyBag();
 }
