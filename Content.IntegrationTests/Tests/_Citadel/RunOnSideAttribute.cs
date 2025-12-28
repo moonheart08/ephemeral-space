@@ -4,6 +4,9 @@ using NUnit.Framework.Internal.Commands;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
+/// <summary>
+///     Ensures a test method runs on the given side (client or server) when used with a <see cref="GameTest"/> fixture.
+/// </summary>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class RunOnSideAttribute : Attribute, IWrapTestMethod, IImplyFixture
 {
