@@ -186,7 +186,7 @@ public sealed class MasqueradeTests
         await data.Server.RemoveAllDummySessions();
     }
 
-    [GameTest]
+    [GameTest(RunOnSide = Side.Server)]
     public void MaskSetsHaveMasks(
         [SidedDependency(Side.Server)] IPrototypeManager proto
     )
