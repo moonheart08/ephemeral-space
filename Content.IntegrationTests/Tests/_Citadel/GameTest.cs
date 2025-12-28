@@ -10,10 +10,9 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
-[Virtual]
 [TestFixture]
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
-public partial class GameTest
+public abstract partial class GameTest
 {
     private bool _pairDirty;
 

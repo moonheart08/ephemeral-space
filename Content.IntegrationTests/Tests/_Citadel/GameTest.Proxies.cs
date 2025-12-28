@@ -7,7 +7,7 @@ using Robust.Shared.Utility;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
-public partial class GameTest
+public abstract partial class GameTest
 {
     /// <summary>
     ///     Marks the test pair as dirty, ensuring it is returned as such.
