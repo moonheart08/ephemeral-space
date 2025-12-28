@@ -97,6 +97,15 @@ public sealed class MasqueradeTests : GameTest
         }
     }
 
+    [Test]
+    [RunOnSide(Side.Server)]
+    public void MaskSetsHaveMasks()
+    {
+        foreach (var maskSet in _proto.EnumeratePrototypes<ESMaskSetPrototype>())
+        {
+            Assert.That(maskSet.AllMasks(), Is.Not.Empty);
+        }
+    }
 }
 
 public sealed class MasqueradeRunTests : GameTest
@@ -184,15 +193,4 @@ public sealed class MasqueradeRunTests : GameTest
         // Clear out our crowd.
         await Server.RemoveAllDummySessions();
     }
-
-    [Test]
-    [RunOnSide(Side.Server)]
-    public void MaskSetsHaveMasks()
-    {
-        foreach (var maskSet in _proto.EnumeratePrototypes<ESMaskSetPrototype>())
-        {
-            Assert.That(maskSet.AllMasks(), Is.Not.Empty);
-        }
-    }
-
 }
