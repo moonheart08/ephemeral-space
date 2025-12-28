@@ -1,14 +1,11 @@
-using System.Collections.Generic;
-using System.Reflection;
-using JetBrains.Annotations;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Commands;
-using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
-public sealed class RunOnSideAttribute : Attribute, ICommandWrapper, IImplyFixture
+[AttributeUsage(AttributeTargets.Method)]
+public sealed class RunOnSideAttribute : Attribute, IWrapTestMethod, IImplyFixture
 {
     /// <summary>
     ///     Which side to run the inner test code on, if not the test thread.
@@ -16,11 +13,6 @@ public sealed class RunOnSideAttribute : Attribute, ICommandWrapper, IImplyFixtu
     public Side RunOnSide { get; set; }
 
     public RunOnSideAttribute(Side side)
-    {
-        RunOnSide = side;
-    }
-
-    public RunOnSideAttribute(Side side, params object?[] args)
     {
         RunOnSide = side;
     }
@@ -50,12 +42,11 @@ public sealed class RunOnSideAttribute : Attribute, ICommandWrapper, IImplyFixtu
             if (_side is Side.Neither)
                 throw new NotSupportedException($"Sided tests need to specify a side. {Test}");
 
-            TestResult res = null!;
             if (_side is Side.Client)
             {
                 gt.Client.WaitAssertion(() =>
                     {
-                        res = innerCommand.Execute(context);
+                        context.CurrentResult = innerCommand.Execute(context);
                     })
                     .Wait();
             }
@@ -63,12 +54,12 @@ public sealed class RunOnSideAttribute : Attribute, ICommandWrapper, IImplyFixtu
             {
                 gt.Server.WaitAssertion(() =>
                     {
-                        res = innerCommand.Execute(context);
+                        context.CurrentResult = innerCommand.Execute(context);
                     })
                     .Wait();
             }
 
-            return res!;
+            return context.CurrentResult;
         }
     }
 }
