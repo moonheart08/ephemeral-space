@@ -1,4 +1,3 @@
-#nullable enable
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Robust.Shared.GameObjects;
@@ -6,8 +5,16 @@ using Robust.Shared.Utility;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
-public partial class GameTestData
+public partial class GameTest
 {
+    /// <summary>
+    ///     Marks the test pair as dirty, ensuring it is returned as such.
+    /// </summary>
+    public void MarkDirty()
+    {
+        _pairDirty = true;
+    }
+
     public TestMapData? TestMap => Pair.TestMap;
 
     /// <summary>
