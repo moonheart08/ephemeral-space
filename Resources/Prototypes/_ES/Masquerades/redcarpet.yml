@@ -1,14 +1,10 @@
 - type: esMasquerade
   id: RedCarpet
   name: Red Carpet
-  description: Roll it out, if you can find any. A travelling group of VIPs was unfortunate enough to be stranded with you.
+  description: strands a party of VIPs with our harrowing crew.
   weight: 1
   minPlayers: 6
-  gameRules:
-  - ESTroupeRuleCrew
-  - ESTroupeRuleTraitor
-  - ESSchedulerRuleStationEventVote
-  - ESSchedulerRuleDegradationEventVote
+  gameRules: []
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESVIP/ESCrewmember" # God help you.
     roles:

@@ -1,14 +1,10 @@
 - type: esMasquerade
   id: Traitors
   name: Traitors
-  description: A standard, balanced cast of crew and traitors.
+  description: standard, balanced cast of crew and traitors.
   weight: 10
   minPlayers: 6
-  gameRules:
-  - ESTroupeRuleCrew
-  - ESTroupeRuleTraitor
-  - ESSchedulerRuleStationEventVote
-  - ESSchedulerRuleDegradationEventVote
+  gameRules: []
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember" # God help you.
     roles:

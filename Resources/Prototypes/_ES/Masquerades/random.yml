@@ -2,7 +2,7 @@
   id: RandomTraitors
   name: Random (Traitors)
   description: is a truly randomized traitorous experience
-  weight: 10
+  weight: 1
   minPlayers: 1
   gameRules: []
   masquerade: !type:MasqueradeRoleSet

@@ -124,10 +124,12 @@ public sealed class MasqueradeRunTests : GameTest
         Destructive = true, // fuck it. We set the preset which is destructive.
     };
 
-    [TestCase("Random", 35)]
+    [TestCase("RandomTraitors", 35)]
     [TestCase("Freakshow", 35)]
     [TestCase("Freakshow", 21)]
     [TestCase("Showdown", 35)]
+    [TestCase("Traitors", 35)]
+    [TestCase("RedCarpet", 35)]
     public async Task TestMasqueradeStart(string protoStr, int userCount)
     {
         var proto = _proto.Index<ESMasqueradePrototype>(protoStr);
