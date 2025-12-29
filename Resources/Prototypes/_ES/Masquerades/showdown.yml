@@ -4,9 +4,7 @@
   description: A real showdown, with many more guns than usual.
   weight: 1 # Not that common
   minPlayers: 6
-  gameRules:
-    - ESTroupeRuleCrew
-    - ESTroupeRuleTraitor
+  gameRules: []
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember"
     roles:

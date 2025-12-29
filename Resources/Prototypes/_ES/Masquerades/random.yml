@@ -4,9 +4,7 @@
   description: A truly random traitors round.
   weight: 10
   minPlayers: 1
-  gameRules:
-    - ESTroupeRuleCrew
-    - ESTroupeRuleTraitor
+  gameRules: []
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "#AllCrew" # Everyone besides the traitors gets random crew masks.
     roles:

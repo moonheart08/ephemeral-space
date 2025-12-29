@@ -178,7 +178,7 @@ public sealed class ESMaskSystem : ESSharedMaskSystem
         {
             if (!TryGetTroupeEntityForMask(mask, out troupe))
             {
-                _gameTicker.StartGameRule(PrototypeManager.Index(mask.Troupe).ID, out var troupeEnt);
+                _gameTicker.StartGameRule(PrototypeManager.Index(mask.Troupe).GameRule, out var troupeEnt);
                 troupe = (troupeEnt, Comp<ESTroupeRuleComponent>(troupeEnt));
             }
         }

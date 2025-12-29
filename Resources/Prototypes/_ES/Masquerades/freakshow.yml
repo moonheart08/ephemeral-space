@@ -4,8 +4,7 @@
   description: Packs the round with almost nothing but high noise crew masks.
   weight: 1
   minPlayers: 4
-  gameRules:
-    - ESTroupeRuleCrew
+  gameRules: []
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember"
     roles:
