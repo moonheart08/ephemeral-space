@@ -34,6 +34,8 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
     // Icky global state.
     private ProtoId<ESMasqueradePrototype>? _forcedMasquerade = null;
 
+    public override Type[]? RoundEndTextBefore => [typeof(ESMaskSystem)];
+
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -41,7 +43,6 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
 
         SubscribeLocalEvent<AssignLatejoinerToTroupeEvent>(OnAssignLatejoiner);
         SubscribeLocalEvent<AssignPlayersToTroupeEvent>(OnAssignPlayers);
-        SubscribeLocalEvent<RoundEndTextAppendEvent>(OnRoundEndTextAppend, before: [typeof(ESMaskSystem)]);
     }
 
     private void OnAssignPlayers(ref AssignPlayersToTroupeEvent ev)

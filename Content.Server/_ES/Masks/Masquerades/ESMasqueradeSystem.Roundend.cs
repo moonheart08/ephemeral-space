@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server.GameTicking;
+using Content.Shared.GameTicking.Components;
 
 namespace Content.Server._ES.Masks.Masquerades;
 
@@ -7,11 +8,9 @@ public sealed partial class ESMasqueradeSystem
 {
     [Dependency] private readonly ILocalizationManager _loc = default!;
 
-    private void OnRoundEndTextAppend(RoundEndTextAppendEvent ev)
+    protected override void AppendRoundEndText(EntityUid uid, ESMasqueradeRuleComponent component, GameRuleComponent gameRule, ref RoundEndTextAppendEvent ev)
     {
-        var rule = EntityQuery<ESMasqueradeRuleComponent>().SingleOrDefault();
-
-        if (rule?.Masquerade is not {} masquerade)
+        if (component.Masquerade is not { } masquerade)
             return;
 
         ev.AddLine(
@@ -22,6 +21,8 @@ public sealed partial class ESMasqueradeSystem
                 )
             );
 
-
+        // I just want like, a couple blanks.
+        ev.AddLine(string.Empty);
+        ev.AddLine(string.Empty);
     }
 }
