@@ -1,7 +1,7 @@
 - type: esMasquerade
   id: RedCarpet
   name: Red Carpet
-  description: strands a party of VIPs with our harrowing crew.
+  description: strands a party of VIPs with our harrowing crew
   weight: 1
   minPlayers: 6
   gameRules: []
