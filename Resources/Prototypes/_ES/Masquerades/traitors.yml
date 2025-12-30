@@ -8,10 +8,10 @@
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "ESCrewmember" # God help you.
     roles:
-      6: ["ESMarauder(2)", "#Oracles", "#Softsafes", "#Gunners"] # 1 generic crew, 2 traitors
+      6: ["ESMarauder", "ESInfiltrator", "#Oracles", "#Softsafes", "#Gunners"] # 1 generic crew, 2 traitors
       8: ["#Softsafes"] # 2 generic crew, 2 traitors.
       10: ["#Jesters"] # 3 generic crew, 2 traitors.
-      12: ["-ESMarauder", "#Traitors"] # 4 generic crew, 2 traitors.
+      12: ["-ESInfiltrator", "#Traitors"] # 4 generic crew, 2 traitors.
       14: ["#Gunners", "#Softsafes"] # 4 generic crew, 2 traitors.
       16: ["#Firmsafes"] # 5 generic crew, 2 traitors.
       18: ["#Traitors", "#Reaped"] # 5 generic crew, 3 traitors.
