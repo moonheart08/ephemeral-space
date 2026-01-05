@@ -11,7 +11,7 @@
       6: ["#Traitors", "ESInfiltrator", "#Oracles", "#Softsafes", "#Gunners"] # 1 generic crew, 2 traitors
       8: ["#Softsafes"] # 2 generic crew, 2 traitors.
       10: ["#Jesters"] # 3 generic crew, 2 traitors.
-      11: ["-ESInfiltrator", "#PowerTraitors"] # 3 generic crew, 2 traitors.
+      11: ["-ESInfiltrator", "#Traitors"] # 3 generic crew, 2 traitors.
       13: ["#Traitors"]  # 4 generic crew, 3 traitors.
       14: ["#Gunners"] # 4 generic crew, 3 traitors.
       16: ["#Firmsafes"] # 5 generic crew, 3 traitors.
@@ -19,11 +19,11 @@
       18: ["#Softsafes"] # 5 generic crew, 4 traitors.
       19: ["#Traitors"] # 5 generic crew, 4 traitors.
       20: ["#Softsafes"] # 5 generic crew, 4 traitors.
-      21: ["#Jesters"] # 5 generic crew, 4 traitors.
+      21: ["#Jesters", "-#Traitors", "#PowerTraitors"] # 5 generic crew, 4 traitors.
       22: ["#Softsafes"] # 5 generic crew, 4 traitors.
       24: ["#Gunners"] # 6 generic crew, 4 traitors.
       25: ["#Traitors"] # 6 generic crew, 5 traitors.
       26: ["#Oracles"] # 6 generic crew, 5 traitors.
       28: ["#Gunners"] # 7 generic crew, 5 traitors.
       30: ["#Reaped"] # 8 generic crew, 5 traitors
-      31: ["#PowerTraitors", "#Oracles"] # 7 generic crew, 6 traitors.
+      31: ["#Traitors", "#Oracles"] # 7 generic crew, 6 traitors.
