@@ -236,7 +236,10 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
                     // and other places I wish the game had a Single<>() helper for "I really want to assume singleton".
                     var query = EntityQueryEnumerator<StationDataComponent>();
 
-                    if (!query.MoveNext(out var ent, out var comp))
+                    if (!query.MoveNext(out var ent, out _))
+                        return;
+
+                    if (component.Deleted)
                         return;
 
                     var report = new StringBuilder();
