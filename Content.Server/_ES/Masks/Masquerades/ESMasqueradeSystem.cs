@@ -248,7 +248,7 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
                     {
                         report.AppendLine(Loc.GetString(masquerade.StartupNewsArticleMaskEntry,
                             ("count", masks.Value),
-                            ("mask", masks.Key.ToString())));
+                            ("mask", Loc.GetString(_proto.Index(masks.Key).Name))));
                     }
 
                     _news.TryAddNews(ent,
