@@ -17,17 +17,17 @@
       11: ["#Softsafes"]
       13: ["#Jesters"]  # 0 generic crew
       14: ["ESEmpath"]
-      16: ["#Firmsafes"] # 1 generic crew, 3 traitors.
+      16: ["#Firmsafes"] # 1 generic crew
       17: ["#Reaped"]
       18: ["ESArmsDealer"]
-      19: ["#Jesters"] # 1 generic crew, 4 traitors.
+      19: ["#Jesters"] # 1 generic crew
       20: ["#Softsafes"]
-      21: ["#Jesters"] # 1 generic crew, 4 traitors.
+      21: ["#Jesters"] # 1 generic crew
       22: ["#Softsafes"]
-      24: ["#CrewGunners"] # 2 generic crew, 4 traitors.
+      24: ["#CrewGunners"] # 2 generic crew
       25: ["#Jesters"] # 2 generic crew, 5 traitors.
       26: ["#Jesters"]
-      28: ["#CrewGunners"] # 3 generic crew, 5 traitors.
+      28: ["#CrewGunners"] # 3 generic crew
       29: ["#Softsafes"]
       30: ["#Reaped"]
-      31: ["#Jesters(2)"] # 3 generic crew, 6 traitors.
+      31: ["#Jesters(2)"] # 3 generic crew
