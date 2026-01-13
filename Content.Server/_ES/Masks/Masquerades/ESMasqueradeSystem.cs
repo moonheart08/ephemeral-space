@@ -1,17 +1,22 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using Content.Server.Chat.Managers;
 using Content.Server.GameTicking.Rules;
+using Content.Server.MassMedia.Systems;
 using Content.Server.Mind;
+using Content.Server.Station.Systems;
 using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Mind;
 using Content.Shared.Random.Helpers;
+using Content.Shared.Station.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Server._ES.Masks.Masquerades;
@@ -24,8 +29,11 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
     [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly ITimerManager _timer = default!;
     [Dependency] private readonly ESMaskSystem _mask = default!;
     [Dependency] private readonly MindSystem _mind = default!;
+    [Dependency] private readonly NewsSystem _news = default!;
+    [Dependency] private readonly StationSystem _station = default!;
 
     // Icky global state.
     private ProtoId<ESMasqueradePrototype>? _forcedMasquerade;
@@ -54,6 +62,23 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
         {
             Log.Error($"Failed to assign masks for masquerade {rule.Masquerade!.ID}!");
             return;
+        }
+
+        if (rule.Masquerade.ImpersonateMasquerade is { } impersonate)
+        {
+            var proto = _proto.Index(impersonate);
+
+            if (!proto.Masquerade.TryGetMasks(ev.Players.Count, rule.Rng, _proto, out var impersonationMasks))
+            {
+                Log.Error($"Failed to assign impersonation masks for masquerade {rule.Masquerade!.ID}!");
+                return;
+            }
+
+            rule.AssignedMasks = impersonationMasks;
+        }
+        else
+        {
+            rule.AssignedMasks = masks.ShallowClone();
         }
 
         DebugTools.AssertEqual(masks.Count, ev.Players.Count, "Player count mismatched mask count, shit broke.");
@@ -191,14 +216,44 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
         component.Rng = component.Seed.IntoRandomizer();
         component.Masquerade = SelectMasquerade(GameTicker.ReadyPlayerCount());
 
-        if (component.Masquerade is null)
+        if (component.Masquerade is not {} masquerade)
             return;
 
-        _chat.SendAdminAlert($"Upcoming masquerade is {component.Masquerade.ID}.");
+        _chat.SendAdminAlert($"Upcoming masquerade is {masquerade.ID}.");
 
-        foreach (var rule in component.Masquerade.GameRules)
+        foreach (var rule in masquerade.GameRules)
         {
             GameTicker.StartGameRule(rule);
+        }
+
+        // If we do news, run the news.
+        if (masquerade.StartupNewsArticleTime is { } time)
+        {
+            Timer.Spawn(time,
+                () =>
+                {
+                    // Find The Station. Only one.
+                    // and other places I wish the game had a Single<>() helper for "I really want to assume singleton".
+                    var query = EntityQueryEnumerator<StationDataComponent>();
+
+                    if (!query.MoveNext(out var ent, out var comp))
+                        return;
+
+                    var report = new StringBuilder();
+
+                    foreach (var masks in component.AssignedMasks!.CountBy(x => x))
+                    {
+                        report.AppendLine(Loc.GetString(masquerade.StartupNewsArticleMaskEntry,
+                            ("count", masks.Value),
+                            ("mask", masks.Key.ToString())));
+                    }
+
+                    _news.TryAddNews(ent,
+                        Loc.GetString(masquerade.StartupNewsArticleTitle),
+                        Loc.GetString(masquerade.StartupNewsArticleContents, ("maskEntries", report)),
+                        out _,
+                        enforceLimits: false);
+                });
         }
     }
 

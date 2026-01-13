@@ -72,6 +72,24 @@ public sealed partial class ESMasqueradePrototype : IPrototype, ISerializationHo
         set => Masquerade.MaxPlayers = value;
     }
 
+    [DataField]
+    public TimeSpan? StartupNewsArticleTime = TimeSpan.FromSeconds(60);
+
+    [DataField]
+    public LocId StartupNewsArticleTitle = "es-news-masks-report-title";
+
+    [DataField]
+    public LocId StartupNewsArticleContents = "es-news-masks-report-body";
+
+    [DataField]
+    public LocId StartupNewsArticleMaskEntry = "es-news-masks-entry";
+
+    /// <summary>
+    ///     A masquerade to impersonate, if any. This tells the game to "act like this other masquerade" for things
+    ///     like the startup news article. For example, Freakshow impersonates Traitors and simply lies about the masks.
+    /// </summary>
+    [DataField]
+    public ProtoId<ESMasqueradePrototype>? ImpersonateMasquerade = null;
 
     // Due to this being shared, we can't rely on GamePresetPrototype... please don't make typos :3
     /// <summary>
