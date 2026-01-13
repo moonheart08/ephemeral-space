@@ -51,3 +51,6 @@ login_dataset = "ESTips"
 
 [server]
 default_guide = "ESNewPlayerES"
+
+[chat]
+chat_sanitizer_enabled = false
