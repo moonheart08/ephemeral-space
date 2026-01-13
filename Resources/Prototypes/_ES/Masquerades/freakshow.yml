@@ -9,7 +9,7 @@
   masquerade: !type:MasqueradeRoleSet
     defaultMask: "#Jesters"
     roles:
-      6: ["#Jesters(2)", "#Freaks", "#Softsafes", "ESVandal", "ESMercenary"] # 0 generic crew
+      6: ["#Jesters(3)", "#Softsafes", "ESVandal", "ESMercenary"] # 0 generic crew
       7: ["ESMartyr"]
       8: ["#Softsafes"]
       9: ["#CrewGunners"]
@@ -20,13 +20,13 @@
       16: ["#Firmsafes"] # 1 generic crew
       17: ["#Reaped"]
       18: ["ESArmsDealer"]
-      19: ["#Freaks"] # 1 generic crew
+      19: ["#Jesters"] # 1 generic crew
       20: ["#Softsafes"]
-      21: ["#Freaks"] # 1 generic crew
+      21: ["#Jesters"] # 1 generic crew
       22: ["#Softsafes"]
       24: ["#CrewGunners"] # 2 generic crew
       25: ["#Jesters"] # 2 generic crew, 5 traitors.
-      26: ["#Freaks"]
+      26: ["#Jesters"]
       28: ["#CrewGunners"] # 3 generic crew
       29: ["#Softsafes"]
       30: ["#Reaped"]
