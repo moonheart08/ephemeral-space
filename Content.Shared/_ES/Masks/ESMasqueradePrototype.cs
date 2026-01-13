@@ -72,15 +72,31 @@ public sealed partial class ESMasqueradePrototype : IPrototype, ISerializationHo
         set => Masquerade.MaxPlayers = value;
     }
 
+    /// <summary>
+    ///     How long after roundstart/rule startup should the news be broadcast.
+    /// </summary>
     [DataField]
     public TimeSpan? StartupNewsArticleTime = TimeSpan.FromSeconds(60);
 
+    /// <summary>
+    ///     The title to use for the roundstart news article.
+    /// </summary>
     [DataField]
     public LocId StartupNewsArticleTitle = "es-news-masks-report-title";
 
+    /// <summary>
+    ///     The contents to use for the roundstart news article.
+    /// </summary>
     [DataField]
     public LocId StartupNewsArticleContents = "es-news-masks-report-body";
 
+    /// <summary>
+    ///     The mask entry loc string to use for the roundstart news.
+    /// </summary>
+    /// <remarks>
+    ///     Fluent is responsible for pluralizing the mask names, so if you want to hide how many of each mask there is
+    ///     use this.
+    /// </remarks>
     [DataField]
     public LocId StartupNewsArticleMaskEntry = "es-news-masks-entry";
 
