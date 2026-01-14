@@ -111,8 +111,6 @@ public sealed class TimerTests : GameTest
         {
             var ctimer = CEntity<ESEntityTimerComponent>(ToClientUid(timer!.Value));
 
-            Assert.That(timer.Value.Comp, Is.Not.EqualTo(ctimer.Comp), "wth.");
-
             Assert.That(ctimer.Comp.TimerEndEvent, Is.Null);
 
 

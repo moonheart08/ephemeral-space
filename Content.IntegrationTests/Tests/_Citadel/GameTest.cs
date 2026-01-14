@@ -49,7 +49,7 @@ public abstract partial class GameTest
     /// <summary>
     ///     The client-side entity manager.
     /// </summary>
-    public IEntityManager CEntMan => Server.EntMan;
+    public IEntityManager CEntMan => Client.EntMan;
 
     [SetUp]
     public virtual async Task DoSetup()
