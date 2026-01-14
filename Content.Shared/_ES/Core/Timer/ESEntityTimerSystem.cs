@@ -94,7 +94,8 @@ public sealed class ESEntityTimerSystem : EntitySystem
 
         // This is essentially only checking that the type is net serializable, nothing more.
         // If it's not, then we never dirty the component on purpose and disable netsync.
-        var networked = endEvent.GetType().HasCustomAttribute<NetSerializableAttribute>();
+        var networked = endEvent.GetType().HasCustomAttribute<NetSerializableAttribute>() &&
+                        !endEvent.GetType().HasCustomAttribute<NonNetworkedTimerEventAttribute>();
 
         comp.NetSyncEnabled = networked;
 
