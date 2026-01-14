@@ -155,9 +155,14 @@ public sealed class ESEntityTimerSystem : EntitySystem
 }
 
 [NonNetworkedTimerEvent]
-public sealed partial class MethodTimerEvent(Action method) : ESEntityTimerEvent
+public sealed partial class MethodTimerEvent : ESEntityTimerEvent
 {
-    public readonly Action Method = method;
+    public readonly Action Method;
+
+    public MethodTimerEvent(Action method)
+    {
+        Method = method;
+    }
 }
 
 /// <summary>
