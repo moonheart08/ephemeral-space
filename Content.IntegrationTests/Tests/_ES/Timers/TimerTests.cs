@@ -68,7 +68,7 @@ public sealed class TimerTests : GameTest
             _pvsOverride.AddGlobalOverride(timer.Value); // Ensure it gets synced.
         });
 
-        await SyncTicks();
+        await Pair.RunTicksSync(10);
 
         await Client.WaitAssertion(() =>
         {
@@ -105,7 +105,7 @@ public sealed class TimerTests : GameTest
             _pvsOverride.AddGlobalOverride(timer.Value); // Ensure it gets synced.
         });
 
-        await SyncTicks();
+        await Pair.RunTicksSync(10);
 
         await Client.WaitAssertion(() =>
         {
