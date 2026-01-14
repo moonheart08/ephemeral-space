@@ -45,8 +45,7 @@ public sealed class ESAutoGhostSystem : EntitySystem
         if (args.NewMobState != MobState.Dead)
             return;
 
-        if (!TerminatingOrDeleted(ent))
-            AutoGhost(ent);
+        AutoGhost(ent);
     }
 
     private void OnAutoGhost(Entity<MindContainerComponent> ent, ref ESAutoGhostEvent args)
@@ -59,6 +58,8 @@ public sealed class ESAutoGhostSystem : EntitySystem
 
     private void AutoGhost(EntityUid uid)
     {
-        _ = _entityTimer.SpawnTimer(uid, AutoGhostDelay, new ESAutoGhostEvent());
+        // This may fail in some extreme scenarios like a mob state change happening before the entity is even map-init.
+        // Just silence it, the failure is fine.
+        _ = _entityTimer.SpawnTimer(uid, AutoGhostDelay, new ESAutoGhostEvent(), logFailure: false);
     }
 }
