@@ -188,5 +188,10 @@ public sealed class MasqueradeRunTests : GameTest
 
             _sGameticker.RestartRound();
         });
+
+        await Server.WaitPost(() =>
+        {
+            _sGameticker.SetGamePreset("Extended");
+        });
     }
 }
