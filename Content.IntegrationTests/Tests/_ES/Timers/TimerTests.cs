@@ -109,11 +109,9 @@ public sealed class TimerTests : GameTest
 
         await Client.WaitAssertion(() =>
         {
-            var ctimer = CEntity<ESEntityTimerComponent>(ToClientUid(timer!.Value));
+            var ctimer = ToClientUid(timer!.Value);
 
-            Assert.That(ctimer.Comp.TimerEndEvent, Is.Null);
-
-
+            Assert.That(CHasComp<ESEntityTimerComponent>(ctimer), Is.False);
         });
 
         await Pair.RunSeconds(3);

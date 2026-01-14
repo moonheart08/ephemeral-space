@@ -316,4 +316,22 @@ public abstract partial class GameTest
     {
         return Client.EntMan.Deleted(ent);
     }
+
+    /// <summary>
+    ///     Checks whether the given entity has the given component.
+    /// </summary>
+    public bool SHasComp<T>(EntityUid? ent)
+        where T: IComponent
+    {
+        return Server.EntMan.HasComponent<T>(ent);
+    }
+
+    /// <summary>
+    ///     Checks whether the given entity has the given component.
+    /// </summary>
+    public bool CHasComp<T>(EntityUid? ent)
+        where T: IComponent
+    {
+        return Client.EntMan.HasComponent<T>(ent);
+    }
 }
