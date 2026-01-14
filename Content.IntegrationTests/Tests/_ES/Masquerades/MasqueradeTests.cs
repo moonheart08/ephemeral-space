@@ -121,7 +121,6 @@ public sealed class MasqueradeRunTests : GameTest
         DummyTicker = false,
         Connected = true, // Have one real client connected just to catch oddities.
         InLobby = true,
-        Destructive = true, // fuck it. We set the preset which is destructive.
     };
 
     [TestCase("RandomTraitors", 35)]
