@@ -57,7 +57,8 @@ public sealed class ESEntityTimerSystem : EntitySystem
     {
         if (!TimerTargetIsValid(target))
         {
-            Log.Error($"Failed to spawn a timer on {target} due to invalidity, event was {endEvent}.");
+            if (logFailure)
+                Log.Error($"Failed to spawn a timer on {target} due to invalidity, event was {endEvent}.");
 
             return null;
         }
