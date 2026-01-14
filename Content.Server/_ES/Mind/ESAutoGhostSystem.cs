@@ -45,7 +45,8 @@ public sealed class ESAutoGhostSystem : EntitySystem
         if (args.NewMobState != MobState.Dead)
             return;
 
-        AutoGhost(ent);
+        if (!TerminatingOrDeleted(ent))
+            AutoGhost(ent);
     }
 
     private void OnAutoGhost(Entity<MindContainerComponent> ent, ref ESAutoGhostEvent args)
