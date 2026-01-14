@@ -58,7 +58,12 @@ public sealed class ESEntityTimerSystem : EntitySystem
         if (!TimerTargetIsValid(target))
         {
             if (logFailure)
-                Log.Error($"Failed to spawn a timer on {target} due to invalidity, event was {endEvent}.");
+            {
+                if (TerminatingOrDeleted(target))
+                    Log.Error($"Failed to spawn a timer on {target} due to being in the middle of termianting/being deleted, event was {endEvent}.");
+                else if (LifeStage(target) is not EntityLifeStage.MapInitialized)
+                    Log.Error($"Failed to spawn a timer on {target} due to not being map initialized (was {LifeStage(target)}), event was {endEvent}.");
+            }
 
             return null;
         }
@@ -133,11 +138,6 @@ public sealed class ESEntityTimerSystem : EntitySystem
         foreach (var (uid, timer, xform) in firingTimers)
         {
             var target = xform.ParentUid;
-
-            if (timer.TimerEndEvent is null)
-                continue; // Not our business. Can only happen in replays and other select scenarios
-                          // that cause a server-side timer to be sent to the client.
-                          // We also don't bother with the queuedel.
 
             // broadcast
             if (xform.MapID == MapId.Nullspace)
