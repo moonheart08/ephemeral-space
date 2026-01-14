@@ -8,14 +8,14 @@ namespace Content.Shared._ES.Core.Timer.Components;
 /// Component that holds data regarding a generic timer.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
-[Access(typeof(ESEntityTimerSystem), Other = AccessPermissions.None)]
+//[Access(typeof(ESEntityTimerSystem), Other = AccessPermissions.None)] // interferes with integration tests. :(
 public sealed partial class ESEntityTimerComponent : Component
 {
     /// <summary>
     /// Event raised on the target entity when the timer ends.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public ESEntityTimerEvent TimerEndEvent;
+    public ESEntityTimerEvent? TimerEndEvent;
 
     /// <summary>
     /// Time at which this timer will end.

@@ -300,4 +300,20 @@ public abstract partial class GameTest
 
         return res;
     }
+
+    /// <summary>
+    ///     Checks whether the given entity has been deleted on the server.
+    /// </summary>
+    public bool SDeleted(EntityUid? ent)
+    {
+        return Server.EntMan.Deleted(ent);
+    }
+
+    /// <summary>
+    ///     Checks whether the given entity has been deleted on the client.
+    /// </summary>
+    public bool CDeleted(EntityUid? ent)
+    {
+        return Client.EntMan.Deleted(ent);
+    }
 }

@@ -12,6 +12,7 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Utility;
 
 namespace Content.Server._ES.Spawning;
 
@@ -40,7 +41,7 @@ public sealed class ESSpawningSystem : ESSharedSpawningSystem
         if (_gameTicker.RunLevel == GameRunLevel.PreRoundLobby)
             return;
 
-        _timer.SpawnTimer(TimeSpan.FromSeconds(1.5f), new ESSpawnPlayerAfterCurtainsEvent(msg, args));
+        _ = _timer.SpawnTimer(TimeSpan.FromSeconds(1.5f), new ESSpawnPlayerAfterCurtainsEvent(msg, args));
     }
 
     private void OnAfterCurtains(ESSpawnPlayerAfterCurtainsEvent ev)

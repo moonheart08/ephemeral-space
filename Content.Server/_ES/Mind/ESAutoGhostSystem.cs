@@ -58,6 +58,6 @@ public sealed class ESAutoGhostSystem : EntitySystem
 
     private void AutoGhost(EntityUid uid)
     {
-        _entityTimer.SpawnTimer(uid, AutoGhostDelay, new ESAutoGhostEvent());
+        _ = _entityTimer.SpawnTimer(uid, AutoGhostDelay, new ESAutoGhostEvent());
     }
 }

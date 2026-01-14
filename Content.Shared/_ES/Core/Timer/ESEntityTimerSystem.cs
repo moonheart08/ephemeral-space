@@ -2,7 +2,9 @@ using Content.Shared._ES.Core.Timer.Components;
 using JetBrains.Annotations;
 using Robust.Shared.Collections;
 using Robust.Shared.Map;
+using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 
 namespace Content.Shared._ES.Core.Timer;
 
@@ -14,48 +16,98 @@ public sealed class ESEntityTimerSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
+    public override void Initialize()
+    {
+        SubscribeLocalEvent<MethodTimerEvent>(MethodTimerEventHandler);
+    }
+
+    private void MethodTimerEventHandler(MethodTimerEvent ev)
+    {
+        ev.Method();
+    }
+
     /// <summary>
-    /// Spawns a timer entity that raises a broadcast event after a specified duration.
+    ///     Spawns a timer entity that raises a broadcast event after a specified duration.
     /// </summary>
     /// <param name="duration">Duration of the timer</param>
     /// <param name="endEvent">Event that will be raised when the timer is finished</param>
+    /// <param name="logFailure">Whether to log if SpawnTimer fails to spawn the timer.</param>
     /// <returns>The timer that was created</returns>
     [PublicAPI]
-    public Entity<ESEntityTimerComponent>? SpawnTimer(TimeSpan duration, ESEntityTimerEvent endEvent)
+    [MustUseReturnValue]
+    public Entity<ESEntityTimerComponent>? SpawnTimer(TimeSpan duration, ESEntityTimerEvent endEvent, bool logFailure = true)
     {
         var uid = Spawn(null, MapCoordinates.Nullspace);
         var comp = AddComp<ESEntityTimerComponent>(uid);
 
-        comp.TimerEndEvent = endEvent;
-        comp.TimerEnd = _timing.CurTime + duration;
-        Dirty(uid, comp);
+        SetupTimer((uid, comp), duration, endEvent);
 
         return (uid, comp);
     }
 
     /// <summary>
-    /// Spawns a timer entity that raises a directed event on a target after a specified duration.
+    ///     Spawns a timer entity that raises a directed event on a target after a specified duration.
     /// </summary>
     /// <param name="target">Entity the event will raise on</param>
     /// <param name="duration">Duration of the timer</param>
     /// <param name="endEvent">Event that will be raised when the timer is finished</param>
+    /// <param name="logFailure">Whether to log if SpawnTimer fails to spawn the timer.</param>
     /// <returns>The timer that was created</returns>
     [PublicAPI]
-    public Entity<ESEntityTimerComponent>? SpawnTimer(EntityUid target, TimeSpan duration, ESEntityTimerEvent endEvent)
+    [MustUseReturnValue]
+    public Entity<ESEntityTimerComponent>? SpawnTimer(EntityUid target, TimeSpan duration, ESEntityTimerEvent endEvent, bool logFailure = true)
     {
         if (!TimerTargetIsValid(target))
+        {
+            Log.Error($"Failed to spawn a timer on {target} due to invalidity, event was {endEvent}.");
+
             return null;
+        }
 
         var uid = Spawn();
         var comp = AddComp<ESEntityTimerComponent>(uid);
 
         _transform.SetParent(uid, target);
 
-        comp.TimerEndEvent = endEvent;
-        comp.TimerEnd = _timing.CurTime + duration;
-        Dirty(uid, comp);
+        SetupTimer((uid, comp), duration, endEvent);
 
         return (uid, comp);
+    }
+
+    /// <summary>
+    ///     Spawns a method timer, which is <b>not networked</b> and <b>not serializable</b>, but convenient in some
+    ///     select usecases. Do not use for things that need prediction, do not use for things that need to be saved
+    ///     in maps/etc.
+    /// </summary>
+    /// <param name="duration">Duration of the timer</param>
+    /// <param name="method">The lambda to call when the timer has elapsed.</param>
+    /// <param name="logFailure">Whether to log if SpawnMethodTimer fails to spawn the timer.</param>
+    /// <returns>The timer that was created</returns>
+    [PublicAPI]
+    [MustUseReturnValue]
+    public Entity<ESEntityTimerComponent>? SpawnMethodTimer(TimeSpan duration, Action method, bool logFailure = true)
+    {
+        return SpawnTimer(duration, new MethodTimerEvent(method), logFailure);
+    }
+
+    private void SetupTimer(Entity<ESEntityTimerComponent> timer, TimeSpan duration, ESEntityTimerEvent endEvent)
+    {
+        timer.Comp.TimerEndEvent = endEvent;
+        timer.Comp.TimerEnd = _timing.CurTime + duration;
+
+        // This is essentially only checking that the type is net serializable, nothing more.
+        // If it's not, then we never dirty the component on purpose and disable netsync.
+        var networked = endEvent.GetType().HasCustomAttribute<NetSerializableAttribute>();
+
+        if (networked)
+        {
+            Dirty(timer);
+        }
+        else
+        {
+            // Avoid bricking replays.
+            timer.Comp.NetSyncEnabled = false;
+        }
     }
 
     private bool TimerTargetIsValid(EntityUid uid)
@@ -82,6 +134,11 @@ public sealed class ESEntityTimerSystem : EntitySystem
         {
             var target = xform.ParentUid;
 
+            if (timer.TimerEndEvent is null)
+                continue; // Not our business. Can only happen in replays and other select scenarios
+                          // that cause a server-side timer to be sent to the client.
+                          // We also don't bother with the queuedel.
+
             // broadcast
             if (xform.MapID == MapId.Nullspace)
             {
@@ -96,3 +153,15 @@ public sealed class ESEntityTimerSystem : EntitySystem
         }
     }
 }
+
+[NonNetworkedTimerEvent]
+public sealed partial class MethodTimerEvent(Action method) : ESEntityTimerEvent
+{
+    public readonly Action Method = method;
+}
+
+/// <summary>
+///     Used by integration tests.
+/// </summary>
+[NetSerializable, Serializable]
+public sealed partial class TestTimerEvent : ESEntityTimerEvent;
