@@ -58,8 +58,11 @@ public sealed class ESAutoGhostSystem : EntitySystem
 
     private void AutoGhost(EntityUid uid)
     {
+        if (!_mind.TryGetMind(uid, out _, out _))
+            return; // Don't ghost the brainless.
+
         // This may fail in some extreme scenarios like a mob state change happening before the entity is even map-init.
         // Just silence it, the failure is fine.
-        _ = _entityTimer.SpawnTimer(uid, AutoGhostDelay, new ESAutoGhostEvent(), logFailure: false);
+        _ = _entityTimer.SpawnTimer(uid, AutoGhostDelay, new ESAutoGhostEvent());
     }
 }
