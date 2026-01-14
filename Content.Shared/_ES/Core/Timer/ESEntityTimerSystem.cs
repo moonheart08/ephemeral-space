@@ -14,6 +14,7 @@ namespace Content.Shared._ES.Core.Timer;
 public sealed class ESEntityTimerSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly IComponentFactory _factory = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     public override void Initialize()
@@ -38,11 +39,8 @@ public sealed class ESEntityTimerSystem : EntitySystem
     public Entity<ESEntityTimerComponent>? SpawnTimer(TimeSpan duration, ESEntityTimerEvent endEvent, bool logFailure = true)
     {
         var uid = Spawn(null, MapCoordinates.Nullspace);
-        var comp = AddComp<ESEntityTimerComponent>(uid);
 
-        SetupTimer((uid, comp), duration, endEvent);
-
-        return (uid, comp);
+        return SetupTimer(uid, duration, endEvent);
     }
 
     /// <summary>
@@ -65,13 +63,10 @@ public sealed class ESEntityTimerSystem : EntitySystem
         }
 
         var uid = Spawn();
-        var comp = AddComp<ESEntityTimerComponent>(uid);
 
         _transform.SetParent(uid, target);
 
-        SetupTimer((uid, comp), duration, endEvent);
-
-        return (uid, comp);
+        return SetupTimer(uid, duration, endEvent);
     }
 
     /// <summary>
@@ -90,24 +85,27 @@ public sealed class ESEntityTimerSystem : EntitySystem
         return SpawnTimer(duration, new MethodTimerEvent(method), logFailure);
     }
 
-    private void SetupTimer(Entity<ESEntityTimerComponent> timer, TimeSpan duration, ESEntityTimerEvent endEvent)
+    private Entity<ESEntityTimerComponent> SetupTimer(EntityUid timerEnt, TimeSpan duration, ESEntityTimerEvent endEvent)
     {
-        timer.Comp.TimerEndEvent = endEvent;
-        timer.Comp.TimerEnd = _timing.CurTime + duration;
+        var comp = _factory.GetComponent<ESEntityTimerComponent>();
+
+        comp.TimerEndEvent = endEvent;
+        comp.TimerEnd = _timing.CurTime + duration;
 
         // This is essentially only checking that the type is net serializable, nothing more.
         // If it's not, then we never dirty the component on purpose and disable netsync.
         var networked = endEvent.GetType().HasCustomAttribute<NetSerializableAttribute>();
 
+        comp.NetSyncEnabled = networked;
+
+        AddComp(timerEnt, comp);
+
         if (networked)
         {
-            Dirty(timer);
+            Dirty(timerEnt, comp);
         }
-        else
-        {
-            // Avoid bricking replays.
-            timer.Comp.NetSyncEnabled = false;
-        }
+
+        return (timerEnt, comp);
     }
 
     private bool TimerTargetIsValid(EntityUid uid)

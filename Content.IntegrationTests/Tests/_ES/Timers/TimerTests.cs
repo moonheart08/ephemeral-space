@@ -53,6 +53,7 @@ public sealed class TimerTests : GameTest
 
     [Test]
     [TestOf(typeof(ESEntityTimerSystem))]
+    [Description("Ensures shared timers synchronize over the network correctly.")]
     public async Task EnsureTimerSync()
     {
         Entity<ESEntityTimerComponent>? timer = null;
@@ -87,6 +88,7 @@ public sealed class TimerTests : GameTest
 
     [Test]
     [TestOf(typeof(ESEntityTimerSystem))]
+    [Description("Ensures method timers, and other non-sync timers, do NOT try to send unsupported data over the network.")]
     public async Task EnsureMethodTimerSync()
     {
         Entity<ESEntityTimerComponent>? timer = null;

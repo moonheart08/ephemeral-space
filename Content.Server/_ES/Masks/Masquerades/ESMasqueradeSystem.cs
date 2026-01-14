@@ -7,6 +7,7 @@ using Content.Server.MassMedia.Systems;
 using Content.Server.Mind;
 using Content.Server.Station.Systems;
 using Content.Shared._Citadel.Utilities;
+using Content.Shared._ES.Core.Timer;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
 using Content.Shared.GameTicking.Components;
@@ -16,7 +17,6 @@ using Content.Shared.Station.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
-using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Server._ES.Masks.Masquerades;
@@ -29,11 +29,10 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
     [Dependency] private readonly IChatManager _chat = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly ITimerManager _timer = default!;
+    [Dependency] private readonly ESEntityTimerSystem _timer = default!;
     [Dependency] private readonly ESMaskSystem _mask = default!;
     [Dependency] private readonly MindSystem _mind = default!;
     [Dependency] private readonly NewsSystem _news = default!;
-    [Dependency] private readonly StationSystem _station = default!;
 
     // Icky global state.
     private ProtoId<ESMasqueradePrototype>? _forcedMasquerade;
@@ -229,7 +228,7 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
         // If we do news, run the news.
         if (masquerade.StartupNewsArticleTime is { } time)
         {
-            Timer.Spawn(time,
+            _ = _timer.SpawnMethodTimer(time,
                 () =>
                 {
                     // Find The Station. Only one.
