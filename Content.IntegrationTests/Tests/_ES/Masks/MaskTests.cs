@@ -21,7 +21,6 @@ public sealed class MaskTests : GameTest
         Connected = true, // We need a guy to mask up.
     };
 
-    // I solemnly swear this is better than iterating the prototypes.
     public static readonly string[] Masks = PrototypeDataScrounger.PrototypesOfKind<ESMaskPrototype>();
 
     [Test]
