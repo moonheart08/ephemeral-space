@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using Robust.Shared.ContentPack;
 using Robust.Shared.Prototypes;
@@ -29,6 +30,9 @@ public static class PrototypeDataScrounger
     public static string[] PrototypesOfKind<T>()
         where T : IPrototype
     {
+        if (typeof(T).GetCustomAttribute<PrototypeAttribute>() is { Type: { } ty })
+            return PrototypesOfKind(ty);
+
         return PrototypesOfKind(PrototypeUtility.CalculatePrototypeName(typeof(T).Name));
     }
 
