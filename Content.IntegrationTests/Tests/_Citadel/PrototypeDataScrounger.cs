@@ -109,6 +109,17 @@ public static class PrototypeDataScrounger
 
                 var id = entryMapping[IdNode];
                 var type = entryMapping[TypeNode];
+                if (entryMapping.TryGetNode("abstract", out YamlScalarNode? aabstract))
+                {
+                    // TODO: This technically will exclude prototypes that use the abstract field for their own stuff,
+                    //       and not for parenting. However no such prototype exists in the game as of writing and solving
+                    //       this is mildly nontrivial (need to index all the kinds of prototypes in advance)
+
+                    // We use exact equality to match what serialization does.
+                    if (aabstract.Value == "true")
+                        continue;
+                }
+
 
                 yield return (((YamlScalarNode)type).Value!, ((YamlScalarNode)id).Value!);
             }
