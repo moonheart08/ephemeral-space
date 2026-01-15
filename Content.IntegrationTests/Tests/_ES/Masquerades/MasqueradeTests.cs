@@ -126,13 +126,12 @@ public sealed class MasqueradeRunTests : GameTest
         InLobby = true,
     };
 
-    [TestCase("RandomTraitors", 35)]
-    [TestCase("Freakshow", 35)]
-    [TestCase("Freakshow", 21)]
-    [TestCase("Showdown", 35)]
-    [TestCase("Traitors", 35)]
-    [TestCase("RedCarpet", 35)]
-    public async Task TestMasqueradeStart(string protoStr, int userCount)
+    public static readonly string[] Masquerades = PrototypeDataScrounger.PrototypesOfKind<ESMasqueradePrototype>();
+
+    public async Task TestMasqueradeStart(
+            [ValueSource(nameof(Masquerades))] string protoStr,
+            [Values([35, 21])] int userCount
+        )
     {
         var proto = _proto.Index<ESMasqueradePrototype>(protoStr);
         // A smattering of people. Not including the real client.
