@@ -38,7 +38,7 @@ public abstract partial class GameTest
     public RobustIntegrationTest.ClientIntegrationInstance Client => Pair.Client;
 
     /// <summary>
-    ///     The test player, if any.
+    ///     The test player's server session, if any.
     /// </summary>
     public ICommonSession? Player => Pair.Player;
 

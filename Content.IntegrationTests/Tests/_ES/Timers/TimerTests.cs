@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Content.IntegrationTests.Tests._Citadel;
+using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Content.Shared._ES.Core.Timer;
 using Content.Shared._ES.Core.Timer.Components;
 using Robust.Server.GameStates;
@@ -61,9 +62,9 @@ public sealed class TimerTests : GameTest
         await Server.WaitAssertion(() =>
         {
             timer = _sTimer.SpawnTimer(TimeSpan.FromSeconds(1), new TestTimerEvent());
-            Assert.That(timer, Is.Not.Null);
+            Assert.That(timer, Is.MapInitialized(Server));
 
-            Assert.That(timer.Value.Comp.TimerEndEvent, Is.TypeOf<TestTimerEvent>());
+            Assert.That(timer!.Value.Comp.TimerEndEvent, Is.TypeOf<TestTimerEvent>());
 
             _pvsOverride.AddGlobalOverride(timer.Value); // Ensure it gets synced.
         });
@@ -82,7 +83,7 @@ public sealed class TimerTests : GameTest
 
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SDeleted(timer), "Timer should be deleted by now.. it's been 3 seconds, it lasts 1.");
+            Assert.That(timer, Is.Deleted(Server), "Timer should have expired.");
         });
     }
 
@@ -111,14 +112,14 @@ public sealed class TimerTests : GameTest
         {
             var ctimer = ToClientUid(timer!.Value);
 
-            Assert.That(CHasComp<ESEntityTimerComponent>(ctimer), Is.False);
+            Assert.That(ctimer, Has.No.Comp<ESEntityTimerComponent>(Client));
         });
 
         await Pair.RunSeconds(3);
 
         await Server.WaitAssertion(() =>
         {
-            Assert.That(SDeleted(timer), "Timer should be deleted by now.. it's been 3 seconds, it lasts 1.");
+            Assert.That(timer, Is.Deleted(Server), "Timer should have expired.");
         });
 
         Assert.That(ran, Is.True, "Method timer should've ran by now.");
