@@ -128,6 +128,7 @@ public sealed class MasqueradeRunTests : GameTest
 
     public static readonly string[] Masquerades = PrototypeDataScrounger.PrototypesOfKind<ESMasqueradePrototype>();
 
+    [Test]
     public async Task TestMasqueradeStart(
             [ValueSource(nameof(Masquerades))] string protoStr,
             [Values([35, 21])] int userCount
