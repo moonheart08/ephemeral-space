@@ -2,6 +2,7 @@ using Content.IntegrationTests.Tests._Citadel;
 using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Content.Server._ES.Masks;
 using Content.Server.Mind;
+using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
 using Content.Shared.Mind;
 using Robust.Shared.GameObjects;
@@ -21,31 +22,7 @@ public sealed class MaskTests : GameTest
     };
 
     // I solemnly swear this is better than iterating the prototypes.
-    public static string[] Masks =
-    {
-        "ESCrewmember",
-        "ESArmsDealer",
-        "ESVIP",
-        "ESFruitVendor",
-        "ESMercenary",
-        "ESVeteran",
-        "ESEmpath",
-        "ESGuzzler",
-        "ESDaredevil",
-        "ESPhantom",
-        "ESGlutton",
-        "ESSurvivalist",
-        "ESSacrifice",
-        "ESVandal",
-        "ESMartyr",
-        "ESInsider",
-        "ESMarauder",
-        "ESAssassin",
-        "ESInfiltrator",
-        "ESRecruit",
-        "ESSubverter",
-        "ESDemolitionist",
-    };
+    public static readonly string[] Masks = PrototypeDataScrounger.PrototypesOfKind<ESMaskPrototype>();
 
     [Test]
     [TestCaseSource(nameof(Masks))]
