@@ -99,9 +99,9 @@ public sealed class TimerTests : GameTest
         await Server.WaitAssertion(() =>
         {
             timer = _sTimer.SpawnMethodTimer(TimeSpan.FromSeconds(1), () => ran = true);
-            Assert.That(timer, Is.Not.Null);
+            Assert.That(timer, Is.MapInitialized(Server));
 
-            Assert.That(timer.Value.Comp.TimerEndEvent, Is.TypeOf<MethodTimerEvent>());
+            Assert.That(timer!.Value.Comp.TimerEndEvent, Is.TypeOf<MethodTimerEvent>());
 
             _pvsOverride.AddGlobalOverride(timer.Value); // Ensure it gets synced.
         });
