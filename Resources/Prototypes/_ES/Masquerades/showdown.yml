@@ -12,7 +12,7 @@
       9: ["#Gunners"]
       10: ["ESInfiltrator"] # 0 generic crew, 3 traitors.
       11: ["ESArmsDealer"] # Guarantee another arms dealer, this is definitely balanced around an armed crew.
-      12: ["ESPhantom"] # Guaranteed phantom for the silly value.
+      12: ["ESAvenger"] # Guaranteed phantom for the silly value.
       13: ["ESMartyr"]
       14: ["ESEmpath"]
       15: ["#PowerTraitors"] # 0 generic crew, 4 traitors.
@@ -24,7 +24,7 @@
       22: ["#Gunners"] # 1 generic crew, 6 traitors.
       24: ["#Jesters(2)"]
       25: ["#PowerTraitors"] # 1 generic crew, 7 traitors.
-      26: ["#Freaks"]
+      26: ["ESAvenger"]
       27: ["#Softsafes"]
       28: ["ESEmpath"]
       30: ["#Traitors"] # 2 generic crew, 8 traitors.
