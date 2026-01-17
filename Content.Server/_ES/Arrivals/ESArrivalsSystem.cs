@@ -186,6 +186,8 @@ public sealed class ESArrivalsSystem : EntitySystem
 
         FlyToStation((shuttle.Value, arrivalsComp));
 
+        _station.AddGridToStation(ent, shuttle.Value);
+
         _map.DeleteMap(mapId);
     }
 
