@@ -1,3 +1,4 @@
+#nullable enable
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using NUnit.Framework.Constraints;

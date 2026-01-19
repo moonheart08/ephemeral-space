@@ -1,3 +1,4 @@
+#nullable enable
 using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Robust.Shared.GameObjects;
 

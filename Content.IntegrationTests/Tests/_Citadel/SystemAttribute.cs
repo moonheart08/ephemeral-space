@@ -1,4 +1,5 @@
-﻿namespace Content.IntegrationTests.Tests._Citadel;
+﻿#nullable enable
+namespace Content.IntegrationTests.Tests._Citadel;
 
 /// <summary>
 ///     Marks a field on a GameTest inheritor as needing to be populated with a system from the given side.

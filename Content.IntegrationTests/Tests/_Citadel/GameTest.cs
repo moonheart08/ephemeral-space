@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using Content.IntegrationTests.Pair;
 using Robust.Shared.Analyzers;
 using Robust.Shared.GameObjects;
@@ -18,6 +19,9 @@ public abstract partial class GameTest
 
     private readonly List<EntityUid> _serverEntitiesToClean = new();
     private readonly List<EntityUid> _clientEntitiesToClean = new();
+
+    private protected Thread ServerThread = default!;
+    private protected Thread ClientThread = default!;
 
     /// <summary>
     ///     Settings for the client/server pair. By default, this gets you a client and server that have connected together.
@@ -57,6 +61,12 @@ public abstract partial class GameTest
         _pairDirty = false;
         Pair = await PoolManager.GetServerClient(PoolSettings);
 
+        Task.WaitAll(
+            Server.WaitPost(() => ServerThread = Thread.CurrentThread),
+            Client.WaitPost(() => ClientThread = Thread.CurrentThread)
+            );
+
+
         foreach (var field in GetType().GetAllFields())
         {
             if (field.GetCustomAttribute<SystemAttribute>() is {} sysAttrib)
@@ -91,7 +101,7 @@ public abstract partial class GameTest
     {
         try
         {
-            // Roll forward a tick to process any queued deletions.
+            // Roll forward til sync for teardown.
             await SyncTicks(1);
 
             await Server.WaitAssertion(() =>
@@ -113,7 +123,7 @@ public abstract partial class GameTest
             });
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
             _pairDirty = true;
             throw;

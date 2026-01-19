@@ -1,3 +1,4 @@
+#nullable enable
 using NUnit.Framework.Constraints;
 using Robust.Shared.GameObjects;
 using Robust.UnitTesting;
