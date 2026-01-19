@@ -5,9 +5,9 @@ using Robust.UnitTesting;
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
 /// <summary>
-///     Constraint for whether or not a component exists.
+///     Constraint for whether a component exists.
 /// </summary>
-/// <
+/// <seealso cref="CompConstraintExtensions"/>
 public sealed class CompExistsConstraint(Type component, IIntegrationInstance instance) : Constraint
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)

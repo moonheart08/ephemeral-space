@@ -13,10 +13,6 @@ public sealed class CompOperator : SelfResolvingOperator
     private readonly Type _tComp;
     private readonly IIntegrationInstance _instance;
 
-    /// <summary>
-    ///     An operator for use by nunit constraint resolution.
-    /// </summary>
-    /// <seealso cref="CompExistsConstraint"/>
     public CompOperator(Type tComp, IIntegrationInstance instance)
     {
         _tComp = tComp;
@@ -24,7 +20,6 @@ public sealed class CompOperator : SelfResolvingOperator
 
         left_precedence = right_precedence = 1;
     }
-
 
     public override void Reduce(ConstraintBuilder.ConstraintStack stack)
     {

@@ -45,6 +45,7 @@ public enum Side
 {
     Client,
     Server,
+
     // A special value meant as a default for attributes, and NOTHING ELSE.
     Neither
 }

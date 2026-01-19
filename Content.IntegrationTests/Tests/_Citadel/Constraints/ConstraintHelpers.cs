@@ -13,7 +13,6 @@ public static class ConstraintHelpers
     /// <param name="ent">The resulting entity uid.</param>
     /// <param name="error">Whether TActual is recognized to begin with.</param>
     /// <typeparam name="TActual">The type to cast out of.</typeparam>
-    /// <returns></returns>
     public static bool TryActualAsEnt<TActual>(TActual t, [NotNullWhen(true)] out EntityUid? ent, out bool error)
     {
         if (t is EntityUid u)

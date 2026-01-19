@@ -5,6 +5,10 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
+/// <summary>
+///     A constraint for an entity's lifestage.
+/// </summary>
+/// <seealso cref="LifeStageConstraintExtensions"/>
 public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInstance instance) : Constraint
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)
@@ -22,7 +26,9 @@ public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInsta
 
         var lifestage = instance.EntMan.GetComponentOrNull<MetaDataComponent>(ent.Value)?.EntityLifeStage;
 
-        return new ConstraintResult(this, lifestage, lifestage == stage || (lifestage is null && stage is EntityLifeStage.Deleted));
+        return new ConstraintResult(this,
+            lifestage,
+            lifestage == stage || (lifestage is null && stage is EntityLifeStage.Deleted));
     }
 
     public override string Description => stage switch
@@ -36,7 +42,6 @@ public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInsta
         _ => throw new ArgumentOutOfRangeException(nameof(stage), stage, null),
     };
 }
-
 
 public static class LifeStageConstraintExtensions
 {

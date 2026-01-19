@@ -4,11 +4,15 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
-public sealed class CompConstraint(Type tComp, IIntegrationInstance instance, IConstraint baseConstraint) : PrefixConstraint(baseConstraint, $"component {tComp.Name}")
+/// <summary>
+///     A prefix constraint like <see cref="PropertyConstraint"/>, for entity components.
+/// </summary>
+/// <seealso cref="CompConstraintExtensions"/>
+public sealed class CompConstraint(Type tComp, IIntegrationInstance instance, IConstraint baseConstraint)
+    : PrefixConstraint(baseConstraint, $"component {tComp.Name}")
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)
     {
-
         if (!ConstraintHelpers.TryActualAsEnt(actual, out var ent, out var error))
         {
             if (error)

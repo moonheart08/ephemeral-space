@@ -7,12 +7,11 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._Citadel.TestTests;
 
 [Explicit(reason: """
-    These tests will all be reproduced by other tests, like ConstraintsTests,
-    failing. They exist more as a debugging aid than anything else and to catch certain
-    mistakes.
+    These tests will all be reproduced by other tests, like ConstraintsTests, failing.
+    They exist more as a debugging aid than anything else and to catch certain mistakes.
     As such, they're not part of the normal test run, but people modifying GameTest are
     expected to run these!
-""")]
+    """)]
 public sealed class GameTestTests : GameTest
 {
     [SidedDependency(Side.Server)] private readonly IEntityManager _sEntMan = default!;

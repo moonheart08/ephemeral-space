@@ -29,7 +29,7 @@ public sealed class ConstraintsTests : GameTest
                 .Comp<MetaDataComponent>(Server)
                 .Property(nameof(MetaDataComponent.EntityDeleted))
                 .EqualTo(false)
-            );
+        );
     }
 
     [Test]

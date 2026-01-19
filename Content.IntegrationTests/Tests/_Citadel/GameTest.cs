@@ -32,10 +32,12 @@ public abstract partial class GameTest
     ///     The client and server pair.
     /// </summary>
     public TestPair Pair { get; private set; } = default!; // NULLABILITY: This is always set during test setup.
+
     /// <summary>
     ///     The game server instance.
     /// </summary>
     public RobustIntegrationTest.ServerIntegrationInstance Server => Pair.Server;
+
     /// <summary>
     ///     The game client instance.
     /// </summary>
@@ -50,6 +52,7 @@ public abstract partial class GameTest
     ///     The server-side entity manager.
     /// </summary>
     public IEntityManager SEntMan => Server.EntMan;
+
     /// <summary>
     ///     The client-side entity manager.
     /// </summary>
@@ -64,12 +67,12 @@ public abstract partial class GameTest
         Task.WaitAll(
             Server.WaitPost(() => ServerThread = Thread.CurrentThread),
             Client.WaitPost(() => ClientThread = Thread.CurrentThread)
-            );
+        );
 
 
         foreach (var field in GetType().GetAllFields())
         {
-            if (field.GetCustomAttribute<SystemAttribute>() is {} sysAttrib)
+            if (field.GetCustomAttribute<SystemAttribute>() is { } sysAttrib)
             {
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (sysAttrib.Side is Side.Server)
@@ -121,7 +124,6 @@ public abstract partial class GameTest
                         CEntMan.DeleteEntity(junk);
                 }
             });
-
         }
         catch (Exception)
         {
@@ -136,5 +138,4 @@ public abstract partial class GameTest
                 await Pair.DisposeAsync();
         }
     }
-
 }

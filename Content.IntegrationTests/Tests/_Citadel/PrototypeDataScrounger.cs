@@ -84,7 +84,6 @@ public static class PrototypeDataScrounger
                     list.Add(id);
                 }
             }
-
         }
     }
 
@@ -144,6 +143,7 @@ public static class PrototypeDataScrounger
             // This doesn't apply to us really because we don't do that kind of publishing, but whatever.
             throw new InvalidOperationException("Cannot find path of executable.");
         }
+
         return Path.GetDirectoryName(location)!;
     }
 
@@ -164,5 +164,4 @@ public static class PrototypeDataScrounger
     {
         return ExecutableRelativeFile($"{FindContentRootDir()}Resources");
     }
-
 }

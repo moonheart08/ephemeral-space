@@ -11,7 +11,7 @@ public static class CompConstraintExtensions
     extension(Has)
     {
         public static ResolvableConstraintExpression Comp<T>(IIntegrationInstance instance)
-            where T: IComponent
+            where T : IComponent
         {
             return new ConstraintExpression().Comp<T>(instance);
         }
@@ -25,7 +25,7 @@ public static class CompConstraintExtensions
     extension(ConstraintExpression expr)
     {
         public ResolvableConstraintExpression Comp<T>(IIntegrationInstance instance)
-            where T: IComponent
+            where T : IComponent
         {
             return expr.Append(new CompOperator(typeof(T), instance));
         }
