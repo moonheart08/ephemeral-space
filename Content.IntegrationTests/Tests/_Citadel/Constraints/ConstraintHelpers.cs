@@ -1,14 +1,10 @@
-#nullable enable
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using NUnit.Framework.Constraints;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Toolshed.TypeParsers;
-using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
-public abstract class GameConstraint(IIntegrationInstance instance) : Constraint
+public static class ConstraintHelpers
 {
     /// <summary>
     ///     A constraint implementation helper to convert TActual into an entityuid.
@@ -18,7 +14,7 @@ public abstract class GameConstraint(IIntegrationInstance instance) : Constraint
     /// <param name="error">Whether TActual is recognized to begin with.</param>
     /// <typeparam name="TActual">The type to cast out of.</typeparam>
     /// <returns></returns>
-    protected bool TryActualAsEnt<TActual>(TActual t, [NotNullWhen(true)] out EntityUid? ent, out bool error)
+    public static bool TryActualAsEnt<TActual>(TActual t, [NotNullWhen(true)] out EntityUid? ent, out bool error)
     {
         if (t is EntityUid u)
         {

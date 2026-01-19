@@ -5,16 +5,16 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
-public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInstance instance) : GameConstraint(instance)
+public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInstance instance) : Constraint
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)
     {
-        if (!TryActualAsEnt(actual, out var ent, out var error))
+        if (!ConstraintHelpers.TryActualAsEnt(actual, out var ent, out var error))
         {
             if (error)
             {
                 throw new NotImplementedException(
-                    $"The input type {typeof(TActual)} to {nameof(CompConstraint)} is not a supported entity id.");
+                    $"The input type {typeof(TActual)} to {nameof(CompExistsConstraint)} is not a supported entity id.");
             }
 
             return new ConstraintResult(this, actual, ConstraintStatus.Failure);

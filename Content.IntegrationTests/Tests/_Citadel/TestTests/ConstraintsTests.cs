@@ -1,5 +1,6 @@
 #nullable enable
 using Content.IntegrationTests.Tests._Citadel.Constraints;
+using Content.IntegrationTests.Tests._Citadel.Operators;
 using Robust.Shared.GameObjects;
 
 namespace Content.IntegrationTests.Tests._Citadel.TestTests;
@@ -7,7 +8,7 @@ namespace Content.IntegrationTests.Tests._Citadel.TestTests;
 public sealed class ConstraintsTests : GameTest
 {
     [Test]
-    [TestOf(typeof(CompConstraint))]
+    [TestOf(typeof(CompExistsConstraint))]
     [RunOnSide(Side.Server)]
     public void CompPositive()
     {
@@ -17,7 +18,22 @@ public sealed class ConstraintsTests : GameTest
     }
 
     [Test]
-    [TestOf(typeof(CompConstraint))]
+    [TestOf(typeof(CompOperator))]
+    [RunOnSide(Side.Server)]
+    public void CompPropertyAccess()
+    {
+        var ent = SSpawn(null);
+
+        Assert.That(ent,
+            Has
+                .Comp<MetaDataComponent>(Server)
+                .Property(nameof(MetaDataComponent.EntityDeleted))
+                .EqualTo(false)
+            );
+    }
+
+    [Test]
+    [TestOf(typeof(CompExistsConstraint))]
     [RunOnSide(Side.Server)]
     public void CompNegative()
     {
