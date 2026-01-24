@@ -16,7 +16,7 @@ es-news-disguise-traitors = Traitor
 
 es-news-masks-no-info-report-title = NT Psychics Report
 es-news-masks-no-info-report-body =
-    The Nanotrasen Sponsored Psychics Team (NSPT) regrets to inform you that at this time, their lack of funding due the Friends Among act of 2xxx prevents them from gathering or releasing information on the psyches of the crew.
+    The Nanotrasen Sponsored Psychics Team (NSPT) regrets to inform you that, at this time, their lack of funding due to the Friends Among Act of 2XXX prevents them from gathering or releasing information on the psychological profiles of the crew.
 
     We salute your efforts, but cannot assist you at this time.
 
