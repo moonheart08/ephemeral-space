@@ -13,7 +13,7 @@
     iconOn:
       sprite: _ES/Actions/masks/aura.rsi
       state: aura-on
-    useDelay: 10s
+    useDelay: 10m
     startDelay: true
 
 - type: entity
