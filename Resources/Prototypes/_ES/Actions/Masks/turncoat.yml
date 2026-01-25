@@ -1,0 +1,35 @@
+- type: entity
+  parent: BaseMentalAction
+  id: ESActionMaskTurncoatSwapTeamsBase
+  name: Turn your coat
+  description: Switch to the enemy's side, and try to win with them instead.
+  abstract: true
+  components:
+  - type: Action
+    checkCanInteract: false
+    icon:
+      sprite: _ES/Actions/masks/aura.rsi
+      state: aura
+    iconOn:
+      sprite: _ES/Actions/masks/aura.rsi
+      state: aura-on
+    useDelay: 10s
+    startDelay: true
+
+- type: entity
+  parent: ESActionMaskTurncoatSwapTeamsBase
+  id: ESActionMaskTurncoatSwapTeamsCrew
+  description: Switch to the crew's side, and try to win with them instead.
+  components:
+  - type: InstantAction
+    event: !type:ESActionChangeMaskEvent
+      mask: ESTurncoatCrew
+
+- type: entity
+  parent: ESActionMaskTurncoatSwapTeamsBase
+  id: ESActionMaskTurncoatSwapTeamsTraitors
+  description: Switch to the traitors' side, and try to win with them instead.
+  components:
+  - type: InstantAction
+    event: !type:ESActionChangeMaskEvent
+      mask: ESTurncoatTraitor
