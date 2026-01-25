@@ -86,6 +86,9 @@ es-mask-demolitionist-desc = As a Demolitionist, you have been trained by the Sy
 es-mask-turncoat-name = Turncoat
 es-mask-turncoat-desc = As a Turncoat, you play to both sides, switching teams at will in an effort to win with either the crew or the traitors. Do so carefully, as you can only switch sides so often.
 
+es-mask-syndie-superfan-name = Syndie Superfan
+es-mask-syndie-superfan-desc = As the Syndicate's biggest fan, you're a member of crew and win with them, unless the entire traitors team dies, upon which you switch sides and gain a new mask.
+
 # Meta
 es-objective-issuer-mask = Mask
 

@@ -5,14 +5,15 @@
   weight: 10
   minPlayers: 6
   gameRules: []
-  masquerade: !type:MasqueradeRoleSet
+  masquerade:
     defaultMask: "ESCrewmember"
+    superfanTarget: "ESSubverter"
     roles:
       6: ["ESMarauder", "ESInfiltrator", "ESInsider", "#Softsafes", "ESVandal", "ESMercenary"] # 0 generic crew, 2 traitors
       7: ["ESMartyr"]
       8: ["#Softsafes"]
       9: ["ESVeteran"]
-      10: ["ESPhantom"]
+      10: ["ESSyndieSuperfan"]
       11: ["ESAvenger"]
       13: ["ESAssassin"]  # 0 generic crew, 3 traitors.
       14: ["ESInsider"]

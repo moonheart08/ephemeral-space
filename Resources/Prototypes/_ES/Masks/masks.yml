@@ -341,3 +341,11 @@
   - type: ActionGrant
     actions:
     - ESActionMaskTurncoatSwapTeamsCrew
+
+- type: esMask
+  id: ESSyndieSuperfan
+  name: es-mask-syndie-superfan-name
+  troupe: ESCrew
+  description: es-mask-syndie-superfan-desc
+  mindComponents:
+  - type: ESSuperfan

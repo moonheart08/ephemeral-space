@@ -9,6 +9,7 @@ using Content.Shared._Citadel.Utilities;
 using Content.Shared._ES.Core.Timer;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
+using Content.Shared._ES.Masks.Masquerades;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Mind;
 using Content.Shared.Random.Helpers;
@@ -316,5 +317,18 @@ public sealed partial class ESMasqueradeSystem : GameRuleSystem<ESMasqueradeRule
         }
 
         return troupes;
+    }
+
+    public bool TryGetMasqueradeData([NotNullWhen(true)] out MasqueradeRoleSet? set)
+    {
+        set = null;
+        var rule = EntityQuery<ESMasqueradeRuleComponent>().SingleOrDefault();
+
+        if (rule?.Masquerade is null)
+            return false;
+
+        set = rule.Masquerade.Masquerade;
+
+        return true;
     }
 }
