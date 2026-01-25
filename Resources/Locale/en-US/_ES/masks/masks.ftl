@@ -75,6 +75,11 @@ es-mask-subverter-desc = As a Subverter, you have received two brain-altering ch
 es-mask-demolitionist-name = Demolitionist
 es-mask-demolitionist-desc = As a Demolitionist, you have been trained by the Syndicate for both controlled and uncontrolled "demolitions"--including in the use of explosive implants, should things turn out that way.
 
+# Oddballs
+
+es-mask-turncoat-name = Turncoat
+es-mask-turncoat-desc = As a Turncoat, you play to both sides, switching teams at will in an effort to win with either the crew or the traitors. Do so carefully, as you can only switch sides so often.
+
 # Meta
 es-objective-issuer-mask = Mask
 
