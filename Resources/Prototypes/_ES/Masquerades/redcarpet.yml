@@ -17,7 +17,7 @@
       13: ["ESAssassin"]  # 0 generic crew, 3 traitors.
       14: ["ESInsider"]
       16: ["ESAvenger"] # 1 generic crew, 3 traitors.
-      17: ["ESTurncoat"]
+      17: ["ESTurncoatCrew"]
       18: ["ESArmsDealer"]
       19: ["ESMarauder"] # 1 generic crew, 4 traitors.
       20: ["ESVIP"]
