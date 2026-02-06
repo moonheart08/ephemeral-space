@@ -28,8 +28,7 @@
     invert: true
   - type: ESTargetMaskBlacklist
     maskBlacklist:
-    - ESTurncoatCrew
-    - ESTurncoatTraitor
+    - ESSyndieSuperfan
   - type: ESKillTargetObjective
 
 ### Sabotage objectives

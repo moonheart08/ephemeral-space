@@ -319,30 +319,6 @@
 
 # Neutral/oddball masks
 - type: esMask
-  id: ESTurncoatCrew
-  name: es-mask-turncoat-name
-  troupe: ESCrew
-  description: es-mask-turncoat-desc
-  color: gray
-  weight: 0.1
-  components:
-  - type: ActionGrant
-    actions:
-    - ESActionMaskTurncoatSwapTeamsTraitors
-
-- type: esMask
-  parent: ESBaseTraitor
-  id: ESTurncoatTraitor
-  name: es-mask-turncoat-name
-  description: es-mask-turncoat-desc
-  color: gray
-  weight: 0
-  components:
-  - type: ActionGrant
-    actions:
-    - ESActionMaskTurncoatSwapTeamsCrew
-
-- type: esMask
   id: ESSyndieSuperfan
   name: es-mask-syndie-superfan-name
   troupe: ESCrew
