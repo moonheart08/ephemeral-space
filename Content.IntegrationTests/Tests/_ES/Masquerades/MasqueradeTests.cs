@@ -69,7 +69,7 @@ public sealed class MasqueradeTests : GameTest
         }
 
         {
-            MasqueradeEntry.TryRead("#Freaks", null, out var entry, out var error);
+            MasqueradeEntry.TryRead("#Traitors", null, out var entry, out var error);
 
             Assert.That(error, Is.Null);
 
