@@ -42,7 +42,7 @@ public sealed class ESSuperfanSystem : EntitySystem
 
         if (set.SuperfanTarget is not { } entry)
         {
-            Log.Error("Superfan has no target despite being in a masquerade!");
+            // Fail silently, we were never configured to begin with. See #1079
             return;
         }
 
