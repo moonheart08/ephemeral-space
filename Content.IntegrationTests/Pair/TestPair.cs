@@ -99,6 +99,9 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair
                 {
                     ClientBeforeIoC = () => IoCManager.Register<IParallaxManager, DummyParallaxManager>(true)
                 });
+            // ES EDIT: Attempt to resolve OOMs from excessive localization logs.
+            IoCManager.Resolve<ILogManager>().GetSawmill("loc").Level = LogLevel.Error;
+            // END ES EDIT
         };
         return opts;
     }
@@ -121,6 +124,9 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair
             var entSysMan = IoCManager.Resolve<IEntitySystemManager>();
             entSysMan.LoadExtraSystemType<DeviceNetworkTestSystem>();
             entSysMan.LoadExtraSystemType<TestDestructibleListenerSystem>();
+            // ES EDIT: Attempt to resolve OOMs from excessive localization logs.
+            IoCManager.Resolve<ILogManager>().GetSawmill("loc").Level = LogLevel.Error;
+            // END ES EDIT
         };
         return opts;
     }
