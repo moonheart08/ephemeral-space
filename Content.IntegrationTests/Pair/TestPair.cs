@@ -38,11 +38,8 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair
         };
 
         var settings = (PoolSettings)Settings;
-        if (!settings.DummyTicker)
-        {
-            var gameTicker = Server.System<GameTicker>();
-            await Server.WaitPost(() => gameTicker.RestartRound());
-        }
+        var gameTicker = Server.System<GameTicker>();
+        await Server.WaitPost(() => gameTicker.RestartRound());
     }
 
     public override async Task RevertModifiedCvars()
@@ -79,6 +76,9 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair
             if (cfg.IsCVarRegistered(CCVars.AdminLogsEnabled.Name))
                 cfg.SetCVar(CCVars.AdminLogsEnabled, next.AdminLogsEnabled);
         });
+
+        var gameTicker = Server.System<GameTicker>();
+        await Server.WaitPost(() => gameTicker.RestartRound());
     }
 
     protected override RobustIntegrationTest.ClientIntegrationOptions ClientOptions()
