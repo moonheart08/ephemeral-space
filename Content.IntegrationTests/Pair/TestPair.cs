@@ -37,9 +37,11 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair
                 map.Log.Level = LogLevel.Warning;
         };
 
-        var settings = (PoolSettings)Settings;
+        // ES EDIT: Always reset the sim world during tests. This makes them slightly slower but prevents flapping tests
+        //          from blowing shit up for every test downstream of them too easily.
         var gameTicker = Server.System<GameTicker>();
         await Server.WaitPost(() => gameTicker.RestartRound());
+        // END ES EDIT
     }
 
     public override async Task RevertModifiedCvars()
@@ -77,8 +79,11 @@ public sealed partial class TestPair : RobustIntegrationTest.TestPair
                 cfg.SetCVar(CCVars.AdminLogsEnabled, next.AdminLogsEnabled);
         });
 
+        // ES EDIT: Always reset the sim world during tests. This makes them slightly slower but prevents flapping tests
+        //          from blowing shit up for every test downstream of them too easily.
         var gameTicker = Server.System<GameTicker>();
         await Server.WaitPost(() => gameTicker.RestartRound());
+        // END ES EDIT
     }
 
     protected override RobustIntegrationTest.ClientIntegrationOptions ClientOptions()
