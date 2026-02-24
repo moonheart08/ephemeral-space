@@ -7,13 +7,13 @@
   gameRules: []
   masquerade:
     defaultMask: "ESCrewmember/ESVIP"
-    superfanTarget: "ESSubverter"
+    superfanTarget: "#Traitors"
     roles:
       6: ["ESMarauder", "ESInfiltrator", "#Filler", "ESVIP", "ESVandal", "ESMercenary"] # 0 generic crew, 2 traitors
       7: ["ESMartyr"]
       8: ["ESVIP"]
       9: ["ESVeteran"]
-      10: ["ESSyndieSuperfan"]
+      10: ["#TraitorAdjacent"]
       11: ["ESVIP"]
       13: ["ESAssassin"]  # 0 generic crew, 3 traitors.
       14: ["#Jesters"]
