@@ -90,6 +90,16 @@ public sealed class PortableGeneratorEjectFuelMessage : BoundUserInterfaceMessag
 {
 }
 
+// ES EDIT: Portable generator anchor button
+/// <summary>
+///     Sent to the server to try to toggle the anchored status of the generator.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class PortableGeneratorToggleAnchorMessage : BoundUserInterfaceMessage
+{
+}
+// END ES EDIT
+
 /// <summary>
 /// Contains network state for the portable generator.
 /// </summary>

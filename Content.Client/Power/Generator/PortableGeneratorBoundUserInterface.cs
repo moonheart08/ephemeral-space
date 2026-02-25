@@ -68,4 +68,9 @@ public sealed class PortableGeneratorBoundUserInterface : BoundUserInterface
     {
         SendMessage(new PortableGeneratorEjectFuelMessage());
     }
+
+    public void ToggleAnchor()
+    {
+        SendMessage(new PortableGeneratorToggleAnchorMessage());
+    }
 }

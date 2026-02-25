@@ -307,6 +307,8 @@
       solutions:
         tank:
           maxVol: 50
+          reagents:
+            WeldingFuel: 15
     - type: RefillableSolution
       solution: tank
     - type: PortableGenerator
