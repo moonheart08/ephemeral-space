@@ -21,8 +21,6 @@ public abstract partial class GameTest
         _pairDirty = true;
     }
 
-    public TestMapData? TestMap => Pair.TestMap;
-
     /// <summary>
     ///     Returns a string representation of an entity for the server.
     /// </summary>
@@ -103,12 +101,34 @@ public abstract partial class GameTest
     }
 
     /// <summary>
+    ///     Spawns an entity on the server at a location.
+    /// </summary>
+    /// <remarks>This tracks the entity for post-test cleanup.</remarks>
+    public EntityUid SSpawnAtPosition(string? id, EntityCoordinates coordinates)
+    {
+        var res = SEntMan.SpawnAtPosition(id, coordinates);
+        _serverEntitiesToClean.Add(res);
+        return res;
+    }
+
+    /// <summary>
     ///     Spawns an entity on the client.
     /// </summary>
     /// <remarks>This tracks the entity for post-test cleanup.</remarks>
     public EntityUid CSpawn(string? id)
     {
         var res = CEntMan.Spawn(id);
+        _clientEntitiesToClean.Add(res);
+        return res;
+    }
+
+    /// <summary>
+    ///     Spawns an entity on the server at a location.
+    /// </summary>
+    /// <remarks>This tracks the entity for post-test cleanup.</remarks>
+    public EntityUid CSpawnAtPosition(string? id, EntityCoordinates coordinates)
+    {
+        var res = CEntMan.SpawnAtPosition(id, coordinates);
         _clientEntitiesToClean.Add(res);
         return res;
     }
@@ -162,10 +182,25 @@ public abstract partial class GameTest
 #pragma warning restore
     }
 
+    [MemberNotNull(nameof(TestMap))]
+    public Task<TestMapData> CreateTestMap(bool initialized = true)
+    {
+        // C# is smart, but not that smart, we need to make a promise here.
+#pragma warning disable CS8774
+        return Pair.CreateTestMap(initialized);
+#pragma warning restore
+    }
+
     /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.SyncTicks(System.Int32)"/>
     public Task SyncTicks(int targetDelta = 1)
     {
         return Pair.SyncTicks(targetDelta);
+    }
+
+    /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.RunTicksSync(System.Int32)"/>
+    public Task RunTicksSync(int ticks)
+    {
+        return Pair.RunTicksSync(ticks);
     }
 
     /// <inheritdoc cref="M:Robust.Shared.GameObjects.EntityManager.EntityQueryEnumerator``1"/>

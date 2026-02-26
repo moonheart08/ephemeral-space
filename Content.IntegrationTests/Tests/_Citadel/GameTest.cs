@@ -20,8 +20,8 @@ public abstract partial class GameTest
     private readonly List<EntityUid> _serverEntitiesToClean = new();
     private readonly List<EntityUid> _clientEntitiesToClean = new();
 
-    private protected Thread ServerThread = default!;
-    private protected Thread ClientThread = default!;
+    public Thread ServerThread { get; private set; } = default!;
+    public Thread ClientThread { get; private set; } = default!;
 
     /// <summary>
     ///     Settings for the client/server pair. By default, this gets you a client and server that have connected together.
@@ -58,6 +58,13 @@ public abstract partial class GameTest
     /// </summary>
     public IEntityManager CEntMan => Client.EntMan;
 
+    /// <summary>
+    ///     The test map we're using, if any.
+    /// </summary>
+    public TestMapData? TestMap => Pair.TestMap;
+
+    public virtual bool AutoCreateTestMap => false;
+
     [SetUp]
     public virtual async Task DoSetup()
     {
@@ -65,10 +72,15 @@ public abstract partial class GameTest
         Pair = await PoolManager.GetServerClient(PoolSettings);
 
         Task.WaitAll(
-            Server.WaitPost(() => ServerThread = Thread.CurrentThread),
+            Server.WaitPost(() =>
+            {
+                ServerThread = Thread.CurrentThread;
+            }),
             Client.WaitPost(() => ClientThread = Thread.CurrentThread)
         );
 
+        if (AutoCreateTestMap)
+            await CreateTestMap();
 
         foreach (var field in GetType().GetAllFields())
         {
