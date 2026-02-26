@@ -63,7 +63,7 @@ public abstract partial class GameTest
     /// </summary>
     public TestMapData? TestMap => Pair.TestMap;
 
-    public virtual bool AutoCreateTestMap => false;
+    public virtual TestMapMode TestMapSetting => TestMapMode.None;
 
     [SetUp]
     public virtual async Task DoSetup()
@@ -79,21 +79,25 @@ public abstract partial class GameTest
             Client.WaitPost(() => ClientThread = Thread.CurrentThread)
         );
 
-        if (AutoCreateTestMap)
-            await CreateTestMap();
+        await CreateTestMap(TestMapSetting);
 
-        foreach (var field in GetType().GetAllFields())
+        InjectDependencies(this);
+    }
+
+    public void InjectDependencies(object target)
+    {
+        foreach (var field in target.GetType().GetAllFields())
         {
             if (field.GetCustomAttribute<SystemAttribute>() is { } sysAttrib)
             {
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (sysAttrib.Side is Side.Server)
                 {
-                    field.SetValue(this, Server.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
+                    field.SetValue(target, Server.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
                 }
                 else
                 {
-                    field.SetValue(this, Client.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
+                    field.SetValue(target, Client.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
                 }
             }
             else if (field.GetCustomAttribute<SidedDependencyAttribute>() is { } depAttrib)
@@ -101,11 +105,11 @@ public abstract partial class GameTest
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (depAttrib.Side is Side.Server)
                 {
-                    field.SetValue(this, Server.InstanceDependencyCollection.ResolveType(field.FieldType));
+                    field.SetValue(target, Server.InstanceDependencyCollection.ResolveType(field.FieldType));
                 }
                 else
                 {
-                    field.SetValue(this, Client.InstanceDependencyCollection.ResolveType(field.FieldType));
+                    field.SetValue(target, Client.InstanceDependencyCollection.ResolveType(field.FieldType));
                 }
             }
         }
@@ -150,4 +154,11 @@ public abstract partial class GameTest
                 await Pair.DisposeAsync();
         }
     }
+}
+
+public enum TestMapMode
+{
+    None,
+    Basic,
+    Arena,
 }

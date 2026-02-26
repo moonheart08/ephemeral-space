@@ -1,3 +1,4 @@
+#nullable enable
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Content.Shared.Mind;
@@ -27,22 +28,21 @@ public sealed partial class TestPlayer : IResolvesToEntity
     public Entity<MindComponent> CMindEntity { get; private set; }
     public NetEntity MindNetEntity { get; private set; }
 
-    private TestPlayer(GameTest test, RobustIntegrationTest.ClientIntegrationInstance client)
+    private TestPlayer(GameTest test)
     {
         Test = test;
         // REMARK: We specify the client explicitly for some future where we can have more than one
         //         client attached in a test if we need it.
-        Client = client;
+        Client = test.Client;
         Server = test.Server;
     }
 
-    public static async Task<TestPlayer> CreatePlayer(GameTest test, RobustIntegrationTest.ClientIntegrationInstance client, string playerProto = "InteractionTestMob", EntityCoordinates? location = null)
+    public static async Task<TestPlayer> CreatePlayer(GameTest test, string playerProto = "InteractionTestMob", EntityCoordinates? location = null)
     {
-        if (client != test.Client)
-            throw new NotImplementedException("Multi-client TestPlayer not supported yet.");
-
-        var player = new TestPlayer(test, client);
+        var player = new TestPlayer(test);
         player.MutualThreadSanity();
+
+        test.InjectDependencies(player);
 
         if (test.TestMap is not { } map)
         {

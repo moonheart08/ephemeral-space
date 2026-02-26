@@ -183,11 +183,26 @@ public abstract partial class GameTest
     }
 
     [MemberNotNull(nameof(TestMap))]
-    public Task<TestMapData> CreateTestMap(bool initialized = true)
+    public async Task CreateTestMap(TestMapMode kind = TestMapMode.Basic, bool initialized = true)
     {
+        switch (kind)
+        {
+            case TestMapMode.None:
+                break;
+            case TestMapMode.Basic:
+                await Pair.CreateTestMap(initialized);
+                break;
+            case TestMapMode.Arena:
+                await Pair.CreateTestMap(initialized);
+                await FillTestMapArena();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+        }
+
         // C# is smart, but not that smart, we need to make a promise here.
 #pragma warning disable CS8774
-        return Pair.CreateTestMap(initialized);
+        return;
 #pragma warning restore
     }
 
@@ -201,6 +216,19 @@ public abstract partial class GameTest
     public Task RunTicksSync(int ticks)
     {
         return Pair.RunTicksSync(ticks);
+    }
+
+    /// <summary>
+    /// Convert a time interval to some number of ticks.
+    /// </summary>
+    public int SecondsToTicks(float seconds)
+    {
+        return (int) Math.Ceiling(seconds / Server.Timing.TickPeriod.TotalSeconds);
+    }
+
+    public Task RunSeconds(float seconds)
+    {
+        return RunTicksSync(SecondsToTicks(seconds));
     }
 
     /// <inheritdoc cref="M:Robust.Shared.GameObjects.EntityManager.EntityQueryEnumerator``1"/>

@@ -1,4 +1,7 @@
+using System.Numerics;
 using Content.IntegrationTests.Tests._Citadel.Constraints;
+using Robust.Shared.GameObjects;
+using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Citadel.TestTests;
@@ -15,7 +18,7 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap();
 
-        var player = await TestPlayer.CreatePlayer(this, Client, playerProto: proto);
+        var player = await TestPlayer.CreatePlayer(this, playerProto: proto);
 
         using (Assert.EnterMultipleScope())
         {
@@ -36,7 +39,7 @@ public sealed partial class TestPlayerTests : GameTest
 
         Assert.CatchAsync<NotSupportedException>(async () =>
         {
-            _ = await TestPlayer.CreatePlayer(this, Client);
+            _ = await TestPlayer.CreatePlayer(this);
         });
     }
 
@@ -45,12 +48,12 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap();
 
-        _ = await TestPlayer.CreatePlayer(this, Client);
+        _ = await TestPlayer.CreatePlayer(this);
 
         Assert.CatchAsync<NotSupportedException>(async () =>
         {
             // We didn't detach first...
-            _ = await TestPlayer.CreatePlayer(this, Client);
+            _ = await TestPlayer.CreatePlayer(this);
         });
     }
 
@@ -59,10 +62,40 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap();
 
-        var player = await TestPlayer.CreatePlayer(this, Client);
+        var player = await TestPlayer.CreatePlayer(this);
 
         await player.Destroy();
 
-        _ = await TestPlayer.CreatePlayer(this, Client);
+        _ = await TestPlayer.CreatePlayer(this);
+    }
+
+    [Test]
+    public async Task WalkIntoVoid()
+    {
+        await CreateTestMap(TestMapMode.Arena);
+
+        var player = await TestPlayer.CreatePlayer(this);
+
+        var xform = SComp<TransformComponent>(player.SEntity);
+
+        await Server.WaitAssertion(() =>
+        {
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(xform.LocalPosition, Is.EqualTo(Vector2.Zero));
+                Assert.That(xform.ParentUid, Is.Not.EqualTo(xform.MapUid));
+            }
+        });
+
+        await player.Move(DirectionFlag.North, 1);
+
+        await Server.WaitAssertion(() =>
+        {
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(xform.LocalPosition, Is.Not.EqualTo(Vector2.Zero));
+                Assert.That(xform.ParentUid, Is.EqualTo(xform.MapUid));
+            }
+        });
     }
 }
