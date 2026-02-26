@@ -223,15 +223,18 @@ public sealed class MindSystem : SharedMindSystem
         var oldEntity = mind.OwnedEntity;
         if (TryComp(oldEntity, out MindContainerComponent? oldContainer))
         {
+            Entity<MindComponent> mindEnt = (mindId, mind);
+            Entity<MindContainerComponent> containerEnt = (oldEntity.Value, oldContainer);
+
+            RaiseLocalEvent(oldEntity.Value, new BeforeMindRemovedMessage(mindEnt, containerEnt, entity));
+            RaiseLocalEvent(mindId, new BeforeMindGotRemovedEvent(mindEnt, containerEnt, entity));
+
             oldContainer.Mind = null;
             oldContainer.HasMind = false;
             mind.OwnedEntity = null;
-            Entity<MindComponent> mindEnt = (mindId, mind);
-            Entity<MindContainerComponent> containerEnt = (oldEntity.Value, oldContainer);
-// ES START
-            RaiseLocalEvent(oldEntity.Value, new MindRemovedMessage(mindEnt, containerEnt), true);
-            RaiseLocalEvent(mindId, new MindGotRemovedEvent(mindEnt, containerEnt), true);
-// ES END
+
+            RaiseLocalEvent(oldEntity.Value, new MindRemovedMessage(mindEnt, containerEnt, entity), true);
+            RaiseLocalEvent(mindId, new MindGotRemovedEvent(mindEnt, containerEnt, entity), true);
             Dirty(oldEntity.Value, oldContainer);
         }
 
@@ -268,8 +271,8 @@ public sealed class MindSystem : SharedMindSystem
             mind.OriginalOwnedEntity ??= GetNetEntity(mind.OwnedEntity);
             Entity<MindComponent> mindEnt = (mindId, mind);
             Entity<MindContainerComponent> containerEnt = (entity.Value, component);
-            RaiseLocalEvent(entity.Value, new MindAddedMessage(mindEnt, containerEnt));
-            RaiseLocalEvent(mindId, new MindGotAddedEvent(mindEnt, containerEnt));
+            RaiseLocalEvent(entity.Value, new MindAddedMessage(mindEnt, containerEnt, oldEntity));
+            RaiseLocalEvent(mindId, new MindGotAddedEvent(mindEnt, containerEnt, oldEntity));
             Dirty(entity.Value, component);
         }
     }
