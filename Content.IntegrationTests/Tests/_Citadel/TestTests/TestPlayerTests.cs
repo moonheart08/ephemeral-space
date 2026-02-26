@@ -1,11 +1,13 @@
 using Content.IntegrationTests.Tests._Citadel.Constraints;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Citadel.TestTests;
 
-public sealed class TestPlayerTests : GameTest
+public sealed partial class TestPlayerTests : GameTest
 {
+    private static readonly EntProtoId Human = "MobHuman";
 
-    public static readonly string[] TestMobs = ["InteractionTestMob", "MobHuman", "MobObserver", "AdminObserver"];
+    private static readonly string[] TestMobs = ["InteractionTestMob", "MobHuman", "MobObserver", "AdminObserver"];
 
     [Test]
     [TestCaseSource(nameof(TestMobs))]
@@ -17,8 +19,13 @@ public sealed class TestPlayerTests : GameTest
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(player.CEntity, Is.Initialized(Client));
-            Assert.That(player.SEntity, Is.MapInitialized(Server));
+            Assert.That(player, Is.Initialized(Client));
+            Assert.That(player, Is.MapInitialized(Server));
+
+            Assert.That(player.SEntity, Is.EqualTo(ServerSession!.AttachedEntity));
+
+            Assert.That(player, Is.MapInitialized(Server));
+            Assert.That(player.SMindEntity.Comp.UserId, Is.EqualTo(ServerSession!.UserId));
         }
     }
 

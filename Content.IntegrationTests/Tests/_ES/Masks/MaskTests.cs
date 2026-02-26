@@ -12,9 +12,6 @@ namespace Content.IntegrationTests.Tests._ES.Masks;
 [TestFixture]
 public sealed class MaskTests : GameTest
 {
-    [System(Side.Server)] private readonly ESMaskSystem _sMask = default!;
-    [System(Side.Server)] private readonly MindSystem _sMind = default!;
-
     public override PoolSettings PoolSettings { get; } = new()
     {
         Dirty = true,
@@ -23,26 +20,20 @@ public sealed class MaskTests : GameTest
 
     public static readonly string[] Masks = PrototypeDataScrounger.PrototypesOfKind<ESMaskPrototype>();
 
+    public override bool AutoCreateTestMap => true;
+
     [Test]
     [TestCaseSource(nameof(Masks))]
     [Description("Assigns each mask alone with no other players.")]
     public async Task AssignMaskAlone(string maskProto)
     {
-        await Pair.CreateTestMap();
-
-        _ = await AssignPlayerBody(Player!, playerPrototype: "MobHuman");
+        var player = await TestPlayer.CreatePlayer(this, Client, playerProto: "MobHuman");
 
         await Server.WaitAssertion(() =>
         {
-            _sMind.TryGetMind(Pair.Player!, out var mindEnt, out var mindComp);
+            player.SSetMask(maskProto);
 
-            Assert.That(mindEnt, Is.Not.Deleted(Server));
-
-            Entity<MindComponent> mind = (mindEnt, mindComp);
-
-            _sMask.ApplyMask(mind, maskProto);
-
-            _sMask.TryGetMask(mind, out var mask);
+            var mask = player.SGetMask();
 
             using (Assert.EnterMultipleScope())
             {

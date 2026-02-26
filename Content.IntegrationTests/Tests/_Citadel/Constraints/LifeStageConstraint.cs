@@ -13,7 +13,7 @@ public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInsta
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)
     {
-        if (!ConstraintHelpers.TryActualAsEnt(actual, out var ent, out var error))
+        if (!ConstraintHelpers.TryActualAsEnt(actual, instance, out var ent, out var error))
         {
             if (error)
             {

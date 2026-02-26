@@ -46,7 +46,7 @@ public abstract partial class GameTest
     /// <summary>
     ///     The test player's server session, if any.
     /// </summary>
-    public ICommonSession? Player => Pair.Player;
+    public ICommonSession? ServerSession => Pair.Player;
 
     /// <summary>
     ///     The server-side entity manager.

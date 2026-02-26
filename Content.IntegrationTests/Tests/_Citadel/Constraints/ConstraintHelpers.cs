@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Toolshed.TypeParsers;
+using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
@@ -13,7 +14,7 @@ public static class ConstraintHelpers
     /// <param name="ent">The resulting entity uid.</param>
     /// <param name="error">Whether TActual is recognized to begin with.</param>
     /// <typeparam name="TActual">The type to cast out of.</typeparam>
-    public static bool TryActualAsEnt<TActual>(TActual t, [NotNullWhen(true)] out EntityUid? ent, out bool error)
+    public static bool TryActualAsEnt<TActual>(TActual t, IIntegrationInstance instance, [NotNullWhen(true)] out EntityUid? ent, out bool error)
     {
         if (t is EntityUid u)
         {
@@ -25,6 +26,25 @@ public static class ConstraintHelpers
         if (t is IAsType<EntityUid> asTy)
         {
             ent = asTy.AsType();
+            error = false;
+            return true;
+        }
+
+        if (t is IResolvesToEntity resolvable)
+        {
+            if (instance is IServerIntegrationInstance)
+            {
+                ent = resolvable.SEntity;
+            }
+            else if (instance is IClientIntegrationInstance)
+            {
+                ent = resolvable.CEntity;
+            }
+            else
+            {
+                throw new NotSupportedException($"{t.GetType()} is not a valid kind of IIntegrationInstance");
+            }
+
             error = false;
             return true;
         }
