@@ -74,7 +74,7 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap(TestMapMode.Arena);
 
-        var player = await TestPlayer.CreatePlayer(this);
+        var player = await TestPlayer.CreatePlayer(this, playerProto: Human);
 
         var xform = SComp<TransformComponent>(player.SEntity);
 
@@ -87,7 +87,7 @@ public sealed partial class TestPlayerTests : GameTest
             }
         });
 
-        await player.Move(DirectionFlag.North, 1);
+        await player.Move(DirectionFlag.North, 2);
 
         await Server.WaitAssertion(() =>
         {
