@@ -47,7 +47,7 @@ public sealed class MaskTests : GameTest
     }
 
     // Very strong, suitable for extreme violence.
-    private static EntProtoId Weapon = "MeleeDebug200";
+    private static readonly EntProtoId Weapon = "MeleeDebug200";
 
     [Test]
     [TestCaseSource(nameof(Masks))]
