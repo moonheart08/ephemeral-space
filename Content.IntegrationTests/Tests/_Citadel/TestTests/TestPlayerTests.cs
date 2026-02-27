@@ -135,4 +135,20 @@ public sealed partial class TestPlayerTests : GameTest
             Assert.That(damage.Damage.DamageDict["Blunt"], Is.Not.EqualTo(initialBlunt), $"Punch didn't deal damage? Punch #{i}");
         }
     }
+
+    [Test]
+    [Description("Has the player sit in place innocently in the given maps. Ensures they're unharmed.")]
+    [TestCase(TestMapMode.Arena)]
+    public async Task SitAroundInnocently(TestMapMode mode)
+    {
+        await CreateTestMap(mode);
+
+        var player = await TestPlayer.CreatePlayer(this, playerProto: Human);
+
+        await RunSeconds(10);
+
+        var damage = SComp<DamageableComponent>(player.SEntity);
+
+        Assert.That(damage.Damage.DamageDict.Values, Is.All.EqualTo(FixedPoint2.Zero));
+    }
 }

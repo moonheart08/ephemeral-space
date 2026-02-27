@@ -1,16 +1,14 @@
-using System.Numerics;
+using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Gravity;
 using Content.Shared.Atmos;
 using Content.Shared.Gravity;
 using Content.Shared.Maps;
-using NUnit.Framework.Internal;
 using Robust.Server.GameObjects;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Maths;
-using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Citadel;
@@ -37,7 +35,7 @@ public abstract partial class GameTest
             }
 
             SAddGravity(TestMap!.Grid);
-            SAddAtmosphere(TestMap!.MapUid);
+            SAddAtmosphere(TestMap!.MapUid, TestMap.Grid);
         });
     }
 
@@ -53,12 +51,17 @@ public abstract partial class GameTest
     /// <summary>
     /// Adds a default atmosphere to the test map.
     /// </summary>
-    public void SAddAtmosphere(EntityUid target)
+    public void SAddAtmosphere(EntityUid targetMap, EntityUid targetGrid)
     {
         var moles = new float[Atmospherics.AdjustedNumberOfGases];
         moles[(int)Gas.Oxygen] = 21.824779f;
         moles[(int)Gas.Nitrogen] = 82.10312f;
-        _serverAtmosphereSys.SetMapAtmosphere(target, false, new GasMixture(moles, Atmospherics.T20C));
+        _serverAtmosphereSys.SetMapAtmosphere(targetMap, false, new GasMixture(moles, Atmospherics.T20C));
+
+        _serverAtmosphereSys.RebuildGridAtmosphere((targetGrid,
+            SComp<GridAtmosphereComponent>(targetGrid),
+            SComp<MapGridComponent>(targetGrid))
+            );
     }
 
     /// <summary>

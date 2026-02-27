@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Content.IntegrationTests.Pair;
-using Robust.Shared.Analyzers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
@@ -158,7 +157,17 @@ public abstract partial class GameTest
 
 public enum TestMapMode
 {
+    /// <summary>
+    ///     Indicates no testmap should be loaded.
+    /// </summary>
     None,
+    /// <summary>
+    ///     Indicates a single tile, empty map should be loaded.
+    /// </summary>
     Basic,
+    /// <summary>
+    ///     Indicates a larger 9x9 "arena" map should be created,
+    ///     with atmos and gravity set up.
+    /// </summary>
     Arena,
 }
