@@ -10,6 +10,7 @@ using Robust.Shared.Prototypes;
 namespace Content.IntegrationTests.Tests._ES.Masks;
 
 [TestFixture]
+[TestMap(TestMapMode.Arena)]
 public sealed class MaskTests : GameTest
 {
     [System(Side.Server)] private readonly SuicideSystem _suicideSystem = default!;
@@ -21,8 +22,6 @@ public sealed class MaskTests : GameTest
     };
 
     public static readonly string[] Masks = PrototypeDataScrounger.PrototypesOfKind<ESMaskPrototype>();
-
-    public override TestMapMode TestMapSetting => TestMapMode.Arena;
 
     [Test]
     [TestCaseSource(nameof(Masks))]

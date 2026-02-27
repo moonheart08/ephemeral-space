@@ -6,6 +6,16 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel.Constraints;
 
+/// <summary>
+///     Provides <see cref="M:Content.IntegrationTests.Tests._Citadel.Constraints.CompConstraintExtensions.extension(NUnit.Framework.Has).Comp``1(Robust.UnitTesting.IIntegrationInstance)">Has.Comp&lt;T&gt;(side)</see>,
+///     a constraint that allows you to check for the presence of, or operate on, a component.
+/// </summary>
+/// <example>
+/// <code>
+///     // Assert that the server sided entity myEntity has ItemComponent on the server.
+///     Assert.That(myEntity, Has.Comp&lt;ItemComponent&gt;(Server));
+/// </code>
+/// </example>
 public static class CompConstraintExtensions
 {
     extension(Has)

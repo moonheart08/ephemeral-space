@@ -35,9 +35,9 @@ public sealed partial class TestPlayer
         EntityUid? clientCursorEntity = null)
     {
         await SetKey(key, BoundKeyState.Down, clientCoordinates, clientCursorEntity);
-        await Test.RunTicksSync(ticks);
+        await _test.RunTicksSync(ticks);
         await SetKey(key, BoundKeyState.Up, clientCoordinates, clientCursorEntity);
-        await Test.RunTicksSync(1);
+        await _test.RunTicksSync(1);
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public sealed partial class TestPlayer
             Uid = target,
         };
 
-        await Client.WaitPost(() => _clientInputSys.HandleInputCommand(Client.Session, key, message));
+        await _client.WaitPost(() => _clientInputSys.HandleInputCommand(_client.Session, key, message));
     }
 
     /// <summary>
@@ -89,9 +89,9 @@ public sealed partial class TestPlayer
     public async Task Move(DirectionFlag dir, float seconds)
     {
         await SetMovementKey(dir, BoundKeyState.Down);
-        await Test.RunSeconds(seconds);
+        await _test.RunSeconds(seconds);
         await SetMovementKey(dir, BoundKeyState.Up);
-        await Test.RunTicksSync(1);
+        await _test.RunTicksSync(1);
     }
 
     /// <summary>
@@ -100,13 +100,13 @@ public sealed partial class TestPlayer
     /// <param name="enabled">What state to set combat mode to.</param>
     public async Task SetCombatMode(bool enabled)
     {
-        if (!Test.SEntMan.TryGetComponent(SEntity, out CombatModeComponent? combat))
+        if (!_test.SEntMan.TryGetComponent(SEntity, out CombatModeComponent? combat))
         {
-            throw new Exception($"Entity {Test.SEntMan.ToPrettyString(SEntity)} does not have a CombatModeComponent");
+            throw new Exception($"Entity {_test.SEntMan.ToPrettyString(SEntity)} does not have a CombatModeComponent");
         }
 
-        await Server.WaitPost(() => _serverCombatMode.SetInCombatMode(SEntity, enabled, combat));
-        await Test.RunUntilSynced();
+        await _server.WaitPost(() => _serverCombatMode.SetInCombatMode(SEntity, enabled, combat));
+        await _test.RunUntilSynced();
 
         Assert.That(combat.IsInCombatMode, Is.EqualTo(enabled), $"Player could not set combat mode to {enabled}");
     }
@@ -118,13 +118,13 @@ public sealed partial class TestPlayer
     /// <param name="waitOutCooldown">Whether this should automatically wait out the cooldown on melee.</param>
     public async Task Punch(EntityUid target, bool waitOutCooldown = false)
     {
-        var clientEnt = Test.ToClientUid(target);
+        var clientEnt = _test.ToClientUid(target);
 
-        var xform = Test.CComp<TransformComponent>(clientEnt);
+        var xform = _test.CComp<TransformComponent>(clientEnt);
 
         await SetCombatMode(true);
 
-        await Server.WaitPost(() =>
+        await _server.WaitPost(() =>
         {
             if (_serverHandsSys.GetActiveItem(SEntity) is not { } item)
             {
@@ -132,19 +132,19 @@ public sealed partial class TestPlayer
                 item = SEntity;
             }
 
-            _serverWeaponSystem.AttemptLightAttack(SEntity, item, Test.SComp<MeleeWeaponComponent>(item), target);
+            _serverWeaponSystem.AttemptLightAttack(SEntity, item, _test.SComp<MeleeWeaponComponent>(item), target);
         });
 
         await SetCombatMode(false);
 
         if (waitOutCooldown)
         {
-            await Test.RunTicksSync(1);
+            await _test.RunTicksSync(1);
             var timeToWait = 0.0f;
 
-            await Server.WaitPost(() =>
+            await _server.WaitPost(() =>
             {
-                if (Test.SDeleted(SEntity))
+                if (_test.SDeleted(SEntity))
                     return; // We got eviscerated.
 
                 if (_serverHandsSys.GetActiveItem(SEntity) is not { } item)
@@ -153,7 +153,7 @@ public sealed partial class TestPlayer
                     item = SEntity;
                 }
 
-                if (!Test.STryComp(item, out MeleeWeaponComponent? weapon))
+                if (!_test.STryComp(item, out MeleeWeaponComponent? weapon))
                     return; // Not a weapon.
 
                 var rate = _serverWeaponSystem.GetAttackRate(item, SEntity, weapon);
@@ -162,7 +162,7 @@ public sealed partial class TestPlayer
                 timeToWait = (1f / rate) + 0.1f;
             });
 
-            await Test.RunSeconds(timeToWait);
+            await _test.RunSeconds(timeToWait);
         }
     }
 }

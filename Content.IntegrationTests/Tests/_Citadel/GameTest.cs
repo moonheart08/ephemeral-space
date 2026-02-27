@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Content.IntegrationTests.Pair;
+using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
@@ -10,6 +11,21 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
+/// <summary>
+/// <para>
+///     A test fixture with an integrated <see cref="GameTest.Pair">test pair</see>,
+///     proxy methods for efficient test writing, utilities for ensuring tests clean up correctly,
+///     <see cref="TestMapAttribute"> configurable test map management</see>,
+///     <see cref="TestPlayer">player puppeteering</see>, and dependency injection
+///     (<see cref="SystemAttribute"/> and <see cref="SidedDependencyAttribute"/>).
+/// </para>
+/// <para>
+///     Tests using GameTest support some additional attributes, namely <see cref="RunOnSideAttribute"/> and
+///     <see cref="TestMapAttribute"/>. Attributes can be used to control how the test runs.
+/// </para>
+/// </summary>
+/// <seealso cref="CompConstraintExtensions"/>
+/// <seealso cref="LifeStageConstraintExtensions"/>
 [TestFixture]
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
 public abstract partial class GameTest
@@ -62,8 +78,6 @@ public abstract partial class GameTest
     /// </summary>
     public TestMapData? TestMap => Pair.TestMap;
 
-    public virtual TestMapMode TestMapSetting => TestMapMode.None;
-
     [SetUp]
     public virtual async Task DoSetup()
     {
@@ -79,8 +93,6 @@ public abstract partial class GameTest
         );
 
         InjectDependencies(this);
-
-        await CreateTestMap(TestMapSetting);
     }
 
     public void InjectDependencies(object target)
@@ -155,19 +167,30 @@ public abstract partial class GameTest
     }
 }
 
+/// <summary>
+///     Possible configurations for <see cref="GameTest.TestMapSetting"/>.
+/// </summary>
+/// <seealso cref="TestMapMode.None"/>
+/// <seealso cref="TestMapMode.Basic"/>
+/// <seealso cref="TestMapMode.Arena"/>
+/// <seealso cref="GameTest"/>
 public enum TestMapMode
 {
+    // REMARK: IF you add new modes suitable for TestPlayer, make sure to add them to SitAroundInnocently.
+
     /// <summary>
     ///     Indicates no testmap should be loaded.
     /// </summary>
     None,
     /// <summary>
     ///     Indicates a single tile, empty map should be loaded.
+    ///     Atmospherics and gravity are not configured.
     /// </summary>
     Basic,
     /// <summary>
     ///     Indicates a larger 9x9 "arena" map should be created,
-    ///     with atmos and gravity set up.
+    ///     with atmos and gravity set up. This is useful alongside <see cref="TestPlayer"/>
+    ///     for tests that need to puppeteer a player.
     /// </summary>
     Arena,
 }

@@ -14,10 +14,9 @@ public sealed partial class TestPlayerTests : GameTest
 
     [Test]
     [TestCaseSource(nameof(TestMobs))]
+    [TestMap(TestMapMode.Basic)]
     public async Task MakePlayer(string proto)
     {
-        await CreateTestMap();
-
         var player = await TestPlayer.CreatePlayer(this, playerProto: proto);
 
         using (Assert.EnterMultipleScope())
@@ -44,10 +43,9 @@ public sealed partial class TestPlayerTests : GameTest
     }
 
     [Test]
+    [TestMap(TestMapMode.Basic)]
     public async Task ErroneousMakeManyPlayers()
     {
-        await CreateTestMap();
-
         _ = await TestPlayer.CreatePlayer(this);
 
         Assert.CatchAsync<NotSupportedException>(async () =>
@@ -58,10 +56,9 @@ public sealed partial class TestPlayerTests : GameTest
     }
 
     [Test]
+    [TestMap(TestMapMode.Basic)]
     public async Task MakeManyPlayers()
     {
-        await CreateTestMap();
-
         var player = await TestPlayer.CreatePlayer(this);
 
         await player.Destroy();
@@ -70,10 +67,9 @@ public sealed partial class TestPlayerTests : GameTest
     }
 
     [Test]
+    [TestMap(TestMapMode.Arena)]
     public async Task WalkIntoVoid()
     {
-        await CreateTestMap(TestMapMode.Arena);
-
         var player = await TestPlayer.CreatePlayer(this);
 
         var xform = SComp<TransformComponent>(player.SEntity);
@@ -100,10 +96,9 @@ public sealed partial class TestPlayerTests : GameTest
     }
 
     [Test]
+    [TestMap(TestMapMode.Arena)]
     public async Task Punch()
     {
-        await CreateTestMap(TestMapMode.Arena);
-
         var player = await TestPlayer.CreatePlayer(this);
 
         var pos = new Vector2(-1, 0);

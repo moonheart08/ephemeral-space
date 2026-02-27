@@ -73,12 +73,11 @@ public sealed class GameTestTests : GameTest
 
     [Test]
     [Description("Assert that RunUntilSynced waits long enough for the client and server to actually sync.")]
+    [TestMap(TestMapMode.Arena)]
     public async Task SyncRunsLongEnough()
     {
-        await CreateTestMap();
-
         // Bring some friends we're gonna stress PVS.
-        await SpawnAtPosition("MobHuman", TestMap.GridCoords);
+        await SpawnAtPosition("MobHuman", TestMap!.GridCoords);
         await SpawnAtPosition("MobHuman", TestMap.GridCoords);
         await SpawnAtPosition("MobHuman", TestMap.GridCoords);
         var bigEntity = await SpawnAtPosition("MobHuman", TestMap.GridCoords);

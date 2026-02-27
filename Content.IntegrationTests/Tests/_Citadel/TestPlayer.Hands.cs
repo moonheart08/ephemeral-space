@@ -17,9 +17,9 @@ public sealed partial class TestPlayer
     {
         var target = EntityUid.Invalid;
 
-        await Server.WaitPost(() =>
+        await _server.WaitPost(() =>
         {
-            target = Test.SSpawnAtPosition(proto, Test.SComp<TransformComponent>(SEntity).Coordinates);
+            target = _test.SSpawnAtPosition(proto, _test.SComp<TransformComponent>(SEntity).Coordinates);
         });
 
         await PickUp(target);
@@ -31,17 +31,17 @@ public sealed partial class TestPlayer
     /// <param name="serverTarget">The server-side entity to pick up.</param>
     public async Task PickUp(EntityUid serverTarget)
     {
-        var hands = Test.SComp<HandsComponent>(SEntity);
+        var hands = _test.SComp<HandsComponent>(SEntity);
 
         if (hands.ActiveHandId == null)
             throw new NotSupportedException("Can't pick up things without an active hand");
 
-        await Server.WaitPost(() =>
+        await _server.WaitPost(() =>
         {
             if (!_serverHandsSys.TryForcePickup(SEntity, serverTarget, hands.ActiveHandId, false, false))
                 throw new Exception("Failed to actually pick anything up. Fatal to the test.");
         });
 
-        await Test.RunTicksSync(1);
+        await _test.RunTicksSync(1);
     }
 }

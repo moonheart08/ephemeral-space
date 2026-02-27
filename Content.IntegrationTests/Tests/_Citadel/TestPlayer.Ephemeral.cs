@@ -13,7 +13,7 @@ public sealed partial class TestPlayer
     {
         AssertServer();
 
-        var maskSys = Test.Server.System<ESMaskSystem>();
+        var maskSys = _test.Server.System<ESMaskSystem>();
 
         maskSys.ApplyMask(SMindEntity, mask);
     }
@@ -26,7 +26,7 @@ public sealed partial class TestPlayer
     {
         AssertServer();
 
-        var maskSys = Test.Server.System<ESMaskSystem>();
+        var maskSys = _test.Server.System<ESMaskSystem>();
 
         return maskSys.GetMaskOrNull(SMindEntity);
     }

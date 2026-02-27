@@ -43,6 +43,15 @@ public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInsta
     };
 }
 
+/// <summary>
+///     Provides constraints for testing if an entity is in the given lifestage.
+/// </summary>
+/// <example>
+/// <code>
+///     // Assert that the server sided entity myEntity is MapInitialized.
+///     Assert.That(myEntity, Is.MapInitialized(Server));
+/// </code>
+/// </example>
 public static class LifeStageConstraintExtensions
 {
     extension(Is)

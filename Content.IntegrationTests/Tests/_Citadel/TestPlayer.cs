@@ -10,11 +10,14 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
+/// <summary>
+///     A player for use with <see cref="GameTest"/>s, with methods to control the player's actions.
+/// </summary>
 public sealed partial class TestPlayer : IResolvesToEntity
 {
-    private GameTest Test;
-    private RobustIntegrationTest.ClientIntegrationInstance Client;
-    private RobustIntegrationTest.ServerIntegrationInstance Server;
+    private readonly GameTest _test;
+    private readonly RobustIntegrationTest.ClientIntegrationInstance _client;
+    private readonly RobustIntegrationTest.ServerIntegrationInstance _server;
 
     /// <summary>
     ///     The server-side entity of this player.
@@ -48,11 +51,11 @@ public sealed partial class TestPlayer : IResolvesToEntity
 
     private TestPlayer(GameTest test)
     {
-        Test = test;
+        _test = test;
         // REMARK: We specify the client explicitly for some future where we can have more than one
         //         client attached in a test if we need it.
-        Client = test.Client;
-        Server = test.Server;
+        _client = test.Client;
+        _server = test.Server;
     }
 
     /// <summary>
@@ -87,30 +90,30 @@ public sealed partial class TestPlayer : IResolvesToEntity
         // By default, put them dead center of the map.
         location ??= map.GridCoords;
 
-        await player.Server.WaitPost(() =>
+        await player._server.WaitPost(() =>
         {
             var sEntity = test.SSpawnAtPosition(playerProto, location.Value);
-            var sMindSys = player.Server.EntMan.System<SharedMindSystem>();
+            var sMindSys = player._server.EntMan.System<SharedMindSystem>();
 
             // interactiontest cargo cult
             sMindSys.WipeMind(session.ContentData()?.Mind);
 
             player.SMindEntity = sMindSys.GetOrCreateMind(session.UserId);
-            player.MindNetEntity = player.Server.EntMan.GetNetEntity(player.SMindEntity);
+            player.MindNetEntity = player._server.EntMan.GetNetEntity(player.SMindEntity);
 
             sMindSys.TransferTo(player.SMindEntity, sEntity, true, false);
-            player.Server.PlayerMan.SetAttachedEntity(session, sEntity);
+            player._server.PlayerMan.SetAttachedEntity(session, sEntity);
 
             player.SEntity = sEntity;
-            player.NetEntity = player.Server.EntMan.GetNetEntity(sEntity);
+            player.NetEntity = player._server.EntMan.GetNetEntity(sEntity);
         });
 
         await test.RunTicksSync(5);
 
-        await player.Client.WaitPost(() =>
+        await player._client.WaitPost(() =>
         {
-            var cEntity = player.Client.EntMan.GetEntity(player.NetEntity);
-            var cMindEntity = player.Client.EntMan.GetEntity(player.MindNetEntity);
+            var cEntity = player._client.EntMan.GetEntity(player.NetEntity);
+            var cMindEntity = player._client.EntMan.GetEntity(player.MindNetEntity);
 
             player.CEntity = cEntity;
             player.CMindEntity = (cMindEntity, test.CComp<MindComponent>(cMindEntity));
@@ -124,31 +127,31 @@ public sealed partial class TestPlayer : IResolvesToEntity
     /// </summary>
     public async Task Destroy()
     {
-        await Server.WaitPost(() =>
+        await _server.WaitPost(() =>
         {
-            Test.SDeleteNow(SEntity);
+            _test.SDeleteNow(SEntity);
         });
 
-        await Test.RunTicksSync(5);
+        await _test.RunTicksSync(5);
     }
 
     private void MutualThreadSanity([CallerMemberName] string caller = "<unknown>")
     {
         // We may await on both the client and server in various methods, so we check we're not there.
         // TODO: Account for multiple clients here..
-        if (Thread.CurrentThread == Test.ClientThread || Thread.CurrentThread == Test.ServerThread)
+        if (Thread.CurrentThread == _test.ClientThread || Thread.CurrentThread == _test.ServerThread)
             throw new NotSupportedException($"Cannot use {caller} on the client or server thread, it will deadlock.");
     }
 
     private void AssertServer([CallerMemberName] string caller = "<unknown>")
     {
-        if (Thread.CurrentThread != Test.ServerThread)
+        if (Thread.CurrentThread != _test.ServerThread)
             throw new NotSupportedException($"Cannot use {caller} outside of the server thread.");
     }
 
     private void AssertClient([CallerMemberName] string caller = "<unknown>")
     {
-        if (Thread.CurrentThread != Test.ClientThread)
+        if (Thread.CurrentThread != _test.ClientThread)
             throw new NotSupportedException($"Cannot use {caller} outside of the server thread.");
     }
 }
