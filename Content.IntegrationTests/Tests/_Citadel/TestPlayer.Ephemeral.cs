@@ -18,6 +18,10 @@ public sealed partial class TestPlayer
         maskSys.ApplyMask(SMindEntity, mask);
     }
 
+    /// <summary>
+    ///     Gets the player's mask on the server.
+    /// </summary>
+    /// <returns></returns>
     public ProtoId<ESMaskPrototype>? SGetMask()
     {
         AssertServer();

@@ -16,16 +16,34 @@ public sealed partial class TestPlayer : IResolvesToEntity
     private RobustIntegrationTest.ClientIntegrationInstance Client;
     private RobustIntegrationTest.ServerIntegrationInstance Server;
 
+    /// <summary>
+    ///     The server-side entity of this player.
+    /// </summary>
     public EntityUid SEntity { get; private set; }
     EntityUid? IResolvesToEntity.SEntity => SEntity;
 
+    /// <summary>
+    ///     The client-side entity of this player.
+    /// </summary>
     public EntityUid CEntity { get; private set; }
     EntityUid? IResolvesToEntity.CEntity => CEntity;
 
+    /// <summary>
+    ///     The net-entity of this player.
+    /// </summary>
     public NetEntity NetEntity { get; private set; }
 
+    /// <summary>
+    ///     The server-side mind of the player.
+    /// </summary>
     public Entity<MindComponent> SMindEntity { get; private set; }
+    /// <summary>
+    ///     The client-side mind of the player.
+    /// </summary>
     public Entity<MindComponent> CMindEntity { get; private set; }
+    /// <summary>
+    ///     The net-entity of the player's mind.
+    /// </summary>
     public NetEntity MindNetEntity { get; private set; }
 
     private TestPlayer(GameTest test)
@@ -37,6 +55,13 @@ public sealed partial class TestPlayer : IResolvesToEntity
         Server = test.Server;
     }
 
+    /// <summary>
+    ///     Creates a new player using the attached client of the test.
+    /// </summary>
+    /// <param name="test">The test we're creating this player for.</param>
+    /// <param name="playerProto">The prototype to use for the player</param>
+    /// <param name="location">Where to spawn the player. By default, the TestMap is used.</param>
+    /// <returns>The constructed TestPlayer.</returns>
     public static async Task<TestPlayer> CreatePlayer(GameTest test, string playerProto = "InteractionTestMob", EntityCoordinates? location = null)
     {
         var player = new TestPlayer(test);
@@ -57,7 +82,7 @@ public sealed partial class TestPlayer : IResolvesToEntity
             throw new NotSupportedException("The provided client is not connected to the server.");
 
         if (session.AttachedEntity is not null)
-            throw new NotSupportedException("The provided client is already attached to a player. Detach it first.");
+            throw new NotSupportedException($"The provided client is already attached to a player. Detach it first, possibly with {nameof(Destroy)}()");
 
         // By default, put them dead center of the map.
         location ??= map.GridCoords;

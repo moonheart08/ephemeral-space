@@ -25,7 +25,6 @@ public sealed partial class TestPlayer
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.
-    ///     This will default to using the <see cref="Target"/> entity and <see cref="TargetCoords"/> coordinates.
     /// </summary>
     public async Task PressKey(
         BoundKeyFunction key,
@@ -41,7 +40,6 @@ public sealed partial class TestPlayer
 
     /// <summary>
     ///     Make the client press or release a key.
-    ///     This will default to using the <see cref="Target"/> entity and <see cref="TargetCoords"/> coordinates.
     /// </summary>
     public async Task SetKey(
         BoundKeyFunction key,
@@ -94,12 +92,15 @@ public sealed partial class TestPlayer
         await Test.RunTicksSync(1);
     }
 
+    /// <summary>
+    ///     Sets the player's combat mode state.
+    /// </summary>
+    /// <param name="enabled">What state to set combat mode to.</param>
     public async Task SetCombatMode(bool enabled)
     {
         if (!Test.SEntMan.TryGetComponent(SEntity, out CombatModeComponent? combat))
         {
-            Assert.Fail($"Entity {Test.SEntMan.ToPrettyString(SEntity)} does not have a CombatModeComponent");
-            return;
+            throw new Exception($"Entity {Test.SEntMan.ToPrettyString(SEntity)} does not have a CombatModeComponent");
         }
 
         await Server.WaitPost(() => _serverCombatMode.SetInCombatMode(SEntity, enabled, combat));
@@ -108,6 +109,11 @@ public sealed partial class TestPlayer
         Assert.That(combat.IsInCombatMode, Is.EqualTo(enabled), $"Player could not set combat mode to {enabled}");
     }
 
+    /// <summary>
+    ///     Causes the player to punch the given target with a light blow (instantaneous use press).
+    /// </summary>
+    /// <param name="target">The entity to assault.</param>
+    /// <param name="waitOutCooldown">Whether this should automatically wait out the cooldown on melee.</param>
     public async Task Punch(EntityUid target, bool waitOutCooldown = false)
     {
         var clientEnt = Test.ToClientUid(target);
@@ -118,8 +124,7 @@ public sealed partial class TestPlayer
 
         await SetCombatMode(true);
 
-        await SetKey(EngineKeyFunctions.Use, BoundKeyState.Down, clientCoords, clientEnt);
-        await SetKey(EngineKeyFunctions.Use, BoundKeyState.Up, clientCoords, clientEnt);
+        await PressKey(EngineKeyFunctions.Use, clientCoords, ticks: 0, clientCursorEntity: clientEnt);
 
         await SetCombatMode(false);
 
@@ -145,7 +150,7 @@ public sealed partial class TestPlayer
                 var rate = _serverWeaponSystem.GetAttackRate(item, SEntity, weapon);
 
                 // Small leeway to avoid nonsense
-                timeToWait = (1f / rate) + 0.5f;
+                timeToWait = (1f / rate) + 0.1f;
             });
 
             await Test.RunSeconds(timeToWait);
