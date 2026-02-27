@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Threading;
+using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
@@ -68,5 +69,20 @@ public sealed class GameTestTests : GameTest
     {
         var scrounged = PrototypeDataScrounger.PrototypesOfKind<EntityPrototype>();
         Assert.That(scrounged, Is.Not.Empty);
+    }
+
+    [Test]
+    [Description("Assert that RunUntilSynced waits long enough for the client and server to actually sync.")]
+    [TestMap(TestMapMode.Arena)]
+    public async Task SyncRunsLongEnough()
+    {
+        // Bring some friends we're gonna stress PVS.
+        await SpawnAtPosition("MobHuman", TestMap!.GridCoords);
+        await SpawnAtPosition("MobHuman", TestMap.GridCoords);
+        await SpawnAtPosition("MobHuman", TestMap.GridCoords);
+        var bigEntity = await SpawnAtPosition("MobHuman", TestMap.GridCoords);
+        await RunUntilSynced();
+
+        Assert.That(ToClientUid(bigEntity), Is.Initialized(Client));
     }
 }

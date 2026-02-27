@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using Content.IntegrationTests.Pair;
-using Robust.Shared.Analyzers;
+using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
@@ -11,6 +11,21 @@ using Robust.UnitTesting;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
+/// <summary>
+/// <para>
+///     A test fixture with an integrated <see cref="GameTest.Pair">test pair</see>,
+///     proxy methods for efficient test writing, utilities for ensuring tests clean up correctly,
+///     <see cref="TestMapAttribute"> configurable test map management</see>,
+///     <see cref="TestPlayer">player puppeteering</see>, and dependency injection
+///     (<see cref="SystemAttribute"/> and <see cref="SidedDependencyAttribute"/>).
+/// </para>
+/// <para>
+///     Tests using GameTest support some additional attributes, namely <see cref="RunOnSideAttribute"/> and
+///     <see cref="TestMapAttribute"/>. Attributes can be used to control how the test runs.
+/// </para>
+/// </summary>
+/// <seealso cref="CompConstraintExtensions"/>
+/// <seealso cref="LifeStageConstraintExtensions"/>
 [TestFixture]
 [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
 public abstract partial class GameTest
@@ -20,8 +35,8 @@ public abstract partial class GameTest
     private readonly List<EntityUid> _serverEntitiesToClean = new();
     private readonly List<EntityUid> _clientEntitiesToClean = new();
 
-    private protected Thread ServerThread = default!;
-    private protected Thread ClientThread = default!;
+    public Thread ServerThread { get; private set; } = default!;
+    public Thread ClientThread { get; private set; } = default!;
 
     /// <summary>
     ///     Settings for the client/server pair. By default, this gets you a client and server that have connected together.
@@ -46,7 +61,7 @@ public abstract partial class GameTest
     /// <summary>
     ///     The test player's server session, if any.
     /// </summary>
-    public ICommonSession? Player => Pair.Player;
+    public ICommonSession? ServerSession => Pair.Player;
 
     /// <summary>
     ///     The server-side entity manager.
@@ -58,6 +73,11 @@ public abstract partial class GameTest
     /// </summary>
     public IEntityManager CEntMan => Client.EntMan;
 
+    /// <summary>
+    ///     The test map we're using, if any.
+    /// </summary>
+    public TestMapData? TestMap => Pair.TestMap;
+
     [SetUp]
     public virtual async Task DoSetup()
     {
@@ -65,23 +85,30 @@ public abstract partial class GameTest
         Pair = await PoolManager.GetServerClient(PoolSettings);
 
         Task.WaitAll(
-            Server.WaitPost(() => ServerThread = Thread.CurrentThread),
+            Server.WaitPost(() =>
+            {
+                ServerThread = Thread.CurrentThread;
+            }),
             Client.WaitPost(() => ClientThread = Thread.CurrentThread)
         );
 
+        InjectDependencies(this);
+    }
 
-        foreach (var field in GetType().GetAllFields())
+    public void InjectDependencies(object target)
+    {
+        foreach (var field in target.GetType().GetAllFields())
         {
             if (field.GetCustomAttribute<SystemAttribute>() is { } sysAttrib)
             {
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (sysAttrib.Side is Side.Server)
                 {
-                    field.SetValue(this, Server.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
+                    field.SetValue(target, Server.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
                 }
                 else
                 {
-                    field.SetValue(this, Client.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
+                    field.SetValue(target, Client.EntMan.EntitySysManager.GetEntitySystem(field.FieldType));
                 }
             }
             else if (field.GetCustomAttribute<SidedDependencyAttribute>() is { } depAttrib)
@@ -89,11 +116,11 @@ public abstract partial class GameTest
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (depAttrib.Side is Side.Server)
                 {
-                    field.SetValue(this, Server.InstanceDependencyCollection.ResolveType(field.FieldType));
+                    field.SetValue(target, Server.InstanceDependencyCollection.ResolveType(field.FieldType));
                 }
                 else
                 {
-                    field.SetValue(this, Client.InstanceDependencyCollection.ResolveType(field.FieldType));
+                    field.SetValue(target, Client.InstanceDependencyCollection.ResolveType(field.FieldType));
                 }
             }
         }
@@ -138,4 +165,32 @@ public abstract partial class GameTest
                 await Pair.DisposeAsync();
         }
     }
+}
+
+/// <summary>
+///     Possible configurations for <see cref="GameTest.TestMapSetting"/>.
+/// </summary>
+/// <seealso cref="TestMapMode.None"/>
+/// <seealso cref="TestMapMode.Basic"/>
+/// <seealso cref="TestMapMode.Arena"/>
+/// <seealso cref="GameTest"/>
+public enum TestMapMode
+{
+    // REMARK: IF you add new modes suitable for TestPlayer, make sure to add them to SitAroundInnocently.
+
+    /// <summary>
+    ///     Indicates no testmap should be loaded.
+    /// </summary>
+    None,
+    /// <summary>
+    ///     Indicates a single tile, empty map should be loaded.
+    ///     Atmospherics and gravity are not configured.
+    /// </summary>
+    Basic,
+    /// <summary>
+    ///     Indicates a larger 9x9 "arena" map should be created,
+    ///     with atmos and gravity set up. This is useful alongside <see cref="TestPlayer"/>
+    ///     for tests that need to puppeteer a player.
+    /// </summary>
+    Arena,
 }

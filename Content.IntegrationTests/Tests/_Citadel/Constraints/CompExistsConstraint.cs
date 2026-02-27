@@ -12,7 +12,7 @@ public sealed class CompExistsConstraint(Type component, IIntegrationInstance in
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)
     {
-        if (!ConstraintHelpers.TryActualAsEnt(actual, out var ent, out var error))
+        if (!ConstraintHelpers.TryActualAsEnt(actual, instance, out var ent, out var error))
         {
             if (error)
             {

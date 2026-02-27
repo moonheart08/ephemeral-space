@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Mind;
-using Content.Shared.Mind;
 using Content.Shared.Players;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -20,8 +19,6 @@ public abstract partial class GameTest
     {
         _pairDirty = true;
     }
-
-    public TestMapData? TestMap => Pair.TestMap;
 
     /// <summary>
     ///     Returns a string representation of an entity for the server.
@@ -56,7 +53,7 @@ public abstract partial class GameTest
     }
 
     /// <summary>
-    ///     Retrieves the given component from an entity, from the server.
+    ///     Retrieves the given component from an entity on the server.
     /// </summary>
     public T SComp<T>(EntityUid target)
         where T : IComponent
@@ -65,12 +62,30 @@ public abstract partial class GameTest
     }
 
     /// <summary>
-    ///     Retrieves the given component from an entity, from the client.
+    ///     Attempts to retrieve the given component from an entity on the server.
+    /// </summary>
+    public bool STryComp<T>(EntityUid? target, [NotNullWhen(true)] out T? component)
+        where T : IComponent
+    {
+        return SEntMan.TryGetComponent(target, out component);
+    }
+
+    /// <summary>
+    ///     Retrieves the given component from an entity on the client.
     /// </summary>
     public T CComp<T>(EntityUid target)
         where T : IComponent
     {
         return CEntMan.GetComponent<T>(target);
+    }
+
+    /// <summary>
+    ///     Attempts to retrieve the given component from an entity on the server.
+    /// </summary>
+    public bool CTryComp<T>(EntityUid? target, [NotNullWhen(true)] out T? component)
+        where T : IComponent
+    {
+        return SEntMan.TryGetComponent(target, out component);
     }
 
     /// <summary>
@@ -103,6 +118,17 @@ public abstract partial class GameTest
     }
 
     /// <summary>
+    ///     Spawns an entity on the server at a location.
+    /// </summary>
+    /// <remarks>This tracks the entity for post-test cleanup.</remarks>
+    public EntityUid SSpawnAtPosition(string? id, EntityCoordinates coordinates)
+    {
+        var res = SEntMan.SpawnAtPosition(id, coordinates);
+        _serverEntitiesToClean.Add(res);
+        return res;
+    }
+
+    /// <summary>
     ///     Spawns an entity on the client.
     /// </summary>
     /// <remarks>This tracks the entity for post-test cleanup.</remarks>
@@ -112,6 +138,44 @@ public abstract partial class GameTest
         _clientEntitiesToClean.Add(res);
         return res;
     }
+
+    /// <summary>
+    ///     Spawns an entity on the server at a location.
+    /// </summary>
+    /// <remarks>This tracks the entity for post-test cleanup.</remarks>
+    public EntityUid CSpawnAtPosition(string? id, EntityCoordinates coordinates)
+    {
+        var res = CEntMan.SpawnAtPosition(id, coordinates);
+        _clientEntitiesToClean.Add(res);
+        return res;
+    }
+
+    /// <summary>
+    ///     Asynchronously spawns an entity on the server.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<EntityUid> Spawn(string? id)
+    {
+        var ent = EntityUid.Invalid;
+
+        await Server.WaitPost(() => ent = SSpawn(id));
+
+        return ent;
+    }
+
+    /// <summary>
+    ///     Asynchronously spawns an entity on the server at the given position.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<EntityUid> SpawnAtPosition(string? id, EntityCoordinates coords)
+    {
+        var ent = EntityUid.Invalid;
+
+        await Server.WaitPost(() => ent = SSpawnAtPosition(id, coords));
+
+        return ent;
+    }
+
 
     /// <summary>
     ///     Deletes an entity on the server immediately.
@@ -162,10 +226,66 @@ public abstract partial class GameTest
 #pragma warning restore
     }
 
+    [MemberNotNull(nameof(TestMap))]
+    public async Task CreateTestMap(TestMapMode kind = TestMapMode.Basic, bool initialized = true)
+    {
+        switch (kind)
+        {
+            case TestMapMode.None:
+                break;
+            case TestMapMode.Basic:
+                await Pair.CreateTestMap(initialized);
+                break;
+            case TestMapMode.Arena:
+                await Pair.CreateTestMap(initialized);
+                await FillTestMapArena();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+        }
+
+        await RunUntilSynced();
+
+        // C# is smart, but not that smart, we need to make a promise here.
+#pragma warning disable CS8774
+        return;
+#pragma warning restore
+    }
+
     /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.SyncTicks(System.Int32)"/>
     public Task SyncTicks(int targetDelta = 1)
     {
         return Pair.SyncTicks(targetDelta);
+    }
+
+    /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.RunTicksSync(System.Int32)"/>
+    public Task RunTicksSync(int ticks)
+    {
+        return Pair.RunTicksSync(ticks);
+    }
+
+    /// <summary>
+    ///     Runs the pairs just long enough for PVS to send entities.
+    /// </summary>
+    /// <remarks>
+    ///     ..if the entity count is reasonable (&lt; 10000)
+    /// </remarks>
+    public Task RunUntilSynced()
+    {
+        return Pair.RunTicksSync(4);
+    }
+
+    /// <summary>
+    /// Convert a time interval to some number of ticks.
+    /// </summary>
+    public int SecondsToTicks(float seconds)
+    {
+        return (int) Math.Ceiling(seconds / Server.Timing.TickPeriod.TotalSeconds);
+    }
+
+    public Task RunSeconds(float seconds)
+    {
+        return RunTicksSync(SecondsToTicks(seconds));
     }
 
     /// <inheritdoc cref="M:Robust.Shared.GameObjects.EntityManager.EntityQueryEnumerator``1"/>
@@ -348,7 +468,7 @@ public abstract partial class GameTest
     ///     Assigns the player a body in the test map, ensuring they have a mind as well.
     /// </summary>
     public async Task<EntityUid> AssignPlayerBody(ICommonSession session,
-        string playerPrototype = "InteractionTestMob",
+        string playerPrototype = "MobHuman",
         bool godMode = true)
     {
         EntityUid res = default;

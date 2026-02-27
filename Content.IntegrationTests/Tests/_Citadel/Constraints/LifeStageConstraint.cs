@@ -13,7 +13,7 @@ public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInsta
 {
     public override ConstraintResult ApplyTo<TActual>(TActual actual)
     {
-        if (!ConstraintHelpers.TryActualAsEnt(actual, out var ent, out var error))
+        if (!ConstraintHelpers.TryActualAsEnt(actual, instance, out var ent, out var error))
         {
             if (error)
             {
@@ -43,6 +43,15 @@ public sealed class LifeStageConstraint(EntityLifeStage stage, IIntegrationInsta
     };
 }
 
+/// <summary>
+///     Provides constraints for testing if an entity is in the given lifestage.
+/// </summary>
+/// <example>
+/// <code>
+///     // Assert that the server sided entity myEntity is MapInitialized.
+///     Assert.That(myEntity, Is.MapInitialized(Server));
+/// </code>
+/// </example>
 public static class LifeStageConstraintExtensions
 {
     extension(Is)

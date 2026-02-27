@@ -1,19 +1,18 @@
 using Content.IntegrationTests.Tests._Citadel;
-using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Content.Server._ES.Masks;
+using Content.Server.Chat;
 using Content.Server.Mind;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
 using Content.Shared.Mind;
-using Robust.Shared.GameObjects;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._ES.Masks;
 
 [TestFixture]
 public sealed class MaskTests : GameTest
 {
-    [System(Side.Server)] private readonly ESMaskSystem _sMask = default!;
-    [System(Side.Server)] private readonly MindSystem _sMind = default!;
+    [System(Side.Server)] private readonly SuicideSystem _suicideSystem = default!;
 
     public override PoolSettings PoolSettings { get; } = new()
     {
@@ -26,23 +25,16 @@ public sealed class MaskTests : GameTest
     [Test]
     [TestCaseSource(nameof(Masks))]
     [Description("Assigns each mask alone with no other players.")]
+    [TestMap(TestMapMode.Arena)]
     public async Task AssignMaskAlone(string maskProto)
     {
-        await Pair.CreateTestMap();
-
-        _ = await AssignPlayerBody(Player!, playerPrototype: "MobHuman");
+        var player = await TestPlayer.CreatePlayer(this);
 
         await Server.WaitAssertion(() =>
         {
-            _sMind.TryGetMind(Pair.Player!, out var mindEnt, out var mindComp);
+            player.SSetMask(maskProto);
 
-            Assert.That(mindEnt, Is.Not.Deleted(Server));
-
-            Entity<MindComponent> mind = (mindEnt, mindComp);
-
-            _sMask.ApplyMask(mind, maskProto);
-
-            _sMask.TryGetMask(mind, out var mask);
+            var mask = player.SGetMask();
 
             using (Assert.EnterMultipleScope())
             {
@@ -52,5 +44,78 @@ public sealed class MaskTests : GameTest
                 Assert.That(SQueryCount<ESMaskRoleComponent>(), Is.EqualTo(1));
             }
         });
+    }
+
+    // Very strong, suitable for extreme violence.
+    private static readonly EntProtoId Weapon = "MeleeDebug200";
+
+    [Test]
+    [TestCaseSource(nameof(Masks))]
+    [Description("Has the given mask beat up a crew member, asserting it doesn't fail.")]
+    [TestMap(TestMapMode.Arena)]
+    public async Task BeatUpCrewmember(string maskProto)
+    {
+        var deviant = await TestPlayer.CreatePlayer(this);
+
+        var targetSession = await Server.AddDummySession();
+
+        var target = await AssignPlayerBody(targetSession);
+
+        await Server.WaitPost(() => { deviant.SSetMask(maskProto); });
+
+        // Grant them the Power.
+        await deviant.SpawnAndPickUp(Weapon);
+
+        // Be violent. Really violent.
+        for (var i = 0; i < 5; i++)
+        {
+            if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+                await deviant.Punch(target, waitOutCooldown: true);
+        }
+
+        if (!SDeleted(target))
+            await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
+
+        // Few seconds for stuff to settle.
+        // Don't worry tests don't run in realtime.
+        await RunSeconds(20);
+    }
+
+    [Test]
+    [TestCaseSource(nameof(Masks))]
+    [Description("Has the a crew member beat up the given mask, asserting it doesn't fail.")]
+    [TestMap(TestMapMode.Arena)]
+    public async Task GetBeatenUp(string maskProto)
+    {
+        var deviant = await TestPlayer.CreatePlayer(this);
+
+        var targetSession = await Server.AddDummySession();
+
+        var target = await AssignPlayerBody(targetSession);
+
+        await Server.WaitPost(() =>
+        {
+            var mind = Server.System<MindSystem>().GetMind(target)!;
+
+            Server.System<ESMaskSystem>()
+                .ApplyMask((mind!.Value, SComp<MindComponent>(mind!.Value)), maskProto);
+        });
+
+        // Grant them the Power.
+        await deviant.SpawnAndPickUp(Weapon);
+
+        // Be violent. Really violent.
+        for (var i = 0; i < 5; i++)
+        {
+            if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+                await deviant.Punch(target, waitOutCooldown: true);
+        }
+
+        if (!SDeleted(target))
+            await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
+
+        // Few seconds for stuff to settle.
+        // Don't worry tests don't run in realtime.
+        await RunSeconds(20);
     }
 }
