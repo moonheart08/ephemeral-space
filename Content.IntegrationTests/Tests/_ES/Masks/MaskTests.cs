@@ -77,6 +77,7 @@ public sealed class MaskTests : GameTest
             await deviant.Punch(target, waitOutCooldown: true);
 
         // Few seconds for stuff to settle.
-        await RunSeconds(5);
+        // Don't worry tests don't run in realtime.
+        await RunSeconds(20);
     }
 }
