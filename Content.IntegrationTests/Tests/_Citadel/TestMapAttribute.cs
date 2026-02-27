@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal.Commands;
 
@@ -27,5 +28,6 @@ public sealed class TestMapAttribute(TestMapMode testMapMode) : Attribute, ITest
         // nothin
     }
 
-    public ActionTargets Targets => ActionTargets.Default;
+    // We can't support suites due to the kind of fixture we use.
+    public ActionTargets Targets => ActionTargets.Test;
 }
