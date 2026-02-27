@@ -1,6 +1,10 @@
 using Content.IntegrationTests.Tests._Citadel;
+using Content.Server._ES.Masks;
+using Content.Server.Chat;
+using Content.Server.Mind;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
+using Content.Shared.Mind;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._ES.Masks;
@@ -8,6 +12,8 @@ namespace Content.IntegrationTests.Tests._ES.Masks;
 [TestFixture]
 public sealed class MaskTests : GameTest
 {
+    [System(Side.Server)] private readonly SuicideSystem _suicideSystem = default!;
+
     public override PoolSettings PoolSettings { get; } = new()
     {
         Dirty = true,
@@ -70,6 +76,48 @@ public sealed class MaskTests : GameTest
             await deviant.Punch(target, waitOutCooldown: true);
         if (!SDeleted(deviant.SEntity) && !SDeleted(target))
             await deviant.Punch(target, waitOutCooldown: true);
+
+        _suicideSystem.Suicide(target); // free them.
+
+        // Few seconds for stuff to settle.
+        // Don't worry tests don't run in realtime.
+        await RunSeconds(20);
+    }
+
+    [Test]
+    [TestCaseSource(nameof(Masks))]
+    [Description("Has the a crew member beat up the given mask, asserting it doesn't fail.")]
+    public async Task GetBeatenUp(string maskProto)
+    {
+        var deviant = await TestPlayer.CreatePlayer(this);
+
+        var targetSession = await Server.AddDummySession();
+
+        var target = await AssignPlayerBody(targetSession);
+
+        await Server.WaitPost(() =>
+        {
+            var mind = Server.System<MindSystem>().GetMind(target)!;
+
+            Server.System<ESMaskSystem>()
+                .ApplyMask((mind!.Value, SComp<MindComponent>(mind!.Value)), maskProto);
+        });
+
+        // Grant them the Power.
+        await deviant.SpawnAndPickUp(Weapon);
+
+        // Be violent. Really violent.
+        await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+
+        _suicideSystem.Suicide(target); // free them.
 
         // Few seconds for stuff to settle.
         // Don't worry tests don't run in realtime.
