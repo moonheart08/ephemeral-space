@@ -67,17 +67,14 @@ public sealed class MaskTests : GameTest
         await deviant.SpawnAndPickUp(Weapon);
 
         // Be violent. Really violent.
-        await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
+        for (var i = 0; i < 5; i++)
+        {
+            if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+                await deviant.Punch(target, waitOutCooldown: true);
+        }
 
-        await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
+        if (!SDeleted(target))
+            await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
 
         // Few seconds for stuff to settle.
         // Don't worry tests don't run in realtime.
@@ -107,17 +104,14 @@ public sealed class MaskTests : GameTest
         await deviant.SpawnAndPickUp(Weapon);
 
         // Be violent. Really violent.
-        await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
-        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
-            await deviant.Punch(target, waitOutCooldown: true);
+        for (var i = 0; i < 5; i++)
+        {
+            if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+                await deviant.Punch(target, waitOutCooldown: true);
+        }
 
-        await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
+        if (!SDeleted(target))
+            await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
 
         // Few seconds for stuff to settle.
         // Don't worry tests don't run in realtime.
