@@ -1,4 +1,5 @@
 #nullable enable
+using Content.Client.Weapons.Melee;
 using Content.Server.CombatMode;
 using Content.Shared.CombatMode;
 using Content.Shared.Weapons.Melee;
@@ -22,6 +23,7 @@ public sealed partial class TestPlayer
     [System(Side.Server)] private readonly CombatModeSystem _serverCombatMode = default!;
     [System(Side.Server)] private readonly Robust.Server.GameObjects.TransformSystem _serverXformSys = default!;
     [System(Side.Server)] private readonly SharedMeleeWeaponSystem _serverWeaponSystem = default!;
+    [System(Side.Client)] private readonly MeleeWeaponSystem _clientWeaponSystem = default!;
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.
@@ -104,7 +106,7 @@ public sealed partial class TestPlayer
         }
 
         await Server.WaitPost(() => _serverCombatMode.SetInCombatMode(SEntity, enabled, combat));
-        await Test.RunTicksSync(1);
+        await Test.RunUntilSynced();
 
         Assert.That(combat.IsInCombatMode, Is.EqualTo(enabled), $"Player could not set combat mode to {enabled}");
     }
@@ -120,11 +122,18 @@ public sealed partial class TestPlayer
 
         var xform = Test.CComp<TransformComponent>(clientEnt);
 
-        var clientCoords = xform.Coordinates;
-
         await SetCombatMode(true);
 
-        await PressKey(EngineKeyFunctions.Use, clientCoords, ticks: 0, clientCursorEntity: clientEnt);
+        await Server.WaitPost(() =>
+        {
+            if (_serverHandsSys.GetActiveItem(SEntity) is not { } item)
+            {
+                // Nothing in hand, try ourselves.
+                item = SEntity;
+            }
+
+            _serverWeaponSystem.AttemptLightAttack(SEntity, item, Test.SComp<MeleeWeaponComponent>(item), target);
+        });
 
         await SetCombatMode(false);
 

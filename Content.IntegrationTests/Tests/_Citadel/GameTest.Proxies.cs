@@ -244,6 +244,8 @@ public abstract partial class GameTest
                 throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
         }
 
+        await RunUntilSynced();
+
         // C# is smart, but not that smart, we need to make a promise here.
 #pragma warning disable CS8774
         return;
@@ -260,6 +262,17 @@ public abstract partial class GameTest
     public Task RunTicksSync(int ticks)
     {
         return Pair.RunTicksSync(ticks);
+    }
+
+    /// <summary>
+    ///     Runs the pairs just long enough for PVS to send entities.
+    /// </summary>
+    /// <remarks>
+    ///     ..if the entity count is reasonable (&lt; 10000)
+    /// </remarks>
+    public Task RunUntilSynced()
+    {
+        return Pair.RunTicksSync(4);
     }
 
     /// <summary>

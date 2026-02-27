@@ -110,7 +110,7 @@ public sealed partial class TestPlayerTests : GameTest
 
         var target = await SpawnAtPosition("MobHuman", TestMap.GridCoords.Offset(pos));
 
-        await RunTicksSync(1);
+        await RunUntilSynced();
 
         Assert.That(target,
             Has.Comp<TransformComponent>(Server)
