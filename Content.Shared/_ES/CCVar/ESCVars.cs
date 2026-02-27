@@ -52,4 +52,10 @@ public sealed partial class ESCVars : CVars
     // How long in seconds it takes from roundstart->the shuttle arriving at the station
     public static readonly CVarDef<float> ESArrivalsFTLTime =
         CVarDef.Create("es_arrivals.ftl_time", 60 * 5f, CVar.SERVER);
+
+    /// <summary>
+    ///     Controls whether chat sanitization is enabled for individual users.
+    /// </summary>
+    public static readonly CVarDef<bool> UserChatSanitizationEnabled =
+    CVarDef.Create("es_chat.user_chat_sanitization_enabled", true, CVar.CLIENT | CVar.REPLICATED);
 }
