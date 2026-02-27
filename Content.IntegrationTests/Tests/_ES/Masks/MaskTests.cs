@@ -77,7 +77,7 @@ public sealed class MaskTests : GameTest
         if (!SDeleted(deviant.SEntity) && !SDeleted(target))
             await deviant.Punch(target, waitOutCooldown: true);
 
-        _suicideSystem.Suicide(target); // free them.
+        await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
 
         // Few seconds for stuff to settle.
         // Don't worry tests don't run in realtime.
@@ -117,7 +117,7 @@ public sealed class MaskTests : GameTest
         if (!SDeleted(deviant.SEntity) && !SDeleted(target))
             await deviant.Punch(target, waitOutCooldown: true);
 
-        _suicideSystem.Suicide(target); // free them.
+        await Server.WaitPost(() => _suicideSystem.Suicide(target)); // free them.
 
         // Few seconds for stuff to settle.
         // Don't worry tests don't run in realtime.
