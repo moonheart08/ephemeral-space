@@ -31,11 +31,13 @@ public sealed class ClumsySystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<ClumsyComponent, SelfBeforeInjectEvent>(BeforeHyposprayEvent);
-        SubscribeLocalEvent<ClumsyComponent, SelfBeforeDefibrillatorZapsEvent>(BeforeDefibrillatorZapsEvent);
+        // ES EDIT: Obliterate clumsy interactions that aren't gunfire.
+        //SubscribeLocalEvent<ClumsyComponent, SelfBeforeInjectEvent>(BeforeHyposprayEvent);
+        //SubscribeLocalEvent<ClumsyComponent, SelfBeforeDefibrillatorZapsEvent>(BeforeDefibrillatorZapsEvent);
         SubscribeLocalEvent<ClumsyComponent, SelfBeforeGunShotEvent>(BeforeGunShotEvent);
-        SubscribeLocalEvent<ClumsyComponent, CatchAttemptEvent>(OnCatchAttempt);
-        SubscribeLocalEvent<ClumsyComponent, SelfBeforeClimbEvent>(OnBeforeClimbEvent);
+        //SubscribeLocalEvent<ClumsyComponent, CatchAttemptEvent>(OnCatchAttempt);
+        //SubscribeLocalEvent<ClumsyComponent, SelfBeforeClimbEvent>(OnBeforeClimbEvent);
+        // END ES EDIT
     }
 
     // If you add more clumsy interactions add them in this section!
