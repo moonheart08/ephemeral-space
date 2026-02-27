@@ -53,7 +53,7 @@ public abstract partial class GameTest
     }
 
     /// <summary>
-    ///     Retrieves the given component from an entity, from the server.
+    ///     Retrieves the given component from an entity on the server.
     /// </summary>
     public T SComp<T>(EntityUid target)
         where T : IComponent
@@ -62,12 +62,30 @@ public abstract partial class GameTest
     }
 
     /// <summary>
-    ///     Retrieves the given component from an entity, from the client.
+    ///     Attempts to retrieve the given component from an entity on the server.
+    /// </summary>
+    public bool STryComp<T>(EntityUid? target, [NotNullWhen(true)] out T? component)
+        where T : IComponent
+    {
+        return SEntMan.TryGetComponent(target, out component);
+    }
+
+    /// <summary>
+    ///     Retrieves the given component from an entity on the client.
     /// </summary>
     public T CComp<T>(EntityUid target)
         where T : IComponent
     {
         return CEntMan.GetComponent<T>(target);
+    }
+
+    /// <summary>
+    ///     Attempts to retrieve the given component from an entity on the server.
+    /// </summary>
+    public bool CTryComp<T>(EntityUid? target, [NotNullWhen(true)] out T? component)
+        where T : IComponent
+    {
+        return SEntMan.TryGetComponent(target, out component);
     }
 
     /// <summary>

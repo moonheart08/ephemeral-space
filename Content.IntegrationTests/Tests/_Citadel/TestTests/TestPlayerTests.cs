@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.IntegrationTests.Tests._Citadel.Constraints;
 using Content.Shared.Damage.Components;
+using Content.Shared.FixedPoint;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
@@ -124,13 +125,14 @@ public sealed partial class TestPlayerTests : GameTest
                 .With.Property(nameof(TransformComponent.LocalPosition))
                 .EqualTo(pos));
 
-        // Do a crime.
-        await player.Punch(target);
-
-        await RunTicksSync(5);
-
         var damage = SComp<DamageableComponent>(target);
 
-        Assert.That(damage.Damage.DamageDict["Blunt"], Is.Not.Zero, "Punch didn't deal damage?");
+        for (var i = 0; i < 3; i++)
+        {
+            var initialBlunt = damage.Damage.DamageDict["Blunt"];
+            // Do a crime.
+            await player.Punch(target, waitOutCooldown: true);
+            Assert.That(damage.Damage.DamageDict["Blunt"], Is.Not.EqualTo(initialBlunt), $"Punch didn't deal damage? Punch #{i}");
+        }
     }
 }

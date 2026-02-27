@@ -79,9 +79,9 @@ public abstract partial class GameTest
             Client.WaitPost(() => ClientThread = Thread.CurrentThread)
         );
 
-        await CreateTestMap(TestMapSetting);
-
         InjectDependencies(this);
+
+        await CreateTestMap(TestMapSetting);
     }
 
     public void InjectDependencies(object target)

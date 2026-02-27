@@ -6,6 +6,7 @@ using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
 using Content.Shared.Mind;
 using Robust.Shared.GameObjects;
+using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._ES.Masks;
 
@@ -45,6 +46,9 @@ public sealed class MaskTests : GameTest
         });
     }
 
+    // Very strong, suitable for extreme violence.
+    private static EntProtoId Weapon = "MeleeDebug200";
+
     [Test]
     [TestCaseSource(nameof(Masks))]
     [Description("Has the given mask beat up a crew member, asserting it doesn't fail.")]
@@ -56,6 +60,23 @@ public sealed class MaskTests : GameTest
 
         var target = await AssignPlayerBody(targetSession, playerPrototype: "MobHuman");
 
+        await Server.WaitPost(() => { deviant.SSetMask(maskProto); });
 
+        // Grant them the Power.
+        await deviant.SpawnAndPickUp(Weapon);
+
+        // Be violent. Really violent.
+        await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+        if (!SDeleted(deviant.SEntity) && !SDeleted(target))
+            await deviant.Punch(target, waitOutCooldown: true);
+
+        // Few seconds for stuff to settle.
+        await RunSeconds(5);
     }
 }

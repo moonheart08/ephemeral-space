@@ -1,6 +1,7 @@
 #nullable enable
 using Content.Server.CombatMode;
 using Content.Shared.CombatMode;
+using Content.Shared.Weapons.Melee;
 using Robust.Client.GameObjects;
 using Robust.Client.Input;
 using Robust.Shared.GameObjects;
@@ -15,10 +16,12 @@ public sealed partial class TestPlayer
 {
     [SidedDependency(Side.Client)] private readonly IInputManager _inputManager = default!;
     [SidedDependency(Side.Client)] private readonly IGameTiming _clientTiming = default!;
+    [SidedDependency(Side.Server)] private readonly IGameTiming _serverTiming = default!;
     [SidedDependency(Side.Client)] private readonly IEntityManager _clientEntMan = default!;
     [System(Side.Client)] private readonly InputSystem _clientInputSys = default!;
     [System(Side.Server)] private readonly CombatModeSystem _serverCombatMode = default!;
     [System(Side.Server)] private readonly Robust.Server.GameObjects.TransformSystem _serverXformSys = default!;
+    [System(Side.Server)] private readonly SharedMeleeWeaponSystem _serverWeaponSystem = default!;
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.
@@ -105,7 +108,7 @@ public sealed partial class TestPlayer
         Assert.That(combat.IsInCombatMode, Is.EqualTo(enabled), $"Player could not set combat mode to {enabled}");
     }
 
-    public async Task Punch(EntityUid target)
+    public async Task Punch(EntityUid target, bool waitOutCooldown = false)
     {
         var clientEnt = Test.ToClientUid(target);
 
@@ -119,5 +122,33 @@ public sealed partial class TestPlayer
         await SetKey(EngineKeyFunctions.Use, BoundKeyState.Up, clientCoords, clientEnt);
 
         await SetCombatMode(false);
+
+        if (waitOutCooldown)
+        {
+            await Test.RunTicksSync(1);
+            var timeToWait = 0.0f;
+
+            await Server.WaitPost(() =>
+            {
+                if (Test.SDeleted(SEntity))
+                    return; // We got eviscerated.
+
+                if (_serverHandsSys.GetActiveItem(SEntity) is not { } item)
+                {
+                    // Nothing in hand, try ourselves.
+                    item = SEntity;
+                }
+
+                if (!Test.STryComp(item, out MeleeWeaponComponent? weapon))
+                    return; // Not a weapon.
+
+                var rate = _serverWeaponSystem.GetAttackRate(item, SEntity, weapon);
+
+                // Small leeway to avoid nonsense
+                timeToWait = (1f / rate) + 0.5f;
+            });
+
+            await Test.RunSeconds(timeToWait);
+        }
     }
 }
