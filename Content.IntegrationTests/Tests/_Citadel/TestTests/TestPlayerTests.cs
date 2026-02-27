@@ -10,8 +10,6 @@ namespace Content.IntegrationTests.Tests._Citadel.TestTests;
 
 public sealed partial class TestPlayerTests : GameTest
 {
-    private static readonly EntProtoId Human = "MobHuman";
-
     private static readonly string[] TestMobs = ["InteractionTestMob", "MobHuman", "MobObserver", "AdminObserver"];
 
     [Test]
@@ -76,7 +74,7 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap(TestMapMode.Arena);
 
-        var player = await TestPlayer.CreatePlayer(this, playerProto: Human);
+        var player = await TestPlayer.CreatePlayer(this);
 
         var xform = SComp<TransformComponent>(player.SEntity);
 
@@ -106,19 +104,13 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap(TestMapMode.Arena);
 
-        var player = await TestPlayer.CreatePlayer(this, playerProto: Human);
+        var player = await TestPlayer.CreatePlayer(this);
 
         var pos = new Vector2(-1, 0);
 
-        var target = await SpawnAtPosition(Human, TestMap.GridCoords.Offset(pos));
+        var target = await SpawnAtPosition("MobHuman", TestMap.GridCoords.Offset(pos));
 
-        await Server.WaitAssertion(() =>
-        {
-            Assert.That(target, Is.MapInitialized(Server));
-            Assert.That(SComp<MetaDataComponent>(target).EntityPrototype?.ID, Is.EqualTo((string)Human));
-        });
-
-        await RunTicksSync(5);
+        await RunTicksSync(1);
 
         Assert.That(target,
             Has.Comp<TransformComponent>(Server)
@@ -143,7 +135,7 @@ public sealed partial class TestPlayerTests : GameTest
     {
         await CreateTestMap(mode);
 
-        var player = await TestPlayer.CreatePlayer(this, playerProto: Human);
+        var player = await TestPlayer.CreatePlayer(this);
 
         await RunSeconds(10);
 

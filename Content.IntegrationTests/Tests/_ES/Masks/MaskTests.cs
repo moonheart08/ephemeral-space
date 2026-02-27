@@ -28,7 +28,7 @@ public sealed class MaskTests : GameTest
     [Description("Assigns each mask alone with no other players.")]
     public async Task AssignMaskAlone(string maskProto)
     {
-        var player = await TestPlayer.CreatePlayer(this, playerProto: "MobHuman");
+        var player = await TestPlayer.CreatePlayer(this);
 
         await Server.WaitAssertion(() =>
         {
@@ -54,11 +54,11 @@ public sealed class MaskTests : GameTest
     [Description("Has the given mask beat up a crew member, asserting it doesn't fail.")]
     public async Task BeatUpCrewmember(string maskProto)
     {
-        var deviant = await TestPlayer.CreatePlayer(this, playerProto: "MobHuman");
+        var deviant = await TestPlayer.CreatePlayer(this);
 
         var targetSession = await Server.AddDummySession();
 
-        var target = await AssignPlayerBody(targetSession, playerPrototype: "MobHuman");
+        var target = await AssignPlayerBody(targetSession);
 
         await Server.WaitPost(() => { deviant.SSetMask(maskProto); });
 

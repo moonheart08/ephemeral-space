@@ -455,7 +455,7 @@ public abstract partial class GameTest
     ///     Assigns the player a body in the test map, ensuring they have a mind as well.
     /// </summary>
     public async Task<EntityUid> AssignPlayerBody(ICommonSession session,
-        string playerPrototype = "InteractionTestMob",
+        string playerPrototype = "MobHuman",
         bool godMode = true)
     {
         EntityUid res = default;

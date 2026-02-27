@@ -62,7 +62,7 @@ public sealed partial class TestPlayer : IResolvesToEntity
     /// <param name="playerProto">The prototype to use for the player</param>
     /// <param name="location">Where to spawn the player. By default, the TestMap is used.</param>
     /// <returns>The constructed TestPlayer.</returns>
-    public static async Task<TestPlayer> CreatePlayer(GameTest test, string playerProto = "InteractionTestMob", EntityCoordinates? location = null)
+    public static async Task<TestPlayer> CreatePlayer(GameTest test, string playerProto = "MobHuman", EntityCoordinates? location = null)
     {
         var player = new TestPlayer(test);
         player.MutualThreadSanity();
