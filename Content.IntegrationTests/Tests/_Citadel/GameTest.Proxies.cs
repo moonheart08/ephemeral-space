@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Content.Server.Mind;
-using Content.Shared.Mind;
 using Content.Shared.Players;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -132,6 +131,33 @@ public abstract partial class GameTest
         _clientEntitiesToClean.Add(res);
         return res;
     }
+
+    /// <summary>
+    ///     Asynchronously spawns an entity on the server.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<EntityUid> Spawn(string? id)
+    {
+        var ent = EntityUid.Invalid;
+
+        await Server.WaitPost(() => ent = SSpawn(id));
+
+        return ent;
+    }
+
+    /// <summary>
+    ///     Asynchronously spawns an entity on the server at the given position.
+    /// </summary>
+    /// <returns></returns>
+    public async Task<EntityUid> SpawnAtPosition(string? id, EntityCoordinates coords)
+    {
+        var ent = EntityUid.Invalid;
+
+        await Server.WaitPost(() => ent = SSpawnAtPosition(id, coords));
+
+        return ent;
+    }
+
 
     /// <summary>
     ///     Deletes an entity on the server immediately.

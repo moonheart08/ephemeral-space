@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.IntegrationTests.Tests._Citadel.Constraints;
+using Content.Shared.Damage.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
@@ -97,5 +98,39 @@ public sealed partial class TestPlayerTests : GameTest
                 Assert.That(xform.ParentUid, Is.EqualTo(xform.MapUid));
             }
         });
+    }
+
+    [Test]
+    public async Task Punch()
+    {
+        await CreateTestMap(TestMapMode.Arena);
+
+        var player = await TestPlayer.CreatePlayer(this, playerProto: Human);
+
+        var pos = new Vector2(-1, 0);
+
+        var target = await SpawnAtPosition(Human, TestMap.GridCoords.Offset(pos));
+
+        await Server.WaitAssertion(() =>
+        {
+            Assert.That(target, Is.MapInitialized(Server));
+            Assert.That(SComp<MetaDataComponent>(target).EntityPrototype?.ID, Is.EqualTo((string)Human));
+        });
+
+        await RunTicksSync(5);
+
+        Assert.That(target,
+            Has.Comp<TransformComponent>(Server)
+                .With.Property(nameof(TransformComponent.LocalPosition))
+                .EqualTo(pos));
+
+        // Do a crime.
+        await player.Punch(target);
+
+        await RunTicksSync(5);
+
+        var damage = SComp<DamageableComponent>(target);
+
+        Assert.That(damage.Damage.DamageDict["Blunt"], Is.Not.Zero, "Punch didn't deal damage?");
     }
 }
