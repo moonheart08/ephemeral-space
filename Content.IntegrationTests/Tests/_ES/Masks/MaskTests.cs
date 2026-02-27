@@ -1,11 +1,6 @@
 using Content.IntegrationTests.Tests._Citadel;
-using Content.IntegrationTests.Tests._Citadel.Constraints;
-using Content.Server._ES.Masks;
-using Content.Server.Mind;
 using Content.Shared._ES.Masks;
 using Content.Shared._ES.Masks.Components;
-using Content.Shared.Mind;
-using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._ES.Masks;
