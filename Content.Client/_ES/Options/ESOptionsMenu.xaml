@@ -1,0 +1,14 @@
+<options:ESOptionsMenu
+    xmlns="https://spacestation14.io"
+    xmlns:options="clr-namespace:Content.Client._ES.Options">
+    <VStack>
+        <ElementSet VerticalExpand="True">
+            <Label Text="Among" ElementSet.SelectedBy="AmongButton" HorizontalAlignment="Center"/>
+            <Label Text="Sus" ElementSet.SelectedBy="SusButton" HorizontalAlignment="Center"/>
+        </ElementSet>
+        <HStack>
+            <Button Name="AmongButton" Text="select Among"/>
+            <Button Name="SusButton" Text="select Sus"/>
+        </HStack>
+    </VStack>
+</options:ESOptionsMenu>
