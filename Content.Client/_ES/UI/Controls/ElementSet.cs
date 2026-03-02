@@ -1,3 +1,4 @@
+using System.Linq;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
@@ -69,6 +70,9 @@ public sealed class ElementSet : Control
 
         button.OnPressed += action;
 
+        if (button.Pressed)
+            SetVisibleElement(c);
+
         c.SetValue<AttachedButtonData>(AttachedButton, (button, action));
     }
 
@@ -83,6 +87,13 @@ public sealed class ElementSet : Control
 
         c.Visible = true;
         CurrentElement = c;
+
+        if (c.GetValue<AttachedButtonData>(AttachedButton) is { } data)
+        {
+            // We're part of a group so go back and set the button as pressed.
+            if (data.Button.Group is not null)
+                data.Button.Pressed = true;
+        }
     }
 
     protected override void EnteredTree()
@@ -92,11 +103,12 @@ public sealed class ElementSet : Control
         {
             ProcessSelectedBy(c);
         }
+
+        SetVisibleElement(Children.First());
     }
 
     protected override void ChildAdded(Control newChild)
     {
         ProcessSelectedBy(newChild);
-        SetVisibleElement(newChild);
     }
 }
