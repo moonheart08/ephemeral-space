@@ -3,6 +3,10 @@
 # Sorting by path instead of by who added it one day :(
 # this isn't how codeowners rules work pls read the first comment instead of trying to force a sorting order
 
+# Globs
+*.xaml @moonheart08
+*.xaml.cs @moonheart08
+
 /Resources/ConfigPresets/WizardsDen/  @crazybrain23
 /Content.*/Administration/ @DrSmugleaf @crazybrain23
 /Resources/ServerInfo/ @crazybrain23
@@ -39,3 +43,11 @@
 /Content.Server/Discord/ @Simyon264
 
 /Content.*/Atmos/** @ArtisticRoomba
+
+/Content.*/_ES/Masks/Masquerades/ @moonheart08
+/Resources/Prototypes/_ES/Masquerades/ @moonheart08
+/Resources/Prototypes/_ES/MaskSets/ @moonheart08
+/Resources/Prototypes/_ES/Shaders/ @moonheart08
+/Content.Client/_ES/UI/ @moonheart08
+**/_Citadel @moonheart08
+/Content.IntegrationTests/ @moonheart08
