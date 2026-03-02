@@ -17,7 +17,7 @@
                     HorizontalAlignment="Center"/>
                 <Label Text="The XAML for this Zoo is in PheemyWindowZoo.xaml" HorizontalAlignment="Center"/>
             </VStack>
-            <HFillStack ElementSet.SelectedBy="StacksButton" >
+            <HFillStack ElementSet.SelectedBy="StacksButton">
                 <VFillStack VerticalExpand="True">
                     <Label Text="Lefthand" VerticalExpand="True" HorizontalAlignment="Center"/>
                 </VFillStack>
