@@ -10,23 +10,23 @@
             <Button Text="Stacks" Name="StacksButton" StyleClasses="OpenLeft"/>
         </HStack>
         <LowDivider/>
-        <ElementSet VerticalExpand="True" HorizontalExpand="True">
-            <VStack HorizontalAlignment="Center" ElementSet.SelectedBy="ElementSetsButton" VerticalAlignment="Center">
+        <ElementSet Stack.ExpandAxis="Both">
+            <VStack ControlExt.Alignment="Center Center" ElementSet.SelectedBy="ElementSetsButton">
                 <Label
                     Text="The zoo tabs are an element set! Click the buttons to switch tabs."
                     HorizontalAlignment="Center"/>
                 <Label Text="The XAML for this Zoo is in PheemyWindowZoo.xaml" HorizontalAlignment="Center"/>
             </VStack>
             <HFillStack ElementSet.SelectedBy="StacksButton">
-                <VFillStack VerticalExpand="True">
-                    <Label Text="Lefthand" VerticalExpand="True" HorizontalAlignment="Center"/>
-                </VFillStack>
+                <VStack Stack.ExpandAxis="Both">
+                    <Label Text="Lefthand" Stack.ExpandAxis="Vertical" HorizontalAlignment="Center"/>
+                </VStack>
                 <LowDivider/>
-                <VFillStack VerticalExpand="True" SizeFlagsStretchRatio="2">
-                    <Label Text="Upper Righthand" VerticalExpand="True" HorizontalAlignment="Center"/>
+                <VStack Stack.ExpandAxis="Both" SizeFlagsStretchRatio="2">
+                    <Label Text="Upper Righthand" Stack.ExpandAxis="Vertical" HorizontalAlignment="Center"/>
                     <LowDivider/>
-                    <Label Text="Lower Righthand" VerticalExpand="True" HorizontalAlignment="Center"/>
-                </VFillStack>
+                    <Label Text="Lower Righthand" Stack.ExpandAxis="Vertical" HorizontalAlignment="Center"/>
+                </VStack>
             </HFillStack>
         </ElementSet>
     </VFillStack>
