@@ -249,10 +249,30 @@
       prob: 0.3
 
 - type: entity
+  id: ESWardrobeParamedicFilled
+  suffix: ES, Filled
+  parent: ESWardrobeParamedic
+  description: A wardrobe containing the finest attire for the local master of B&E.
+  components:
+  - type: EntityTableContainerFill
+    containers:
+      entity_storage:
+        tableId: ESFillWardrobeParamedic
+
+- type: entityTable
+  id: ESFillWardrobeParamedic
+  table:
+    all:
+    - id: ClothingShoesColorBlue
+    - id: ESClothingHeadHatParamedicsoft
+    - id: ESClothingUniformJumpsuitParamedic
+    - id: ClothingBackpackMedical
+
+- type: entity
   id: ESWardrobeEngineeringFilled
   suffix: ES, Filled
   parent: ESWardrobeEngineering
-  description: "This locker contains a uniform for engineering or social engineering."
+  description: "This locker contains a uniform for engineering; or social engineering."
   components:
   - type: EntityTableContainerFill
     containers:
