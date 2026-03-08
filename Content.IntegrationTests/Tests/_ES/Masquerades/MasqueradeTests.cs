@@ -152,7 +152,7 @@ public sealed class MasqueradeRunTests : GameTest
             _sGameticker.StartRound();
         });
 
-        await SyncTicks(10);
+        await RunUntilSynced();
 
         // Game should have started
         Assert.That(_sGameticker.RunLevel, Is.EqualTo(GameRunLevel.InRound));

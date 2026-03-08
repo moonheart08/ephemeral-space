@@ -147,7 +147,7 @@ public abstract partial class GameTest
         try
         {
             // Roll forward til sync for teardown.
-            await SyncTicks(1);
+            await RunUntilSynced();
 
             RestoreCVars();
 

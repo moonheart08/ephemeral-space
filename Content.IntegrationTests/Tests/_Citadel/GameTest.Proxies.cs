@@ -261,11 +261,6 @@ public abstract partial class GameTest
 #pragma warning restore
     }
 
-    /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.SyncTicks(System.Int32)"/>
-    public Task SyncTicks(int targetDelta = 1)
-    {
-        return Pair.SyncTicks(targetDelta);
-    }
 
     /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.RunTicksSync(System.Int32)"/>
     public Task RunTicksSync(int ticks)

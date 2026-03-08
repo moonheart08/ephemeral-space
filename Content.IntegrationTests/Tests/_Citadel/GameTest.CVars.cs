@@ -42,7 +42,7 @@ public abstract partial class GameTest
             await OverrideCVarByName(Side.Server, cvar, value, false);
         }
 
-        await SyncTicks();
+        await RunUntilSynced();
     }
 
     /// <summary>
