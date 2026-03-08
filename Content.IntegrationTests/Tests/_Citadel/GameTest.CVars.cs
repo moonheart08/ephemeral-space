@@ -72,10 +72,7 @@ public abstract partial class GameTest
         await OverrideCVarByName(side, cvar.Name, value, sync);
     }
 
-    /// <summary>
-    ///     Utility for the test framework, please use <see cref="OverrideCVar"/>.
-    /// </summary>
-    public async Task OverrideCVarByName(Side side, string cVar, object value, bool sync)
+    private async Task OverrideCVarByName(Side side, string cVar, object value, bool sync)
     {
         StoreCVar(side, cVar);
 
