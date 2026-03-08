@@ -1,17 +1,23 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Content.IntegrationTests.Tests._Citadel.Attributes;
 using Content.Server.Mind;
 using Content.Shared.Players;
+using Robust.Client.Timing;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.IntegrationTests.Tests._Citadel;
 
 public abstract partial class GameTest
 {
+    [SidedDependency(Side.Server)] private readonly IGameTiming _sGameTiming = default!;
+    [SidedDependency(Side.Client)] private readonly IClientGameTiming _cGameTiming = default!;
+
     /// <summary>
     ///     Marks the test pair as dirty, ensuring it is returned as such.
     /// </summary>
@@ -227,8 +233,11 @@ public abstract partial class GameTest
     }
 
     [MemberNotNull(nameof(TestMap))]
-    public async Task CreateTestMap(TestMapMode kind = TestMapMode.Basic, bool initialized = true)
+    public async Task CreateTestMap(TestMapMode kind, bool initialized = true)
     {
+        if (TestMap is not null)
+            throw new NotSupportedException("Dismantle your existing TestMap before creating a new one.");
+
         switch (kind)
         {
             case TestMapMode.None:
@@ -265,14 +274,19 @@ public abstract partial class GameTest
     }
 
     /// <summary>
-    ///     Runs the pairs just long enough for PVS to send entities.
+    ///     Runs the pairs just long enough for PVS to send entities, ensuring the client's current tick is what the server's was at call time.
     /// </summary>
     /// <remarks>
     ///     ..if the entity count is reasonable (&lt; 10000)
     /// </remarks>
-    public Task RunUntilSynced()
+    public async Task RunUntilSynced()
     {
-        return Pair.RunTicksSync(4);
+        var startTime = _sGameTiming.CurTick;
+
+        while (_cGameTiming.LastRealTick < startTime)
+        {
+            await RunTicksSync(1);
+        }
     }
 
     /// <summary>

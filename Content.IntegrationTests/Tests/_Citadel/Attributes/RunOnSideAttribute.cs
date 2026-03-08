@@ -1,9 +1,10 @@
 #nullable enable
+using Content.IntegrationTests.Tests._Citadel.Utilities;
 using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using NUnit.Framework.Internal.Commands;
 
-namespace Content.IntegrationTests.Tests._Citadel;
+namespace Content.IntegrationTests.Tests._Citadel.Attributes;
 
 /// <summary>
 ///     Ensures a test method runs on the given side (client or server) when used with a <see cref="GameTest"/> fixture.
@@ -37,14 +38,10 @@ public sealed class RunOnSideAttribute : Attribute, IWrapTestMethod, IImplyFixtu
 
         public override TestResult Execute(TestExecutionContext context)
         {
-            if (innerCommand.Test.Fixture is not GameTest gt)
-            {
-                throw new NotSupportedException(
-                    $"The fixture {innerCommand.Test.Fixture!.GetType()} needs to be a GameTest for SidedTest to work.");
-            }
+            innerCommand.Test.EnsureFixtureIsGameTest(typeof(RunOnSideAttribute), out var gt);
 
-            if (_side is Side.Neither)
-                throw new NotSupportedException($"Sided tests need to specify a side. {Test}");
+            if (_side is not Side.Client and not Side.Server)
+                throw new NotSupportedException($"Sided tests need to specify a specific side. {Test}");
 
             if (_side is Side.Client)
             {

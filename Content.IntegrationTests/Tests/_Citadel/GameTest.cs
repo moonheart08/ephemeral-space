@@ -1,9 +1,12 @@
 #nullable enable
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Content.IntegrationTests.Pair;
+using Content.IntegrationTests.Tests._Citadel.Attributes;
 using Content.IntegrationTests.Tests._Citadel.Constraints;
+using NUnit.Framework.Internal;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
@@ -93,6 +96,18 @@ public abstract partial class GameTest
         );
 
         InjectDependencies(this);
+
+        var test = TestContext.CurrentContext.Test;
+
+        var attribs = test.Method!.GetCustomAttributes<IGameTestModifier>(false);
+        var suiteAttribs = test.Method!.TypeInfo.GetCustomAttributes<IGameTestModifier>(true);
+
+        foreach (var attribute in attribs.Concat(suiteAttribs))
+        {
+            await attribute.ApplyToTest(this);
+        }
+
+        await DoPreTestOverrides();
     }
 
     public void InjectDependencies(object target)
@@ -133,6 +148,8 @@ public abstract partial class GameTest
         {
             // Roll forward til sync for teardown.
             await SyncTicks(1);
+
+            RestoreCVars();
 
             await Server.WaitAssertion(() =>
             {

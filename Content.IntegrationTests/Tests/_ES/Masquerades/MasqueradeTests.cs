@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Content.IntegrationTests.Tests._Citadel;
+using Content.IntegrationTests.Tests._Citadel.Attributes;
 using Content.Server._ES.Masks.Masquerades;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Presets;

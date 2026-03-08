@@ -1,4 +1,5 @@
 using Content.IntegrationTests.Tests._Citadel;
+using Content.IntegrationTests.Tests._Citadel.Attributes;
 using Content.Server._ES.Masks;
 using Content.Server.Chat;
 using Content.Server.Mind;

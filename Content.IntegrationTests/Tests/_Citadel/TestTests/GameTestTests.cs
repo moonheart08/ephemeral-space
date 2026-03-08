@@ -1,21 +1,18 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Threading;
+using Content.IntegrationTests.Tests._Citadel.Attributes;
 using Content.IntegrationTests.Tests._Citadel.Constraints;
+using Robust.Shared.Configuration;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
 namespace Content.IntegrationTests.Tests._Citadel.TestTests;
 
-[Explicit(reason: """
-    These tests will all be reproduced by other tests, like ConstraintsTests, failing.
-    They exist more as a debugging aid than anything else and to catch certain mistakes.
-    As such, they're not part of the normal test run, but people modifying GameTest are
-    expected to run these!
-    """)]
 public sealed class GameTestTests : GameTest
 {
     [SidedDependency(Side.Server)] private readonly IEntityManager _sEntMan = default!;
+    [SidedDependency(Side.Server)] private readonly IConfigurationManager _sCfgMan = default!;
     [SidedDependency(Side.Client)] private readonly IEntityManager _cEntMan = default!;
 
     [Test]
@@ -84,5 +81,35 @@ public sealed class GameTestTests : GameTest
         await RunUntilSynced();
 
         Assert.That(ToClientUid(bigEntity), Is.Initialized(Client));
+    }
+
+    [Test]
+    [Description("Ensure that you cannot create a test map twice without dismantling the old one.")]
+    public async Task EnsureNoAccidentalMapOverrides()
+    {
+        await CreateTestMap(TestMapMode.Basic);
+
+        Assert.CatchAsync<NotSupportedException>(async () =>
+        {
+            await CreateTestMap(TestMapMode.Basic);
+        });
+    }
+
+    [Test]
+    [Description("Ensure that TestMapAttribute actually makes a map.")]
+    [TestOf(typeof(TestMapAttribute))]
+    [TestMap(TestMapMode.Arena)]
+    public void EnsureTestMapAttributeFunctions()
+    {
+        Assert.That(TestMap, Is.Not.Null);
+    }
+
+    [Test]
+    [Description("Ensure that EnsureCVar performs its usual operations.")]
+    [EnsureCVar(Side.Server, typeof(TestCVarDefs), nameof(TestCVarDefs.TestCVar), "bar")]
+    [RunOnSide(Side.Server)]
+    public void EnsureCVarIsBar()
+    {
+        Assert.That(_sCfgMan.GetCVar<string>(TestCVarDefs.TestCVar), Is.EqualTo("bar"));
     }
 }
