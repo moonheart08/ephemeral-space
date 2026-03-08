@@ -172,7 +172,6 @@ public sealed class MasqueradeRunTests : GameTest
                 Is.EqualTo(userCount),
                 "Expected in-game players with everyone assigned masks.");
 
-            // TODO: This should be applicable to random masquerade too instead of being special cased.
             if (rule.Value.Comp.Masquerade!.Masquerade is { } set)
             {
                 var roles =
