@@ -271,9 +271,6 @@ public abstract partial class GameTest
     /// <summary>
     ///     Runs the pairs just long enough for PVS to send entities, ensuring the client's current tick is what the server's was at call time.
     /// </summary>
-    /// <remarks>
-    ///     ..if the entity count is reasonable (&lt; 10000)
-    /// </remarks>
     public async Task RunUntilSynced()
     {
         var startTime = _sGameTiming.CurTick;
