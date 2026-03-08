@@ -108,8 +108,18 @@ public sealed class GameTestTests : GameTest
     [Description("Ensure that EnsureCVar performs its usual operations.")]
     [EnsureCVar(Side.Server, typeof(TestCVarDefs), nameof(TestCVarDefs.TestCVar), "bar")]
     [RunOnSide(Side.Server)]
+    [NonParallelizable] // Force these two to run serially.
     public void EnsureCVarIsBar()
     {
         Assert.That(_sCfgMan.GetCVar<string>(TestCVarDefs.TestCVar), Is.EqualTo("bar"));
+    }
+
+    [Test]
+    [Description("Ensure that the test cvar is what we expect.")]
+    [RunOnSide(Side.Server)]
+    [NonParallelizable]
+    public void EnsureCVarIsFoo()
+    {
+        Assert.That(_sCfgMan.GetCVar<string>(TestCVarDefs.TestCVar), Is.EqualTo("foo"));
     }
 }
