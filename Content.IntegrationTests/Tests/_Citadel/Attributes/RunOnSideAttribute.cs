@@ -7,8 +7,12 @@ using NUnit.Framework.Internal.Commands;
 namespace Content.IntegrationTests.Tests._Citadel.Attributes;
 
 /// <summary>
-///     Ensures a test method runs on the given side (client or server) when used with a <see cref="GameTest"/> fixture.
+///     Ensures a test method runs on the given side (client or server).
 /// </summary>
+/// <remarks>
+///     This only works for <see cref="GameTest"/> fixtures.
+/// </remarks>
+/// <seealso cref="GameTest"/>
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class RunOnSideAttribute : Attribute, IWrapTestMethod, IImplyFixture
 {
@@ -22,7 +26,7 @@ public sealed class RunOnSideAttribute : Attribute, IWrapTestMethod, IImplyFixtu
         RunOnSide = side;
     }
 
-    public TestCommand Wrap(TestCommand command)
+    TestCommand ICommandWrapper.Wrap(TestCommand command)
     {
         return new SidedTestCommand(command, RunOnSide);
     }

@@ -2,7 +2,7 @@
 namespace Content.IntegrationTests.Tests._Citadel.Attributes;
 
 /// <summary>
-///     Marks a field on a GameTest inheritor as needing to be populated with a system from the given side.
+///     Marks a field on a <see cref="GameTest"/> fixture as needing to be populated with a system from the given side.
 /// </summary>
 /// <seealso cref="GameTest"/>
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
