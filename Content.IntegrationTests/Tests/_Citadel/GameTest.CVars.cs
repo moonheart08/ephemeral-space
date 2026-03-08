@@ -14,6 +14,9 @@ public abstract partial class GameTest
     private readonly Dictionary<string, object> _serverCVarOverrides = new();
     private readonly Dictionary<string, object> _serverOldCVarValues = new();
 
+    /// <summary>
+    ///     Adds a setup-time override for a given cvar, for use by <see cref="IGameTestModifier"/>s.
+    /// </summary>
     public void PreTestAddOverride(Side side, string cVar, object value)
     {
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -65,8 +68,9 @@ public abstract partial class GameTest
     }
 
     /// <summary>
-    ///     Sets a given CVar and caches the old value to restore it later.
+    ///     Sets a given CVar for the provided side.
     /// </summary>
+    /// <remarks>Does its own cleanup, you do not need to and should not set the CVar back yourself.</remarks>
     public async Task OverrideCVar<T>(Side side, CVarDef<T> cvar, T value, bool sync = true)
     {
         await OverrideCVarByName(side, cvar.Name, value, sync);
