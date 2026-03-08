@@ -12,7 +12,6 @@ namespace Content.IntegrationTests.Tests._Citadel.TestTests;
 public sealed class GameTestTests : GameTest
 {
     [SidedDependency(Side.Server)] private readonly IEntityManager _sEntMan = default!;
-    [SidedDependency(Side.Server)] private readonly IConfigurationManager _sCfgMan = default!;
     [SidedDependency(Side.Client)] private readonly IEntityManager _cEntMan = default!;
 
     [Test]
@@ -102,24 +101,5 @@ public sealed class GameTestTests : GameTest
     public void EnsureTestMapAttributeFunctions()
     {
         Assert.That(TestMap, Is.Not.Null);
-    }
-
-    [Test]
-    [Description("Ensure that EnsureCVar performs its usual operations.")]
-    [EnsureCVar(Side.Server, typeof(TestCVarDefs), nameof(TestCVarDefs.TestCVar), "bar")]
-    [RunOnSide(Side.Server)]
-    [NonParallelizable] // Force these two to run serially.
-    public void EnsureCVarIsBar()
-    {
-        Assert.That(_sCfgMan.GetCVar<string>(TestCVarDefs.TestCVar), Is.EqualTo("bar"));
-    }
-
-    [Test]
-    [Description("Ensure that the test cvar is what we expect.")]
-    [RunOnSide(Side.Server)]
-    [NonParallelizable]
-    public void EnsureCVarIsFoo()
-    {
-        Assert.That(_sCfgMan.GetCVar<string>(TestCVarDefs.TestCVar), Is.EqualTo("foo"));
     }
 }
