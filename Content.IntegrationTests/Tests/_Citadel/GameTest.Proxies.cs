@@ -224,12 +224,17 @@ public abstract partial class GameTest
     ///     handled automatically as well.
     /// </remarks>
     [MemberNotNull(nameof(TestMap))]
-    public Task<TestMapData> LoadTestMap(ResPath mapPath, bool initialized = true)
+    public async Task<TestMapData> LoadTestMap(ResPath mapPath, bool initialized = true)
     {
         // C# is smart, but not that smart, we need to make a promise here.
+
+        await Pair.LoadTestMap(mapPath, initialized);
+        await RunUntilSynced();
+
 #pragma warning disable CS8774
-        return Pair.LoadTestMap(mapPath, initialized);
+        return TestMap!;
 #pragma warning restore
+
     }
 
     [MemberNotNull(nameof(TestMap))]
@@ -257,12 +262,16 @@ public abstract partial class GameTest
 
         // C# is smart, but not that smart, we need to make a promise here.
 #pragma warning disable CS8774
+        // ReSharper disable once RedundantJumpStatement
         return;
 #pragma warning restore
     }
 
 
-    /// <inheritdoc cref="M:Robust.UnitTesting.Pool.TestPair`2.RunTicksSync(System.Int32)"/>
+    /// <summary>
+    ///     Runs the client and server for the given number of ticks, in lockstep.
+    /// </summary>
+    /// <remarks>Do not use this as a barrier for client-server synchronization, use <see cref="RunUntilSynced"/>.</remarks>
     public Task RunTicksSync(int ticks)
     {
         return Pair.RunTicksSync(ticks);
@@ -289,6 +298,13 @@ public abstract partial class GameTest
         return (int) Math.Ceiling(seconds / Server.Timing.TickPeriod.TotalSeconds);
     }
 
+    /// <summary>
+    ///     Runs the test pair for a number of (simulated) seconds.
+    /// </summary>
+    /// <remarks>
+    ///     Does not actually take N seconds to evaluate, the game ticks as fast as possible.
+    ///     Do not use this as a barrier for client-server synchronization, use <see cref="RunUntilSynced"/>.
+    /// </remarks>
     public Task RunSeconds(float seconds)
     {
         return RunTicksSync(SecondsToTicks(seconds));
