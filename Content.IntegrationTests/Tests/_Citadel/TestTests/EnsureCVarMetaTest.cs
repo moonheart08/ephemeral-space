@@ -10,24 +10,28 @@ public sealed class EnsureCVarMetaTest
 {
     [Test]
     [Description($"Runs {nameof(EnsureCVarTest)} and ensures the pair is still clean.")]
-    public async Task RunEnsureCVarTestTestFixture()
+    public void RunEnsureCVarTestTestFixture()
     {
         var fixture = new EnsureCVarTest();
 
         // Create work..
         var workItem = TestBuilder.CreateWorkItem(typeof(EnsureCVarTest), nameof(EnsureCVarTest.EnsureCVarIsBar), fixture);
 
+        fixture.PreFinalizeHook += () =>
+        {
+            // Check on our fixture.
+            fixture.Pair.Server.WaitAssertion(() =>
+            {
+                var cfg = IoCManager.Resolve<IConfigurationManager>();
+
+                Assert.That(cfg.GetCVar(TestCVarDefs.TestCVar), Is.EqualTo("foo"));
+            })
+                .Wait();
+        };
+
         // Do work.
         TestBuilder.ExecuteWorkItem(workItem);
 
         Assert.That(workItem.Result.FailCount, Is.Zero, $"Inner test failed: {workItem.Result.Message}");
-
-        // Check on our fixture.
-        await fixture.Pair.Server.WaitAssertion(() =>
-        {
-            var cfg = IoCManager.Resolve<IConfigurationManager>();
-
-            Assert.That(cfg.GetCVar(TestCVarDefs.TestCVar), Is.EqualTo("foo"));
-        });
     }
 }

@@ -38,6 +38,11 @@ public abstract partial class GameTest
     private readonly List<EntityUid> _serverEntitiesToClean = new();
     private readonly List<EntityUid> _clientEntitiesToClean = new();
 
+    /// <summary>
+    ///     Tests-testing-tests assistant to run right before the pair is returned.
+    /// </summary>
+    public event Action? PreFinalizeHook;
+
     public Thread ServerThread { get; private set; } = default!;
     public Thread ClientThread { get; private set; } = default!;
 
@@ -176,6 +181,8 @@ public abstract partial class GameTest
         }
         finally
         {
+            PreFinalizeHook?.Invoke();
+
             if (!_pairDirty)
                 await Pair.CleanReturnAsync();
             else
