@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using Content.IntegrationTests.Tests._Citadel.Attributes;
 using Content.Shared._Citadel.Utilities;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Serialization.Manager.Attributes;
