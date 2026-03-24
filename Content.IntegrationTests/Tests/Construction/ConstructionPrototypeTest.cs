@@ -70,7 +70,7 @@ namespace Content.IntegrationTests.Tests.Construction
                 var proto = protoMan.Index<ConstructionPrototype>(protoKey);
                 // Begin Offbrand
                 if (proto.Type == ConstructionType.NodeToNode)
-                    Assert.Pass();
+                    return;
                 // End Offbrand
                 var start = proto.StartNode;
                 var target = proto.TargetNode;
