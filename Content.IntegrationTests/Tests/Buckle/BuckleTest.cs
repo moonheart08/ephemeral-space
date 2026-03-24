@@ -1,6 +1,5 @@
 using System.Numerics;
 using Content.IntegrationTests.Fixtures;
-using Content.IntegrationTests.Fixtures;
 using Content.Server.Body.Systems;
 using Content.Shared.Buckle;
 using Content.Shared.ActionBlocker;

@@ -20,16 +20,14 @@ public sealed class TimerTests : GameTest
 {
     // Just uses the pool instead of trying to spin up reflectionmanager standalone, as we already have functional
     // pairs floating around in a normal CI testing environment.
-
-    [SidedDependency(Side.Server)] private readonly IReflectionManager _reflection = default!;
     [SidedDependency(Side.Server)] private readonly ESEntityTimerSystem _sTimer = default!;
     [SidedDependency(Side.Server)] private readonly PvsOverrideSystem _pvsOverride = default!;
 
-    private static IEnumerable<Type> _timerTypes => GameDataScrounger.GetAllChildren<ESEntityTimerEvent>();
+    private static IEnumerable<Type> TimerTypes => GameDataScrounger.GetAllChildren<ESEntityTimerEvent>();
 
     [Test]
     [TestOf(typeof(ESEntityTimerEvent))]
-    [TestCaseSource(nameof(_timerTypes))]
+    [TestCaseSource(nameof(TimerTypes))]
     [Description("Asserts that all timer events are marked appropriately for their side.")]
     [RunOnSide(Side.Server)]
     public void EnsureTimerEventSanity(Type type)
