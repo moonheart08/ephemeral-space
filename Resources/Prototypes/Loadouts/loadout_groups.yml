@@ -799,35 +799,6 @@
   loadouts:
   - LizardPlushieCargoTechnician
 
-- type: loadoutGroup
-  id: SalvageSpecialistBackpack
-  name: loadout-group-salvage-specialist-backpack
-  loadouts:
-  - SalvageSpecialistBackpack
-  - SalvageSpecialistSatchel
-  - SalvageSpecialistDuffel
-
-- type: loadoutGroup
-  id: SalvageSpecialistOuterClothing
-  name: loadout-group-salvage-specialist-outerclothing
-  minLimit: 0
-  loadouts:
-  - SalvageSpecialistWintercoat
-
-- type: loadoutGroup
-  id: SalvageSpecialistShoes
-  name: loadout-group-salvage-specialist-shoes
-  loadouts:
-  - SalvageBoots
-  - CargoWinterBoots
-
-- type: loadoutGroup
-  id: SalvageSpecialistJobTrinkets
-  name: loadout-group-jobtrinkets
-  minLimit: 0
-  loadouts:
-  - LizardPlushieSalvageSpecialist
-
 # Engineering
 - type: loadoutGroup
   id: ChiefEngineerHead

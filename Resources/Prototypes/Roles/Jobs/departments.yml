@@ -6,7 +6,6 @@
   roles:
   - CargoTechnician
   - Quartermaster
-  - SalvageSpecialist
 
 - type: department
   id: Civilian

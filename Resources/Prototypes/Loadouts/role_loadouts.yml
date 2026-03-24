@@ -247,19 +247,6 @@
   - CargoTechnicianJobTrinkets
   - GroupSpeciesBreathTool
 
-- type: roleLoadout
-  id: JobSalvageSpecialist
-  groups:
-  - GroupTankHarness
-  - SalvageSpecialistBackpack
-  - SalvageSpecialistOuterClothing
-  - SalvageSpecialistShoes
-  - Glasses
-  - Survival
-  - Trinkets
-  - SalvageSpecialistJobTrinkets
-  - GroupSpeciesBreathTool
-
 # Engineering
 - type: roleLoadout
   id: JobChiefEngineer

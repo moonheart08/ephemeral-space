@@ -819,24 +819,6 @@
   - type: PresetIdCard
     job: CargoTechnician
 
-- type: entity
-  parent: IDCardStandard
-  id: SalvageIDCard
-  name: salvage ID card
-  components:
-  - type: Sprite
-    layers:
-    - state: default
-    - state: stripe_top
-      color: *color-supply-top
-    - state: stripe_bottom
-      color: *color-supply-bottom
-    - sprite: *icon-rsi
-      offset: *icon-offset
-      state: ShaftMiner
-  - type: PresetIdCard
-    job: SalvageSpecialist
-
 #Misc.
 
 - type: entity

@@ -214,18 +214,6 @@
     - PlushieLizardJobCargotechnician
 
 - type: loadout
-  id: LizardPlushieSalvageSpecialist
-  effects:
-  - !type:JobRequirementLoadoutEffect
-    requirement:
-      !type:RoleTimeRequirement
-      role: JobSalvageSpecialist
-      time: 72000 # 20hr
-  storage:
-    back:
-    - PlushieLizardJobSalvagespecialist
-
-- type: loadout
   id: LizardPlushieChiefEngineer
   effects:
   - !type:JobRequirementLoadoutEffect
