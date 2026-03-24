@@ -17,7 +17,7 @@ namespace Content.IntegrationTests.Utility;
 /// </summary>
 /// <remarks>
 /// <para>
-///     This does not include engine prototypes, nor anything generated at runtime, as it's made to be simple and fast
+///     This does not include test-provided prototypes, nor anything generated at runtime, as it's made to be simple and fast
 ///     for usage during test framework startup where we cannot afford to initialize all of <see cref="ISerializationManager"/>.
 /// </para>
 /// <para>
@@ -64,6 +64,11 @@ public static partial class GameDataScrounger
     /// </summary>
     private static Dictionary<string, EntityMetadata>? _entitiesMetaIndex = null;
 
+    /// <summary>
+    ///     Our personal reflection manager.
+    /// </summary>
+    private static readonly TestReflectionManager ReflectionManager = ConstructTestReflectionManager();
+
     private sealed class EntityMetadata
     {
         public required string Id;
@@ -83,10 +88,20 @@ public static partial class GameDataScrounger
     public static string[] PrototypesOfKind<T>()
         where T : IPrototype
     {
-        if (typeof(T).GetCustomAttribute<PrototypeAttribute>() is { Type: { } ty })
+        return PrototypesOfKind(typeof(T));
+    }
+
+    /// <summary>
+    ///     Gets all prototypes of the given type kind.
+    /// </summary>
+    public static string[] PrototypesOfKind(Type t)
+    {
+        Assert.That(t.IsAssignableTo(typeof(IPrototype)));
+
+        if (t.GetCustomAttribute<PrototypeAttribute>() is { Type: { } ty })
             return PrototypesOfKind(ty);
 
-        return PrototypesOfKind(PrototypeUtility.CalculatePrototypeName(typeof(T).Name));
+        return PrototypesOfKind(PrototypeUtility.CalculatePrototypeName(t.Name));
     }
 
     /// <summary>
@@ -101,7 +116,10 @@ public static partial class GameDataScrounger
         {
             Scrounge();
 
-            return _prototypeIndex[kind].ToArray();
+            if (_prototypeIndex.TryGetValue(kind, out var value))
+                return value.ToArray();
+
+            return Array.Empty<string>(); // Nothin'.
         }
     }
 
@@ -158,11 +176,12 @@ public static partial class GameDataScrounger
 
         var resDir = ContentResources();
         Assert.That(Directory.Exists($"{resDir}/Prototypes"));
+        Assert.That(Directory.Exists($"{resDir}/../RobustToolbox/Resources/EnginePrototypes"));
 
         var ignoreList = GetIgnoredPrototypes(resDir);
 
         // Start with our root directory. We use this as a stack of directories to traverse.
-        var explorationStack = new List<string>() { $"{resDir}/Prototypes" };
+        var explorationStack = new List<string>() { $"{resDir}/Prototypes", $"{resDir}/../RobustToolbox/Resources/EnginePrototypes" };
 
         while (explorationStack.Count > 0)
         {
@@ -230,8 +249,7 @@ public static partial class GameDataScrounger
                     //       and not for parenting. However no such prototype exists in the game as of writing and solving
                     //       this is mildly nontrivial.
 
-                    // We use exact equality to match what serialization does.
-                    if (abstractNode.Value == "true")
+                    if (bool.TryParse(abstractNode.Value, out var res) && res)
                         @abstract = true;
                 }
 
