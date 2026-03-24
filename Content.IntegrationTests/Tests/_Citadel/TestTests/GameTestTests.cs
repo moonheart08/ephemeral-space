@@ -60,14 +60,6 @@ public sealed class GameTestTests : GameTest
     }
 
     [Test]
-    [Description("Assert that the data scrounger finds prototypes by type.")]
-    public void ScroungeByType()
-    {
-        var scrounged = PrototypeDataScrounger.PrototypesOfKind<EntityPrototype>();
-        Assert.That(scrounged, Is.Not.Empty);
-    }
-
-    [Test]
     [Description("Assert that RunUntilSynced waits long enough for the client and server to actually sync.")]
     [TestMap(TestMapMode.Arena)]
     public async Task SyncRunsLongEnough()

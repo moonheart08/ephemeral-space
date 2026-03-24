@@ -121,7 +121,6 @@ public sealed class SuicideCommandTests
     // ES END
     public async Task TestSuicideWhileDamaged()
     {
-        return; // Offbrand
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
             Connected = true,
@@ -243,7 +242,6 @@ public sealed class SuicideCommandTests
     // ES END
     public async Task TestSuicideByHeldItem()
     {
-        return; // Offbrand
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
             Connected = true,
@@ -322,7 +320,6 @@ public sealed class SuicideCommandTests
     // ES END
     public async Task TestSuicideByHeldItemSpreadDamage()
     {
-        return; // Offbrand
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
             Connected = true,

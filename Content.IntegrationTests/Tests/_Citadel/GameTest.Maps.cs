@@ -3,6 +3,7 @@ using Content.Server.Atmos.Components;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.Gravity;
 using Content.Shared.Atmos;
+using Content.Shared.Atmos.Components;
 using Content.Shared.Gravity;
 using Content.Shared.Maps;
 using Robust.Server.GameObjects;

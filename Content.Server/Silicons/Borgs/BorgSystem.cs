@@ -19,7 +19,6 @@ namespace Content.Server.Silicons.Borgs;
 /// <inheritdoc/>
 public sealed partial class BorgSystem : SharedBorgSystem
 {
-    [Dependency] private readonly IBanManager _banManager = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly DeviceNetworkSystem _deviceNetwork = default!;
     [Dependency] private readonly TriggerSystem _trigger = default!;

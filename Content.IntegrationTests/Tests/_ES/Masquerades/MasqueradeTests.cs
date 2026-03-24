@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.IntegrationTests.Tests._Citadel;
 using Content.IntegrationTests.Tests._Citadel.Attributes;
+using Content.IntegrationTests.Utility;
 using Content.Server._ES.Masks.Masquerades;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Presets;
@@ -127,7 +128,7 @@ public sealed class MasqueradeRunTests : GameTest
         InLobby = true,
     };
 
-    public static readonly string[] Masquerades = PrototypeDataScrounger.PrototypesOfKind<ESMasqueradePrototype>();
+    public static readonly string[] Masquerades = GameDataScrounger.PrototypesOfKind<ESMasqueradePrototype>();
 
     [Test]
     public async Task TestMasqueradeStart(

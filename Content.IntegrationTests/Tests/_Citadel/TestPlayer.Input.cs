@@ -18,13 +18,9 @@ public sealed partial class TestPlayer
 {
     [SidedDependency(Side.Client)] private readonly IInputManager _inputManager = default!;
     [SidedDependency(Side.Client)] private readonly IGameTiming _clientTiming = default!;
-    [SidedDependency(Side.Server)] private readonly IGameTiming _serverTiming = default!;
-    [SidedDependency(Side.Client)] private readonly IEntityManager _clientEntMan = default!;
     [System(Side.Client)] private readonly InputSystem _clientInputSys = default!;
     [System(Side.Server)] private readonly CombatModeSystem _serverCombatMode = default!;
-    [System(Side.Server)] private readonly Robust.Server.GameObjects.TransformSystem _serverXformSys = default!;
     [System(Side.Server)] private readonly SharedMeleeWeaponSystem _serverWeaponSystem = default!;
-    [System(Side.Client)] private readonly MeleeWeaponSystem _clientWeaponSystem = default!;
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.

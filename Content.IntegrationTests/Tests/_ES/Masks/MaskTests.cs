@@ -1,5 +1,6 @@
 using Content.IntegrationTests.Tests._Citadel;
 using Content.IntegrationTests.Tests._Citadel.Attributes;
+using Content.IntegrationTests.Utility;
 using Content.Server._ES.Masks;
 using Content.Server.Chat;
 using Content.Server.Mind;
@@ -22,7 +23,7 @@ public sealed class MaskTests : GameTest
         Connected = true, // We need a guy to mask up.
     };
 
-    public static readonly string[] Masks = PrototypeDataScrounger.PrototypesOfKind<ESMaskPrototype>();
+    public static readonly string[] Masks = GameDataScrounger.PrototypesOfKind<ESMaskPrototype>();
 
     [Test]
     [TestCaseSource(nameof(Masks))]

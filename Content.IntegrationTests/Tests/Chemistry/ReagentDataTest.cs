@@ -1,3 +1,4 @@
+using Content.IntegrationTests.Tests._Citadel;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared.Chemistry.Reagent;
 using Robust.Shared.Reflection;
@@ -8,7 +9,7 @@ namespace Content.IntegrationTests.Tests.Chemistry;
 
 [TestFixture]
 [TestOf(typeof(ReagentData))]
-public sealed class ReagentDataTest : InteractionTest
+public sealed class ReagentDataTest : GameTest
 {
     [Test]
     public void ReagentDataIsSerializable()
