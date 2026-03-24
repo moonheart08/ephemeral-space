@@ -90,6 +90,8 @@ public sealed class JobTest
         // Assert.That(pair.Client.AttachedEntity, Is.Null);
         Assert.That(ticker.PlayerGameStatuses[pair.Client.User!.Value], Is.EqualTo(PlayerGameStatus.NotReadyToPlay));
 
+        await pair.SetJobPriorities((Passenger, JobPriority.Medium), (Engineer, JobPriority.Low));
+
         // Ready up and start the round
         ticker.ToggleReadyAll(true);
         Assert.That(ticker.PlayerGameStatuses[pair.Client.User!.Value], Is.EqualTo(PlayerGameStatus.ReadyToPlay));
