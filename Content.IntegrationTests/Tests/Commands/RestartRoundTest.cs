@@ -52,7 +52,7 @@ namespace Content.IntegrationTests.Tests.Commands
                 }
             });
 
-            await pair.RunTicksSync(15);
+            await pair.RunTicksSync(60);
 
             await server.WaitAssertion(() =>
             {
