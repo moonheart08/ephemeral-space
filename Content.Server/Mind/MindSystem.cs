@@ -377,19 +377,19 @@ public sealed class MindSystem : SharedMindSystem
         mindContainerTwo.Mind = null;
         mindCompOne.OwnedEntity = null;
         mindCompTwo.OwnedEntity = null;
-        RaiseLocalEvent(bodyOne, new MindRemovedMessage((mindEntityOne, mindCompOne), (bodyOne, mindContainerOne)), true);
-        RaiseLocalEvent(bodyTwo, new MindRemovedMessage((mindEntityTwo, mindCompTwo), (bodyTwo, mindContainerTwo)), true);
-        RaiseLocalEvent(mindEntityOne, new MindGotRemovedEvent((mindEntityOne, mindCompOne), (bodyOne, mindContainerOne)), true);
-        RaiseLocalEvent(mindEntityTwo, new MindGotRemovedEvent((mindEntityTwo, mindCompTwo), (bodyTwo, mindContainerTwo)), true);
+        RaiseLocalEvent(bodyOne, new MindRemovedMessage((mindEntityOne, mindCompOne), (bodyOne, mindContainerOne), bodyTwo), true);
+        RaiseLocalEvent(bodyTwo, new MindRemovedMessage((mindEntityTwo, mindCompTwo), (bodyTwo, mindContainerTwo), bodyOne), true);
+        RaiseLocalEvent(mindEntityOne, new MindGotRemovedEvent((mindEntityOne, mindCompOne), (bodyOne, mindContainerOne), bodyTwo), true);
+        RaiseLocalEvent(mindEntityTwo, new MindGotRemovedEvent((mindEntityTwo, mindCompTwo), (bodyTwo, mindContainerTwo), bodyOne), true);
 
         mindContainerOne.Mind = mindEntityTwo;
         mindContainerTwo.Mind = mindEntityOne;
         mindCompOne.OwnedEntity = bodyTwo;
         mindCompTwo.OwnedEntity = bodyOne;
-        RaiseLocalEvent(bodyOne, new MindAddedMessage((mindEntityTwo, mindCompTwo), (bodyOne, mindContainerOne)));
-        RaiseLocalEvent(bodyTwo, new MindAddedMessage((mindEntityOne, mindCompOne), (bodyTwo, mindContainerTwo)));
-        RaiseLocalEvent(mindEntityOne, new MindGotAddedEvent((mindEntityTwo, mindCompTwo), (bodyOne, mindContainerOne)));
-        RaiseLocalEvent(mindEntityTwo, new MindGotAddedEvent((mindEntityOne, mindCompOne), (bodyTwo, mindContainerTwo)));
+        RaiseLocalEvent(bodyOne, new MindAddedMessage((mindEntityTwo, mindCompTwo), (bodyOne, mindContainerOne), bodyTwo));
+        RaiseLocalEvent(bodyTwo, new MindAddedMessage((mindEntityOne, mindCompOne), (bodyTwo, mindContainerTwo), bodyOne));
+        RaiseLocalEvent(mindEntityOne, new MindGotAddedEvent((mindEntityTwo, mindCompTwo), (bodyOne, mindContainerOne), bodyTwo));
+        RaiseLocalEvent(mindEntityTwo, new MindGotAddedEvent((mindEntityOne, mindCompOne), (bodyTwo, mindContainerTwo), bodyOne));
 
         if (mindCompOne.UserId != null && _players.TryGetSessionById(mindCompOne.UserId.Value, out var userOneSession))
         {

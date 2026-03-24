@@ -223,6 +223,7 @@ public abstract partial class GameTest
     ///     The test map is global to the game test and is exposed through the TestMap property when ready. Cleanup is
     ///     handled automatically as well.
     /// </remarks>
+#pragma warning disable CS8774
     [MemberNotNull(nameof(TestMap))]
     public async Task<TestMapData> LoadTestMap(ResPath mapPath, bool initialized = true)
     {
@@ -231,12 +232,12 @@ public abstract partial class GameTest
         await Pair.LoadTestMap(mapPath, initialized);
         await RunUntilSynced();
 
-#pragma warning disable CS8774
+
         return TestMap!;
+    }
 #pragma warning restore
 
-    }
-
+#pragma warning disable CS8774
     [MemberNotNull(nameof(TestMap))]
     public async Task CreateTestMap(TestMapMode kind, bool initialized = true)
     {
@@ -261,12 +262,10 @@ public abstract partial class GameTest
         await RunUntilSynced();
 
         // C# is smart, but not that smart, we need to make a promise here.
-#pragma warning disable CS8774
         // ReSharper disable once RedundantJumpStatement
         return;
-#pragma warning restore
     }
-
+#pragma warning restore
 
     /// <summary>
     ///     Runs the client and server for the given number of ticks, in lockstep.
