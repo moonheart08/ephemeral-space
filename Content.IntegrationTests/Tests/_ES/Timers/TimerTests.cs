@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Content.IntegrationTests.Tests._Citadel;
-using Content.IntegrationTests.Tests._Citadel.Attributes;
-using Content.IntegrationTests.Tests._Citadel.Constraints;
+using Content.IntegrationTests.Fixtures;
+using Content.IntegrationTests.Fixtures.Attributes;
+using Content.IntegrationTests.NUnit.Constraints;
+using Content.IntegrationTests.Utility;
 using Content.Shared._ES.Core.Timer;
 using Content.Shared._ES.Core.Timer.Components;
 using Robust.Server.GameStates;
@@ -21,34 +22,33 @@ public sealed class TimerTests : GameTest
     // pairs floating around in a normal CI testing environment.
 
     [SidedDependency(Side.Server)] private readonly IReflectionManager _reflection = default!;
+    [SidedDependency(Side.Server)] private readonly ESEntityTimerSystem _sTimer = default!;
+    [SidedDependency(Side.Server)] private readonly PvsOverrideSystem _pvsOverride = default!;
 
-    [System(Side.Server)] private readonly ESEntityTimerSystem _sTimer = default!;
-    [System(Side.Server)] private readonly PvsOverrideSystem _pvsOverride = default!;
+    private static IEnumerable<Type> _timerTypes => GameDataScrounger.GetAllChildren<ESEntityTimerEvent>();
 
     [Test]
     [TestOf(typeof(ESEntityTimerEvent))]
+    [TestCaseSource(nameof(_timerTypes))]
     [Description("Asserts that all timer events are marked appropriately for their side.")]
     [RunOnSide(Side.Server)]
-    public void EnsureTimerEventSanity()
+    public void EnsureTimerEventSanity(Type type)
     {
         using (Assert.EnterMultipleScope())
         {
-            foreach (var type in _reflection.GetAllChildren<ESEntityTimerEvent>())
-            {
-                var side = GetSideOfType(type);
+            var side = GetSideOfType(type);
 
-                switch (side)
-                {
-                    case Side.Client:
-                    case Side.Server:
-                        Assert.That(type, Has.No.Attribute<NetSerializableAttribute>());
-                        break;
-                    case Side.Both: // Shared
-                        Assert.That(type, Has.Attribute<NetSerializableAttribute>().Or.Attribute<NonNetworkedTimerEventAttribute>());
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+            switch (side)
+            {
+                case Side.Client:
+                case Side.Server:
+                    Assert.That(type, Has.No.Attribute<NetSerializableAttribute>());
+                    break;
+                case Side.Both: // Shared
+                    Assert.That(type, Has.Attribute<NetSerializableAttribute>().Or.Attribute<NonNetworkedTimerEventAttribute>());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

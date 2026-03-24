@@ -1,4 +1,4 @@
-namespace Content.IntegrationTests.Tests._Citadel.Attributes;
+﻿namespace Content.IntegrationTests.Fixtures.Attributes;
 
 /// <summary>
 ///     Ensures the given test map is already made and initialized, setting <see cref="GameTest.TestMap"/> for you.

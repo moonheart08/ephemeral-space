@@ -1,14 +1,14 @@
-using Content.IntegrationTests.Tests._Citadel.Attributes;
+using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Server.Hands.Systems;
 using Content.Shared.Hands.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
-namespace Content.IntegrationTests.Tests._Citadel;
+namespace Content.IntegrationTests.Fixtures;
 
 public sealed partial class TestPlayer
 {
-    [System(Side.Server)] private readonly HandsSystem _serverHandsSys = default!;
+    [SidedDependency(Side.Server)] private readonly HandsSystem _serverHandsSys = default!;
 
     /// <summary>
     ///     Spawns an entity and has the player pick it up.

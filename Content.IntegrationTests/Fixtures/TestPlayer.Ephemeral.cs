@@ -2,7 +2,7 @@ using Content.Server._ES.Masks;
 using Content.Shared._ES.Masks;
 using Robust.Shared.Prototypes;
 
-namespace Content.IntegrationTests.Tests._Citadel;
+namespace Content.IntegrationTests.Fixtures;
 
 public sealed partial class TestPlayer
 {

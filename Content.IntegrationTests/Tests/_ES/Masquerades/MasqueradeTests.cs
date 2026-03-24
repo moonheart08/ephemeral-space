@@ -1,8 +1,8 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
-using Content.IntegrationTests.Tests._Citadel;
-using Content.IntegrationTests.Tests._Citadel.Attributes;
+using Content.IntegrationTests.Fixtures;
+using Content.IntegrationTests.Fixtures.Attributes;
 using Content.IntegrationTests.Utility;
 using Content.Server._ES.Masks.Masquerades;
 using Content.Server.GameTicking;
@@ -117,8 +117,8 @@ public sealed class MasqueradeRunTests : GameTest
 {
     [SidedDependency(Side.Server)] private readonly IPrototypeManager _proto = default!;
 
-    [System(Side.Server)] private readonly GameTicker _sGameticker = default!;
-    [System(Side.Server)] private readonly ESMasqueradeSystem _sMasqueradeSys = default!;
+    [SidedDependency(Side.Server)] private readonly GameTicker _sGameticker = default!;
+    [SidedDependency(Side.Server)] private readonly ESMasqueradeSystem _sMasqueradeSys = default!;
 
     public override PoolSettings PoolSettings { get; } = new()
     {

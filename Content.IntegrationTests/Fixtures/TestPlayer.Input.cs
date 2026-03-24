@@ -1,6 +1,5 @@
 #nullable enable
-using Content.Client.Weapons.Melee;
-using Content.IntegrationTests.Tests._Citadel.Attributes;
+using Content.IntegrationTests.Fixtures.Attributes;
 using Content.Server.CombatMode;
 using Content.Shared.CombatMode;
 using Content.Shared.Weapons.Melee;
@@ -12,15 +11,15 @@ using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Timing;
 
-namespace Content.IntegrationTests.Tests._Citadel;
+namespace Content.IntegrationTests.Fixtures;
 
 public sealed partial class TestPlayer
 {
     [SidedDependency(Side.Client)] private readonly IInputManager _inputManager = default!;
     [SidedDependency(Side.Client)] private readonly IGameTiming _clientTiming = default!;
-    [System(Side.Client)] private readonly InputSystem _clientInputSys = default!;
-    [System(Side.Server)] private readonly CombatModeSystem _serverCombatMode = default!;
-    [System(Side.Server)] private readonly SharedMeleeWeaponSystem _serverWeaponSystem = default!;
+    [SidedDependency(Side.Client)] private readonly InputSystem _clientInputSys = default!;
+    [SidedDependency(Side.Server)] private readonly CombatModeSystem _serverCombatMode = default!;
+    [SidedDependency(Side.Server)] private readonly SharedMeleeWeaponSystem _serverWeaponSystem = default!;
 
     /// <summary>
     ///     Make the client press and then release a key. This assumes the key is currently released.

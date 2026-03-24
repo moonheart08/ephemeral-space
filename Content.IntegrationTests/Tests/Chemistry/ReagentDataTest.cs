@@ -1,3 +1,4 @@
+using Content.IntegrationTests.Fixtures;
 using Content.IntegrationTests.Tests._Citadel;
 using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared.Chemistry.Reagent;

@@ -1,14 +1,14 @@
 #nullable enable
 using System.Runtime.CompilerServices;
 using System.Threading;
+using Content.IntegrationTests.NUnit.Utilities;
 using Content.Shared.Mind;
 using Content.Shared.Players;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
-using Robust.Shared.Player;
 using Robust.UnitTesting;
 
-namespace Content.IntegrationTests.Tests._Citadel;
+namespace Content.IntegrationTests.Fixtures;
 
 /// <summary>
 ///     A player for use with <see cref="GameTest"/>s, with methods to control the player's actions.
