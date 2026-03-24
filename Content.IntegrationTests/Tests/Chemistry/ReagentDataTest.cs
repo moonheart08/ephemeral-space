@@ -1,6 +1,4 @@
 using Content.IntegrationTests.Fixtures;
-using Content.IntegrationTests.Tests._Citadel;
-using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared.Chemistry.Reagent;
 using Robust.Shared.Reflection;
 using Robust.Shared.Serialization;
@@ -15,7 +13,8 @@ public sealed class ReagentDataTest : GameTest
     [Test]
     public void ReagentDataIsSerializable()
     {
-        var reflection = Pair.Server.ResolveDependency<IReflectionManager>();
+        var pair = Pair;
+        var reflection = pair.Server.ResolveDependency<IReflectionManager>();
 
         using (Assert.EnterMultipleScope())
         {
