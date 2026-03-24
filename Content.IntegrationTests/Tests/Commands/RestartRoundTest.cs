@@ -61,6 +61,9 @@ namespace Content.IntegrationTests.Tests.Commands
                 Assert.That(tickBeforeRestart, Is.LessThan(tickAfterRestart));
             });
 
+            // CVar modification reset happens AFTER recycling.
+            configManager.SetCVar(CCVars.GameLobbyEnabled, false);
+
             await pair.RunUntilSynced();
         }
     }
