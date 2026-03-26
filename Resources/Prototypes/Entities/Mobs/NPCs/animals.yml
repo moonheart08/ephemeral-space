@@ -574,8 +574,8 @@
   - type: Tag
     tags:
     - Trash
-    - CannotSuicide
     - VimPilot
+  - type: ESCannotSuicide
   - type: CanEscapeInventory
   - type: NpcFactionMember
     factions:

@@ -116,19 +116,10 @@
 - type: Tag
   id: Burnt # Storage whitelist: ashtray. Seemingly redundant?
 
-- type: Tag
-  id: BypassDropChecks # Tagged entities don't care about drop distance or walls (Aghost).
-
-- type: Tag
-  id: BypassInteractionRangeChecks # Tagged entities don't care about distance or walls when touching things (Aghost).
-
 ## C ##
 
 - type: Tag
   id: CableCoil # Storage whitelist: BaseClothingBeltEngineering, BorgModuleCable
-
-- type: Tag
-  id: Cake # CargoBounty blacklist: BountyFruit, BountyVegetable
 
 - type: Tag
   id: Candle # Storage whitelist: BoxCandle
@@ -140,9 +131,6 @@
   id: CannonBall # Ammo: WeaponLauncherPirateCannon, ShuttleGunPirateCannon
 
 - type: Tag
-  id: CannotSuicide # Used by SuicideSystem. Tagged entities ghost when attempting to suicide.
-
-- type: Tag
   id: CanPilot # Used by ShuttleConsoleSystem to guard who's allowed to pilot ships. Semi-synonymous with a sentient person/creature.
                # Storage whitelist: BodyBag, MachineArtifactCrusher
 
@@ -150,16 +138,7 @@
   id: CaptainSabre # Storage whitelist: ClothingBeltSheath. ItemMapper: ClothingBeltSheath
 
 - type: Tag
-  id: Carp # CargoBounty: BountyCarp
-
-- type: Tag
   id: Carpet # CreateEntityTileReaction whitelist on Carpetium
-
-- type: Tag
-  id: Carrot # CargoBounty: BountyCarrot
-
-- type: Tag
-  id: CarrotFries # CargoBounty: BountyCarrotFries
 
 - type: Tag # NOT bullets. This is for the cart to load PDA programs.
   id: Cartridge # Storage whitelist: BasePDA

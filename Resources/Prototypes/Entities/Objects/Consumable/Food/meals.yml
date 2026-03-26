@@ -88,9 +88,6 @@
       - salty
   - type: Sprite
     state: fries-carrot
-  - type: Tag
-    tags:
-    - CarrotFries
   - type: SolutionContainerManager
     solutions:
       food:

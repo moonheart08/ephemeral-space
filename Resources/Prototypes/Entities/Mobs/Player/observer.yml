@@ -59,10 +59,8 @@
   - type: ActiveRadio
     receiveAllChannels: true
     globalReceive: true
-  - type: Tag
-    tags:
-    - BypassInteractionRangeChecks
   # ES START
+  - type: ESBypassInteractionRangeChecks
   - type: ESInherentLight
     lightPrototype: ESMobObserverInherentLight
     enabled: false

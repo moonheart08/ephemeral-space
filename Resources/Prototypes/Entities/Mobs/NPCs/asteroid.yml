@@ -86,9 +86,9 @@
     actionId: ActionGoliathTentacle
   - type: Tag
     tags:
-    - CannotSuicide
     - Goliath
     - FootstepSound
+  - type: ESCannotSuicide
   - type: NoSlip
   - type: Butcherable
     spawned:

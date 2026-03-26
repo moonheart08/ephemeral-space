@@ -61,9 +61,9 @@
   - type: MobState
   - type: Tag
     tags:
-      - CannotSuicide
       - DoorBumpOpener
       - FootstepSound
+  - type: ESCannotSuicide
   - type: MobThresholds
     thresholds:
       0: Alive

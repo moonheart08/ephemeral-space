@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.IntegrationTests.Fixtures;
+using Content.Server.Chat.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Prototypes;
@@ -49,7 +50,6 @@ public sealed class SuicideCommandTests : GameTest
   name: test version of the material reclaimer
   components:
   - type: MaterialReclaimer";
-    private static readonly ProtoId<TagPrototype> CannotSuicideTag = "CannotSuicide";
     private static readonly ProtoId<DamageTypePrototype> DamageType = "Slash";
 
     public override PoolSettings PoolSettings => new PoolSettings
@@ -195,9 +195,8 @@ public sealed class SuicideCommandTests : GameTest
             if (mind != null)
                 mindComponent = entManager.GetComponent<MindComponent>(mind.Value);
             mobStateComp = entManager.GetComponent<MobStateComponent>(player);
+            entManager.AddComponent<ESCannotSuicideComponent>(player);
         });
-
-        tagSystem.AddTag(player, CannotSuicideTag);
 
         // Check that running the suicide command kills the player
         // and properly ghosts them without them being able to return to their body

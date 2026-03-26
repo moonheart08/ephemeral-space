@@ -381,7 +381,7 @@ namespace Content.Shared.Interaction
         {
             // This is for Admin/mapping convenience. If ever there are other ghosts that can still interact, this check
             // might need to be more selective.
-            return !_tagSystem.HasTag(user, BypassInteractionRangeChecksTag);
+            return !HasComp<ESBypassInteractionRangeChecksComponent>(user);
         }
 
         /// <summary>
