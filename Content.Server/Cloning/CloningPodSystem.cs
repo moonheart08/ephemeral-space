@@ -46,10 +46,8 @@ public sealed class CloningPodSystem : EntitySystem
     [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private readonly PuddleSystem _puddleSystem = default!;
     [Dependency] private readonly ChatSystem _chatSystem = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly IConfigurationManager _configManager = default!;
     [Dependency] private readonly MaterialStorageSystem _material = default!;
-    [Dependency] private readonly PopupSystem _popupSystem = default!;
     [Dependency] private readonly SharedMindSystem _mindSystem = default!;
     [Dependency] private readonly CloningSystem _cloning = default!;
 

@@ -69,7 +69,6 @@ namespace Content.Server.Ghost
         [Dependency] private readonly DamageableSystem _damageable = default!;
         [Dependency] private readonly SharedPopupSystem _popup = default!;
         [Dependency] private readonly IRobustRandom _random = default!;
-        [Dependency] private readonly TagSystem _tag = default!;
         [Dependency] private readonly NameModifierSystem _nameMod = default!;
 // ES START
         [Dependency] private readonly ESStagehandSystem _stagehand = default!;
