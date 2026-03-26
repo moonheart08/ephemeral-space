@@ -4,9 +4,6 @@
 ## A ##
 
 - type: Tag
-  id: AccessBreakerImmune # Default value in EmagProviderComponent. Marks tagged entity as immune to AccessBreakerUnlimited.
-
-- type: Tag
   id: AirAlarm # Used by AtmosAlarmableComponent for syncing devices.
 
 - type: Tag
@@ -19,11 +16,9 @@
   id: AirSensor # Used by AtmosAlarmableComponent for syncing devices.
 
 - type: Tag
-  id: Ambrosia # ConstructionGraph: flowerwreath
-
-- type: Tag
   id: AnomalyHost # Targeting whitelist: BaseAnomalyInjector
 
+# It'd probably be better if this was some sort of shape check. Let me quiver up some rods.
 - type: Tag
   id: Arrow # Storage whitelist: ClothingBeltQuiver
 

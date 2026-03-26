@@ -1707,9 +1707,6 @@
     sprite: Objects/Specific/Hydroponics/ambrosia_vulgaris.rsi
     slots:
     - HEAD
-  - type: Tag
-    tags:
-    - Ambrosia
   - type: FoodSequenceElement
     entries:
       Taco: AmbrosiaVulgaris
@@ -1748,9 +1745,6 @@
     sprite: Objects/Specific/Hydroponics/ambrosia_deus.rsi
     slots:
     - HEAD
-  - type: Tag
-    tags:
-    - Ambrosia
   - type: FoodSequenceElement
     entries:
       Taco: AmbrosiaDeus
