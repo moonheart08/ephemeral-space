@@ -196,7 +196,6 @@
   - type: Tag
     tags:
     - ClownSuit
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingUniformJumpsuitClown
@@ -497,7 +496,6 @@
     - ClothMade
     - Recyclable
     - PrisonUniform
-    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingUniformBase, BaseCommandContraband]

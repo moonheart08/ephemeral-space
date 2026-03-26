@@ -32,7 +32,6 @@
   - type: Tag
     tags:
     - CorgiWearable
-    - WhitelistChameleon
 
 #Alternate / slim basic armor vest
 - type: entity
@@ -136,7 +135,6 @@
   - type: Tag
     tags:
     - CorgiWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingOuterArmorBaseCarapace, BaseCentcommContraband]

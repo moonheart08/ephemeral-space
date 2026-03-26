@@ -26,7 +26,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -46,7 +45,6 @@
     - CorgiWearable
     - ClothMade
     - Recyclable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -65,7 +63,6 @@
     - PetWearable
     - CorgiWearable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -80,7 +77,6 @@
   - type: Tag
     tags:
     - ClothMade
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -114,7 +110,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -133,7 +128,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -152,7 +146,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -171,7 +164,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -247,7 +239,6 @@
     tags:
     - ClothMade
     - HamsterWearable
-    - WhitelistChameleon
     - PetWearable
     - CorgiWearable
 
@@ -283,7 +274,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -346,7 +336,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -365,7 +354,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -414,7 +402,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingHeadBase, BaseCommandContraband]
@@ -433,7 +420,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -507,7 +493,6 @@
     sprite: Clothing/Head/Hats/plaguedoctor.rsi
   - type: Tag
     tags:
-    - WhitelistChameleon
     - ClothMade
     - Recyclable
   - type: HideLayerClothing
@@ -583,7 +568,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     layers:
       Hair: HEAD
@@ -639,7 +623,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingHeadBase, BaseFoldable]
@@ -733,7 +716,6 @@
     tags:
     - PetWearable
     - CorgiWearable
-    - WhitelistChameleon
     - ClothMade
     - Recyclable
   - type: HideLayerClothing
@@ -897,7 +879,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -968,7 +949,6 @@
     - ClothMade
     - Recyclable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase
@@ -1110,7 +1090,6 @@
     - CorgiWearable
     - ClothMade
     - Recyclable
-    - WhitelistChameleon
     - HamsterWearable
   - type: BlockMovement
 
@@ -1132,7 +1111,6 @@
     - CorgiWearable
     - ClothMade
     - Recyclable
-    - WhitelistChameleon
     - HamsterWearable
 
 - type: entity
@@ -1167,7 +1145,6 @@
     tags:
     - PetWearable
     - CorgiWearable
-    - WhitelistChameleon
     - HamsterWearable
 
 - type: entity
@@ -1214,7 +1191,6 @@
     tags:
     - PetWearable
     - CorgiWearable
-    - WhitelistChameleon
     - HamsterWearable
 
 - type: entity
@@ -1262,7 +1238,6 @@
       tags:
       - PetWearable
       - CorgiWearable
-      - WhitelistChameleon
       - HamsterWearable
 
 - type: entity
@@ -1278,7 +1253,6 @@
       tags:
       - PetWearable
       - CorgiWearable
-      - WhitelistChameleon
       - HamsterWearable
 
 - type: entity
@@ -1294,7 +1268,6 @@
       tags:
       - PetWearable
       - CorgiWearable
-      - WhitelistChameleon
       - HamsterWearable
 
 - type: entity
@@ -1310,7 +1283,6 @@
       tags:
       - PetWearable
       - CorgiWearable
-      - WhitelistChameleon
       - HamsterWearable
 
 - type: entity
@@ -1326,7 +1298,6 @@
       tags:
       - PetWearable
       - CorgiWearable
-      - WhitelistChameleon
       - HamsterWearable
 
 - type: entity
@@ -1342,7 +1313,6 @@
       tags:
       - PetWearable
       - CorgiWearable
-      - WhitelistChameleon
       - HamsterWearable
 
 - type: entity

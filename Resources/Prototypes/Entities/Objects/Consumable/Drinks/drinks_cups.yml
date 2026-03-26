@@ -81,7 +81,6 @@
   - type: Tag
     tags:
     - Trash
-    - WhitelistChameleon
   - type: Clothing
     slots:
     - HEAD

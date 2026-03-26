@@ -163,7 +163,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Hair
@@ -208,8 +207,6 @@
   description: "NYAH!"
   categories: [ DoNotMap ]
   components:
-  - type: Tag
-    tags: [] # ignore "WhitelistChameleon" tag
   - type: Sprite
     sprite: Clothing/Head/Hats/catears.rsi
   - type: Clothing
@@ -230,8 +227,6 @@
     parent: true
     components:
     - type: KillSign
-  - type: Tag
-    tags: [] # ignore "WhitelistChameleon" tag
   - type: Sprite
     sprite: Clothing/Head/Hats/catears.rsi
   - type: Clothing
@@ -349,9 +344,6 @@
         solution: drink
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
-  - type: Tag
-    tags:
-      - WhitelistChameleon
 
 - type: entity
   parent: ClothingHeadBase

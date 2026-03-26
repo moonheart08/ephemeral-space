@@ -24,7 +24,6 @@
   - type: Tag
     tags:
     - Hardsuit
-    - WhitelistChameleon
   - type: ProtectedFromStepTriggers
     slots: WITHOUT_POCKET
   - type: HideLayerClothing
@@ -117,7 +116,6 @@
   - type: Tag
     tags:
     - CorgiWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Tail
@@ -229,7 +227,6 @@
   - type: Tag
     tags:
     - CorgiWearable
-    - WhitelistChameleon
   - type: AddAccentClothing
     accent: BarkAccent
 

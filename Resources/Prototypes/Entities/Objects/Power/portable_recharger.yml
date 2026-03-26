@@ -23,8 +23,6 @@
     slotId: charger_slot
     portable: true
   - type: PowerChargerVisuals
-  - type: Tag
-    tags: [] # ignore "WhitelistChameleon" tag
   - type: ContainerContainer
     containers:
       charger_slot: !type:ContainerSlot

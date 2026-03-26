@@ -5,8 +5,6 @@
   description: A face-covering mask that can be connected to an air supply.
   suffix: Chameleon
   components:
-    - type: Tag
-      tags: [] # ignore "WhitelistChameleon" tag
     - type: Sprite
       sprite: Clothing/Mask/gas.rsi
     - type: Clothing
@@ -64,8 +62,6 @@
           Despair: { state: icon-despair }
           Joy: { state: icon-joy }
           Anger: { state: icon-anger }
-  - type: Tag
-    tags: [] # ignore "WhitelistChameleon" tag
   - type: SelfEquipOnly
   - type: CursedMask
     despairDamageModifier:

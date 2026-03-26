@@ -28,7 +28,6 @@
   - type: Tag
     tags:
     - Kangaroo
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingHandsGlovesBoxingRed
@@ -363,7 +362,6 @@
   - type: Tag
     tags:
     - Kangaroo
-    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingHandsBase, BaseSecurityContraband]
@@ -421,7 +419,6 @@
     mustBeEquippedToUse: true
   - type: Tag
     tags:
-    - WhitelistChameleon
     - Kangaroo
 
 - type: entity
@@ -440,7 +437,6 @@
     node: icon
   - type: Tag
     tags:
-    - WhitelistChameleon
     - Kangaroo
 
 - type: entity
@@ -467,7 +463,6 @@
     mustBeEquippedToUse: true
   - type: Tag
     tags:
-    - WhitelistChameleon
     - Kangaroo
 
 - type: entity
@@ -493,7 +488,6 @@
     mustBeEquippedToUse: true
   - type: Tag
     tags:
-    - WhitelistChameleon
     - Kangaroo
 
 - type: entity
