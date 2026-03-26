@@ -59,6 +59,3 @@
         - id: EmergencyFunnyOxygenTankFilled
         - id: EmergencyMedipen
         - id: Gauze
-  - type: Tag
-    tags:
-    - BoxCardboard

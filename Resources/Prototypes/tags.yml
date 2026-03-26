@@ -23,30 +23,11 @@
   id: Arrow # Storage whitelist: ClothingBeltQuiver
 
 ## B ##
-
-- type: Tag
-  id: Banana # CargoBounty: BountyBanana
-
 - type: Tag
   id: BananaPeel # SpecialDigestible by OrganAnimalRuminantStomach. Several BananaClown ConstructionGraphs
 
 - type: Tag
-  id: Bandana # CargoBounty: BountyBandana
-
-- type: Tag
-  id: BaseballBat # CargoBounty: BountyBaseballBat
-
-- type: Tag
   id: BBQsauce # Storage whitelist: ClothingBeltChef and FoodCartHot. ItemMapper: ClothingBeltChef and FoodCartHot
-
-- type: Tag
-  id: Bedsheet # CargoBounty: BountyBedsheet
-
-- type: Tag
-  id: Bee # CreateEntityTileReaction whitelist on BuzzochloricBees and mode switching (only damages non-bees)
-
-- type: Tag
-  id: Beer # CargoBounty: BountyBeer
 
 - type: Tag
   id: BikeHorn # ConstructionGraph: HonkBot, BananiumHorn
@@ -101,9 +82,6 @@
 
 - type: Tag # Used for specifically chemistry bottles.
   id: Bottle # Storage whitelist: ChemMaster, ChemBag, SmartFridge, ClothingBeltJanitor, ClothingBeltMedical, ClothingBeltPlant
-
-- type: Tag
-  id: BoxCardboard # CargoBounty: BountyCardboardBox. Storage whitelist: MailCart
 
 - type: Tag
   id: Brain # Storage whitelist: MMI. CargoBounty: BountyBrain

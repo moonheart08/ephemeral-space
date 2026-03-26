@@ -514,7 +514,6 @@
     tags:
     - Trash
     - HappyHonk
-    - BoxCardboard
   - type: EntityTableContainerFill
     containers:
       storagebase: !type:NestedSelector
@@ -595,7 +594,6 @@
     tags:
     - Trash
     - CluwneHappyHonk # BAD: Intentional removal of parent tag
-    - BoxCardboard
   - type: Sprite
     sprite: Objects/Storage/Happyhonk/cluwne.rsi
   - type: Item

@@ -199,9 +199,6 @@
         - id: Flare
         - id: FoodSnackNutribrick
         - id: DrinkWaterBottleFull
-  - type: Tag
-    tags:
-    - BoxCardboard
 
 - type: entity
   parent: BoxHug

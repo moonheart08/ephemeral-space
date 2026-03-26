@@ -364,7 +364,6 @@
   - type: Tag
     tags:
     - Fruit
-    - Banana
   - type: FoodSequenceElement
     entries:
       Burger: Banana
