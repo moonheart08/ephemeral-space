@@ -15,7 +15,6 @@
     - NoConsoleSound
     - SilentStorageUser
     - PreventAccessLogging
-    - AllowBiomeLoading
     - NotGhostnadoWarpable
   - type: Input
     context: "aghost"

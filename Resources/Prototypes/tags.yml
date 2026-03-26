@@ -19,30 +19,15 @@
   id: AirSensor # Used by AtmosAlarmableComponent for syncing devices.
 
 - type: Tag
-  id: AllowBiomeLoading # Entities with this tag will load terrain, even if a ghost.
-
-- type: Tag
-  id: AllowGhostShownByEvent # Used by GhostSystem to show tagged ghosts (usually at round end).
-
-- type: Tag
   id: Ambrosia # ConstructionGraph: flowerwreath
 
 - type: Tag
   id: AnomalyHost # Targeting whitelist: BaseAnomalyInjector
 
 - type: Tag
-  id: Apron # ConstructionGraph: scraparmor
-
-- type: Tag
   id: Arrow # Storage whitelist: ClothingBeltQuiver
 
 ## B ##
-
-- type: Tag
-  id: Backpack # ConstructionGraph: ClothingBagPet
-
-- type: Tag
-  id: Balloon # Default value in BalloonPopperComponent. Tagged entities will be viscously maimed by corresponding poppers.
 
 - type: Tag
   id: Banana # CargoBounty: BountyBanana
@@ -73,9 +58,6 @@
 
 - type: Tag
   id: Bloodpack # Storage whitelist: ClothingBeltMedical
-
-- type: Tag
-  id: BlueprintAutolathe # Whitelist on BlueprintReceiverComponent on the autolate for linking tagged entity's BlueprintComponent.
 
 - type: Tag
   id: BodyBag # Storage whitelist: BoxBodyBag

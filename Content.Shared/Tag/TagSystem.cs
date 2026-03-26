@@ -14,6 +14,7 @@ namespace Content.Shared.Tag;
 /// if you need to use them often, it's better to make a proper implementation,
 /// you can read more <a href="https://github.com/space-wizards/space-station-14/pull/28272">HERE</a>.
 /// </summary>
+[Obsolete("Marker components, i.e. dedicated components created for a given thing, are always better. Do not add new uses of tags.")]
 public sealed class TagSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _proto = default!;

@@ -403,9 +403,10 @@ namespace Content.Server.Ghost
         public void MakeVisible(bool visible)
         {
             var entityQuery = EntityQueryEnumerator<GhostComponent, VisibilityComponent>();
-            while (entityQuery.MoveNext(out var uid, out var _, out var vis))
+
+            while (entityQuery.MoveNext(out var uid, out var ghost, out var vis))
             {
-                if (!_tag.HasTag(uid, AllowGhostShownByEventTag))
+                if (!ghost.MadeVisibleByEvents)
                     continue;
 
                 if (visible)

@@ -175,11 +175,3 @@
 #  category: construction-category-clothing
 #  objectType: Item
 #ES END
-
-- type: construction
-  id: ClothingBagPet
-  graph: ClothingBagPet
-  startNode: start
-  targetNode: bagPet
-  category: construction-category-clothing
-  objectType: Item

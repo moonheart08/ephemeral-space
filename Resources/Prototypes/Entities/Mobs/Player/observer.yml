@@ -74,9 +74,8 @@
   id: MobObserver
   components:
   - type: Spectral
-  - type: Tag
-    tags: # BAD: Intentional removal of inherited tag
-    - AllowGhostShownByEvent
+  - type: Ghost
+    madeVisibleByEvents: true
 
 - type: entity
   parent: BaseMentalAction
