@@ -6,10 +6,6 @@
   description:  A small piece of crystal.
   components:
   - type: Sharp
-# ES START
-#  - type: Execution
-#    doAfterDuration: 4.0
-# ES END
   - type: Sprite
     layers:
       - sprite: Objects/Materials/Shards/crystal.rsi
