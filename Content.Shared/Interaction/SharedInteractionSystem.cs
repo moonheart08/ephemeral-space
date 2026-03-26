@@ -106,8 +106,6 @@ namespace Content.Shared.Interaction
         public const float ESPullRange = 0.7f;
         // ES END
 
-        private static readonly ProtoId<TagPrototype> BypassInteractionRangeChecksTag = "BypassInteractionRangeChecks";
-
         public delegate bool Ignored(EntityUid entity);
 
         public override void Initialize()
