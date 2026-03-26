@@ -199,9 +199,6 @@
   id: Chicken # Reproductive partner key. MetamorphRecipe: FoodBurgerChicken
 
 - type: Tag
-  id: ChiliBowl # CargoBounty: BountyChili
-
-- type: Tag
   id: Cigar # ItemCounter: CigarCase
 
 - type: Tag
@@ -264,12 +261,6 @@
 - type: Tag # designed to let corgis wear things; at present only for SmartCorgi.  View PR 33737 on upstream for more dog wearables
   id: CorgiWearable # Used by inventoryTemplate:SmartCorgi to whitelist clothes slots outerClothing, head, back.
 
-- type: Tag #Ohioans die happy
-  id: Corn  # CargoBounty: BountyCorn
-
-- type: Tag
-  id: CottonBoll # CargoBounty: BountyCottonBoll
-
 - type: Tag
   id: CottonBurger # Food sequence key
 
@@ -307,9 +298,6 @@
   id: CrayonYellow # ConstructionGraph: ClownHardsuit. ItemMapper: CrayonBox
 
 - type: Tag
-  id: Creamsicle # Blacklist on BountyFruit
-
-- type: Tag
   id: Crowbar # Storage whitelist: BaseClothingBeltEngineering, ClothingBeltChiefEngineer. ItemMapper: BaseClothingBeltEngineering, ClothingBeltChiefEngineer
 
 - type: Tag
@@ -338,9 +326,6 @@
 
 - type: Tag
   id: CrystalYellow # ConstructionGraph: YellowLight, YellowLightBulb
-
-- type: Tag
-  id: CubanCarp # CargoBounty: BountyCubanCarp
 
 - type: Tag
   id: Cutlet # MetamorphRecipe: FoodBurgerCheese, FoodBurgerChicken, FoodBurgerDuck

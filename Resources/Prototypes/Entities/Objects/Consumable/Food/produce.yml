@@ -1225,7 +1225,6 @@
           Quantity: 5
   - type: Tag
     tags:
-    - Corn
     - Vegetable
   - type: Sprite
     sprite: Objects/Specific/Hydroponics/corn.rsi
@@ -2633,7 +2632,6 @@
   - type: Tag
     tags:
     - ClothMade
-    - CottonBoll
   - type: FoodSequenceElement
     entries:
       CottonBurger: CottonBol
@@ -2667,7 +2665,6 @@
   - type: Tag
     tags:
     - ClothMade
-    - CottonBoll
   - type: Extractable
     grindableSolutionName: food
   - type: FoodSequenceElement
