@@ -162,7 +162,7 @@ public sealed class TimerTests : GameTest
     [Test]
     [TestOf(typeof(ESEntityTimerSystem))]
     [Description("Ensures that timers in nullspace only broadcast if they have no target, not just because they're in nullspace.")]
-    [TrackingIssue("https://github.com/EphemeralSpace/ephemeral-space/issues/1535")]
+    [TrackingIssue("https://github.com/EphemeralSpace/ephemeral-space/issues/1536")]
     [Ignore("""
     This is a variant on EnsureNullSpaceTimersDontBroadcast that runs for the client too.
     Due to client nullspace detachment, this can cause the event to broadcast anyway if
