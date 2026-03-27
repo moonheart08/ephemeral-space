@@ -68,7 +68,6 @@
   - type: Tag
     tags:
     - PetWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingEyesBase
@@ -84,7 +83,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingEyesBase
@@ -96,9 +94,6 @@
     sprite: Clothing/Eyes/Glasses/jensen.rsi
   - type: Clothing
     sprite: Clothing/Eyes/Glasses/jensen.rsi
-  - type: Tag
-    tags:
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingEyesBase
@@ -114,7 +109,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingEyesBase
@@ -143,7 +137,6 @@
     tags:
     - HamsterWearable
     - PetWearable
-    - WhitelistChameleon
   - type: IdentityBlocker
     coverage: EYES
 
@@ -161,7 +154,6 @@
     - Sunglasses
     - PetWearable
     - HamsterWearable
-    - WhitelistChameleon
 
 - type: entity
   parent: [ClothingEyesBase, ShowSecurityIcons, BaseSecurityContraband]
@@ -183,7 +175,6 @@
     tags:
     - HamsterWearable
     - PetWearable
-    - WhitelistChameleon
   - type: IdentityBlocker
     coverage: EYES
 
@@ -204,7 +195,6 @@
     tags:
     - HamsterWearable
     - PetWearable
-    - WhitelistChameleon
   - type: IdentityBlocker
     coverage: EYES
   - type: ShowJobIcons
@@ -260,7 +250,6 @@
     - type: Tag
       tags:
       - PetWearable
-      - WhitelistChameleon
 
 - type: entity
   parent: [ClothingEyesBase, ShowSecurityIcons, BaseSecurityContraband]
@@ -281,4 +270,3 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon

@@ -32,7 +32,6 @@
     tags:
     - ClothMade
     - Recyclable
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingOuterWinterCoat

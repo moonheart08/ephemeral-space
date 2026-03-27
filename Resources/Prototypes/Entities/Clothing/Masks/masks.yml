@@ -14,7 +14,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     layers:
       Snout: Mask
@@ -139,7 +138,6 @@
   - type: Tag
     tags:
     - PetWearable
-    - WhitelistChameleon
   - type: PhysicalComposition
     materialComposition:
       Steel: 50
@@ -182,7 +180,6 @@
   - type: Tag
     tags:
     - PetWearable
-    - WhitelistChameleon
   - type: PhysicalComposition
     materialComposition:
       Steel: 50
@@ -204,7 +201,6 @@
   - type: Tag
     tags:
     - ClownMask
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Snout
@@ -233,7 +229,6 @@
     tags:
     - ClownMask
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Snout
@@ -254,7 +249,6 @@
     tags:
     - ClownMask
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Snout
@@ -280,7 +274,6 @@
     tags:
     - ClownMask
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Snout
@@ -316,7 +309,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Snout
@@ -407,9 +399,6 @@
     sprite: Clothing/Mask/swat.rsi
   - type: Clothing
     sprite: Clothing/Mask/swat.rsi
-  - type: Tag
-    tags:
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Hair
@@ -453,9 +442,6 @@
     sprite: Clothing/Mask/ert.rsi
   - type: Clothing
     sprite: Clothing/Mask/ert.rsi
-  - type: Tag
-    tags:
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Hair
@@ -508,7 +494,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
   - type: HideLayerClothing
     slots:
     - Snout
@@ -622,9 +607,6 @@
     sprite: Clothing/Mask/neckgaiter.rsi
   - type: IdentityBlocker
     coverage: MOUTH
-  - type: Tag
-    tags:
-    - WhitelistChameleon
 
 - type: entity
   parent: ClothingMaskNeckGaiter
@@ -731,9 +713,6 @@
     materialComposition:
       Steel: 200
       Glass: 100
-  - type: Tag
-    tags:
-    - WhitelistChameleon
 
 # Entity tables
 - type: entityTable

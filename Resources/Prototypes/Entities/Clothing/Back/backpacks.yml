@@ -36,7 +36,6 @@
 # ES END
   - type: Tag
     tags:
-    - WhitelistChameleon
     - Backpack
 
 - type: entity

@@ -95,7 +95,6 @@
   - type: Tag
     tags:
     - UtilityBelt
-    - WhitelistChameleon
 
 - type: entity
   parent: BaseClothingBeltEngineering

@@ -16,7 +16,6 @@
       Glass: 100
   - type: Tag
     tags:
-    - WhitelistChameleon
     - WeldingMask
   - type: HideLayerClothing
     slots:
@@ -35,7 +34,6 @@
   - type: Tag
     tags:
     - HamsterWearable
-    - WhitelistChameleon
     - WeldingMask
 
 - type: entity

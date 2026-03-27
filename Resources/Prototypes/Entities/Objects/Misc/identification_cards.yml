@@ -21,8 +21,6 @@
   - type: Tag
     tags:
     - DoorBumpOpener
-    - WhitelistChameleon
-    - WhitelistChameleonIdCard
 
 #IDs with layers
 
@@ -64,8 +62,6 @@
   - type: Tag
     tags:
     - DoorBumpOpener
-    - WhitelistChameleon
-    - WhitelistChameleonIdCard
     - HighRiskItem
 
 - type: entity
@@ -404,8 +400,6 @@
   - type: Tag
     tags:
     - DoorBumpOpener
-    - WhitelistChameleon
-    - WhitelistChameleonIdCard
     - Recyclable
 
 #Antags
@@ -429,7 +423,6 @@
   - type: ChameleonClothing
     slot: [idcard]
     default: PassengerIDCard
-    requireTag: WhitelistChameleonIdCard
   - type: UserInterface
     interfaces:
       enum.AgentIDCardUiKey.Key:
