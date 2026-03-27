@@ -10,7 +10,6 @@ namespace Content.Client.Clothing.UI;
 public sealed class ChameleonBoundUserInterface : BoundUserInterface
 {
     private readonly ChameleonClothingSystem _chameleon;
-    private readonly TagSystem _tag;
 
     [ViewVariables]
     private ChameleonMenu? _menu;
@@ -18,7 +17,6 @@ public sealed class ChameleonBoundUserInterface : BoundUserInterface
     public ChameleonBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
         _chameleon = EntMan.System<ChameleonClothingSystem>();
-        _tag = EntMan.System<TagSystem>();
     }
 
     protected override void Open()
