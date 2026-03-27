@@ -60,11 +60,11 @@ public sealed class WindowSheetlet<T> : Sheetlet<T>
             E<Label>()
                 .Class(DefaultWindow.StyleClassWindowTitle)
                 .FontColor(sheet.HighlightPalette.Text)
-                .Font(sheet.Fonts.GetFont(StandardFontType.Title, 14, FontKind.Bold)),
+                .Font(sheet.Fonts.GetFont(StandardFontType.Title, 18, FontKind.Bold)),
             E<Label>()
                 .Class("windowTitleAlert")
                 .FontColor(Color.White)
-                .Font(sheet.Fonts.GetFont(StandardFontType.Title, 14, FontKind.Bold)),
+                .Font(sheet.Fonts.GetFont(StandardFontType.Title, 18, FontKind.Bold)),
             // TODO: maybe also change everything here to `NanoWindow` or something
             E()
                 .Class(DefaultWindow.StyleClassWindowPanel)
