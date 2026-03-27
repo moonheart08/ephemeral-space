@@ -88,9 +88,7 @@
   - type: ESInherentLight
     lightPrototype: ESMobObserverInherentLight
     enabled: false
-  - type: Tag
-    tags:
-    - BypassInteractionRangeChecks
+  - type: ESBypassInteractionRangeChecks
 
 - type: entity
   parent: BaseMentalAction

@@ -34,9 +34,7 @@
   #- type: ExplosionResistance
   #  damageCoefficient: 0.9
 # ES END
-  - type: Tag
-    tags:
-    - Backpack
+
 
 - type: entity
   parent: ClothingBackpack

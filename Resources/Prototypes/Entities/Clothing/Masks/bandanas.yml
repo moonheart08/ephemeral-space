@@ -29,7 +29,6 @@
       visible: false
   - type: Tag
     tags:
-    - Bandana
     - ClothMade
     - Recyclable
   - type: HideLayerClothing

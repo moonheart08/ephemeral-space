@@ -89,8 +89,8 @@
         Base: dead
   - type: Tag
     tags:
-      - CannotSuicide
       - FootstepSound
+  - type: ESCannotSuicide
   - type: NoSlip
   - type: Rummager
   - type: RatKing
@@ -273,8 +273,8 @@
     wilhelmProbability: 0.001
   - type: Tag
     tags:
-      - CannotSuicide
       - FootstepSound
+  - type: ESCannotSuicide
   - type: NoSlip
   - type: MobsterAccent
     isBoss: false

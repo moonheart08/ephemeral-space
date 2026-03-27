@@ -10,13 +10,12 @@
     tags:
     - InstantDoAfters
     - CanPilot
-    - BypassInteractionRangeChecks
-    - BypassDropChecks
     - NoConsoleSound
     - SilentStorageUser
     - PreventAccessLogging
-    - AllowBiomeLoading
     - NotGhostnadoWarpable
+  - type: ESBypassInteractionRangeChecks
+  - type: ESBypassDropChecks
   - type: Input
     context: "aghost"
   - type: Ghost

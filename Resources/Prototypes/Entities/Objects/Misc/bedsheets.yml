@@ -18,9 +18,6 @@
     quickEquip: true
     slots:
     - neck
-  - type: Tag
-    tags:
-    - Bedsheet
 
 - type: entity
   id: BedsheetBlack

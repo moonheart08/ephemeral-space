@@ -138,7 +138,6 @@
     size: Tiny
   - type: Tag
     tags:
-    - Bee
     - Trash
   - type: Bloodstream
     bloodReferenceSolution:
@@ -575,8 +574,8 @@
   - type: Tag
     tags:
     - Trash
-    - CannotSuicide
     - VimPilot
+  - type: ESCannotSuicide
   - type: CanEscapeInventory
   - type: NpcFactionMember
     factions:
