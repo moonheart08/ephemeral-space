@@ -11,6 +11,7 @@ using Content.Shared._ES.Objectives.Components;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Administration.Systems;
 using Content.Shared.Chat;
+using Content.Shared.IdentityManagement;
 using Content.Shared.Mind;
 using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee.Events;
@@ -79,6 +80,9 @@ public sealed class ESParasiteRuleSystem : EntitySystem
             if (!_mind.TryGetMind(hit, out var mind))
                 continue;
 
+            if (_mask.GetTroupeOrNull(mind.Value.AsNullable()) == ent.Comp.IgnoreTroupe)
+                continue;
+
             if (_actionBlocker.CanMove(hit))
                 continue;
 
@@ -114,7 +118,7 @@ public sealed class ESParasiteRuleSystem : EntitySystem
                 mindComp.OwnedEntity is not { } owned)
                 continue;
 
-            _popup.PopupEntity(Loc.GetString("es-parasite-burst-popup", ("ent", owned)), owned, PopupType.LargeCaution);
+            _popup.PopupEntity(Loc.GetString("es-parasite-burst-popup", ("ent", Identity.Entity(owned, EntityManager))), owned, PopupType.LargeCaution);
             _audio.PlayPvs(ent.Comp.BurstSound, owned);
 
             _rejuvenate.PerformRejuvenate(ent);
