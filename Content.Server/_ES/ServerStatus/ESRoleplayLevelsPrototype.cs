@@ -54,7 +54,7 @@ public sealed partial class ESRoleplayLevelsPrototype : IPrototype, ISerializati
 
     private bool CheckForbidCharactersViolation(string word)
     {
-        return ForbidCharacters.Any(word.StartsWith);
+        return ForbidCharacters.Any(x => char.ToUpperInvariant(word[0]) == char.ToUpperInvariant(x));
     }
 
     public string GetPossibleRoleplay(ILocalizationManager loc, IPrototypeManager proto, IRobustRandom random)
