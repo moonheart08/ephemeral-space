@@ -29,12 +29,18 @@ public sealed class StatusManager
 
     private void OnHostnameChanged(string newValue, in CVarChangeInfo info)
     {
+        RerollHostname();
+    }
+
+    public void RerollHostname()
+    {
+        var hostnameFormat = _cfg.GetCVar(ESCVars.FormattedHostName);
         var levelSet = _proto.Index<ESRoleplayLevelsPrototype>(_cfg.GetCVar(ESCVars.RoleplayLevels));
 
         var titleWord = levelSet.GetPossibleRoleplay(_loc, _proto, _random);
 
         CurrentRoleplayLevel = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(titleWord);
 
-        _cfg.SetCVar(CVars.GameHostName, string.Format(newValue, CurrentRoleplayAbbreviation, CurrentRoleplayLevel));
+        _cfg.SetCVar(CVars.GameHostName, string.Format(hostnameFormat, CurrentRoleplayAbbreviation, CurrentRoleplayLevel));
     }
 }
