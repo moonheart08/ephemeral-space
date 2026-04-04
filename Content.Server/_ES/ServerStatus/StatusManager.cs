@@ -1,4 +1,5 @@
-﻿using Content.Shared._ES.CCVar;
+﻿using System.Globalization;
+using Content.Shared._ES.CCVar;
 using Robust.Shared;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
@@ -32,7 +33,7 @@ public sealed class StatusManager
 
         var titleWord = levelSet.GetPossibleRoleplay(_loc, _proto, _random);
 
-        CurrentRoleplayLevel = titleWord.ToUpper();
+        CurrentRoleplayLevel = CultureInfo.InvariantCulture.TextInfo.ToTitleCase(titleWord);
 
         _cfg.SetCVar(CVars.GameHostName, string.Format(newValue, CurrentRoleplayAbbreviation, CurrentRoleplayLevel));
     }

@@ -41,7 +41,7 @@ public sealed partial class ESRoleplayLevelsPrototype : IPrototype, ISerializati
 
         foreach (var roleplay in Roleplays)
         {
-            if (ForbidCharacters.Any(x => roleplay.StartsWith(x)))
+            if (CheckForbidCharactersViolation(roleplay))
                 badRoleplays.Add(roleplay);
         }
 
@@ -52,40 +52,23 @@ public sealed partial class ESRoleplayLevelsPrototype : IPrototype, ISerializati
         }
     }
 
+    private bool CheckForbidCharactersViolation(string word)
+    {
+        return ForbidCharacters.Any(word.StartsWith);
+    }
+
     public string GetPossibleRoleplay(ILocalizationManager loc, IPrototypeManager proto, IRobustRandom random)
     {
-        var total = 0;
+        var roleplays = new List<string>();
 
         foreach (var setProtoId in LocalizedDatasets)
         {
             var set = proto.Index(setProtoId);
-
-            total += set.Values.Count;
+            roleplays.AddRange(set.Values.Where(x => !CheckForbidCharactersViolation(x)));
         }
 
-        total += Roleplays.Count;
+        roleplays.AddRange(Roleplays);
 
-        var index = random.Next(total);
-
-        total = 0;
-
-        // Iterate each dataset and see if our random index falls into it.
-        foreach (var setProtoId in LocalizedDatasets)
-        {
-            var set = proto.Index(setProtoId);
-
-            total += set.Values.Count;
-
-            if (total > index)
-            {
-                index -= (total - set.Values.Count);
-                return loc.GetString(set.Values[index]);
-            }
-        }
-
-        // okay just..
-        index -= total;
-
-        return Roleplays[index];
+        return random.Pick(roleplays);
     }
 }
