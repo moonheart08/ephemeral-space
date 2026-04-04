@@ -132,6 +132,7 @@ namespace Content.Client.Entry
 // ES START
             _prototypeManager.RegisterIgnore("esStationConfig");
             _prototypeManager.RegisterIgnore("esMasqueradePrototype");
+            _prototypeManager.RegisterIgnore("esRoleplayLevels");
 // ES END
 
             _fontSelectionManager.Initialize();
