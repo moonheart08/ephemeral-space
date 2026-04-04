@@ -27,6 +27,7 @@ public sealed partial class ESRoleplayLevelsPrototype : IPrototype, ISerializati
     /// <summary>
     ///     Localized datasets we also add in to our list of roleplays.
     /// </summary>
+    [DataField]
     public List<ProtoId<LocalizedDatasetPrototype>> LocalizedDatasets = new();
 
     /// <summary>
